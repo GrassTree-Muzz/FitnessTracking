@@ -1,0 +1,162 @@
+TURN YOUR HTML INTO A FREE ANDROID APP
+====================================
+
+Goal: Put your existing HTML inside a small Android app, build an APK,
+and install it directly on your phone. No website or Google Play account
+is needed. The HTML remains the app's interface.
+
+This guide is for using another computer and a basic AI coding model.
+The computer builds the app; the Android phone runs it.
+
+WHAT TO TAKE TO THE OTHER COMPUTER
+--------------------------------
+1. This guide.
+2. Your index.html file.
+3. Any separate images, scripts, fonts or stylesheets it uses. Keep their
+   folder structure unchanged. Files embedded inside the HTML travel with it.
+4. A JSON backup exported from the current app, if you have saved exercise
+   entries you want to keep. Copying the HTML does NOT copy saved entries.
+
+WHAT TO INSTALL
+---------------
+1. Install the free Android Studio from https://developer.android.com/studio
+2. Let its setup wizard install the recommended Android SDK tools.
+3. Use Android Studio's bundled Java/JDK. No paid build service is required.
+4. Internet is needed for setup and dependency downloads. The finished app
+   can work offline when all its resources are bundled locally.
+
+CREATE THE STARTER PROJECT
+--------------------------
+1. In Android Studio, select New Project > Empty Views Activity.
+   Choose the Views template, not the Jetpack Compose template.
+2. App name: Peak Mild Effort
+3. Package name: com.example.peakmildeffort
+4. Language: Kotlin
+5. Minimum SDK: API 24, provided your phone runs Android 7.0 or newer.
+6. Keep the template's recommended compile/target SDK and build-tool versions.
+7. Finish and wait for the initial Gradle sync to complete.
+8. Give the AI model access to this project, your HTML and the prompt below.
+   If it cannot edit files directly, ask it for complete replacement files
+   with their exact paths, one step at a time.
+
+COPY THIS PROMPT TO THE AI MODEL
+-------------------------------
+I have an Android Studio Empty Views Activity project in Kotlin and an
+existing index.html. Turn it into a small Android WebView app for personal
+use. Implement the changes, not just a plan. Keep explanations short.
+
+Work in this order and do not redesign the HTML or add unrelated features:
+
+1. Inspect the existing project and HTML first. Keep the project's generated
+   Gradle, Kotlin and Android plugin versions unless a build error requires
+   a change. Use the existing Activity and theme, not a second application.
+
+2. Copy index.html and its local resources into app/src/main/assets/.
+   The entry file must be app/src/main/assets/index.html.
+   Preserve relative paths. Identify any runtime resources loaded from the
+   internet and bundle them locally where permitted for offline operation.
+   Distinguish external hyperlinks from resources the app needs to run.
+
+3. Replace the starter screen with a full-size WebView. Use AndroidX
+   WebViewAssetLoader and a compatible stable androidx.webkit:webkit
+   dependency. Register AssetsPathHandler at /assets/ and serve requests
+   through shouldInterceptRequest. Load this exact URL:
+   https://appassets.androidplatform.net/assets/index.html
+   This is a local asset address handled inside the app, not a hosted site.
+
+4. Enable JavaScript and DOM storage because the existing app needs them.
+   Preserve its existing localStorage keys and data format. Do not clear
+   storage on startup or exit. Keep the same asset origin across updates.
+   Do not enable broad file access, mixed content or cleartext HTTP.
+   Do not add unnecessary permissions. A fully bundled offline app does
+   not need INTERNET or general storage permissions.
+
+5. Install a WebChromeClient for browser dialogs and required browser
+   callbacks. Keep local navigation inside the WebView. Open user-selected
+   external HTTPS links in the phone's browser, including target="_blank"
+   links. Never load arbitrary external pages into the app's WebView.
+
+6. Handle Android Back: go back within the WebView when it has navigable
+   history, otherwise use normal Activity back behaviour. Use the AndroidX
+   back dispatcher. Apply system-bar and keyboard insets so content is not
+   covered by the status bar, navigation bar or on-screen keyboard.
+
+7. Preserve the existing backup import/export features. This HTML uses
+   localStorage and a blob URL download for its JSON backup. A basic
+   WebView does NOT automatically provide browser-style downloads or a
+   working file picker. Do not claim these work without implementing them.
+
+   IMPORT: Implement WebChromeClient.onShowFileChooser using the system
+   document picker and Activity Result APIs. Return the selected URI to
+   the WebView callback. On cancellation, return null and clear the callback.
+   Keep the HTML's existing JSON validation and restore confirmation.
+
+   EXPORT: Use the Android system CreateDocument flow with MIME type
+   application/json. Pass the existing backup JSON and suggested filename
+   to Android through an origin-restricted WebViewCompat.addWebMessageListener
+   bridge. Allow only https://appassets.androidplatform.net, require the main
+   frame, validate the message, and expose only the backup-saving action.
+   Check WebView feature support before registering the bridge; give a clear
+   update-WebView error if unavailable, not silent success. Write the JSON
+   using contentResolver.openOutputStream for the URI the user chooses.
+   Report success only after writing succeeds; handle cancellation/errors.
+   Make the smallest HTML change needed to call this bridge when present.
+   Keep the existing browser download behaviour when the bridge is absent.
+   Do not use DownloadManager for blob URLs or request broad storage access.
+
+8. Build the debug APK with the project's Gradle wrapper. On Windows use:
+   .\gradlew.bat assembleDebug
+   On macOS/Linux use:
+   ./gradlew assembleDebug
+   Run from the project root. Fix build errors without rewriting the app.
+   The usual output is app/build/outputs/apk/debug/app-debug.apk.
+
+9. Tell me which files changed, where the APK is, and which checks actually
+   passed. Do not claim phone tests were run if you only built the APK.
+   Ask me to run any checks that require my physical phone.
+
+END OF PROMPT
+-------------
+
+INSTALL THE APK ON YOUR PHONE
+-----------------------------
+1. Transfer app-debug.apk to your Android phone, for example using USB.
+2. Open it in the phone's Files app.
+3. If prompted, allow that specific app to "Install unknown apps" temporarily.
+   Only install APKs you built or trust. Do not disable Play Protect.
+4. Tap Install, then Open. Turn the unknown-apps permission off afterwards.
+5. You do not need developer mode or USB debugging to install this way.
+   A work-managed phone may block installation; do not bypass its policy.
+
+CHECK BEFORE RELYING ON IT
+--------------------------
+1. Open the app in airplane mode. Check the pictures, icons and chart.
+2. Add an exercise entry. Close and reopen the app; confirm it is still there.
+3. Restart the phone and check again. Rotate the screen and check the layout.
+4. Check Android Back, scrolling, dialogs, date inputs and the keyboard.
+5. Export a backup. Confirm a real JSON file appears where you saved it.
+6. Use disposable test entries to check restoring that backup and cancelling
+   each file picker. Restore replaces the existing exercise log.
+7. Import your original browser backup only after these tests work.
+8. Keep independent backups. App storage is not automatic cloud storage.
+   Uninstalling the app or clearing its data deletes its local records.
+
+KEEPING AND UPDATING YOUR APP
+-----------------------------
+The debug APK is enough for an initial personal test. For ongoing use, make
+a signed release APK using Android Studio's "Generate Signed Bundle / APK"
+action. Choose APK, not Android App Bundle, for direct installation.
+
+Keep the signing keystore and its passwords safe and backed up. Never give
+passwords to the AI or put them in source code. Use the same package name
+and signing key for future updates, and increase versionCode each release.
+Install updates over the existing app; do not uninstall to update it.
+
+A release APK usually has a different key from the debug APK. Export your
+data before switching: replacing debug with release may require uninstalling
+the debug app, then installing release and importing the backup. Debug keys
+can also differ between computers. Back up before changing build machines.
+
+For later HTML changes, update the assets copy inside the Android project,
+rebuild the APK, and install the update. Editing the original HTML elsewhere
+does not update an already installed app.
