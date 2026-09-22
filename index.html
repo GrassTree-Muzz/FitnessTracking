@@ -379,7 +379,7 @@
       <div class="data-actions" id="exercise-remove-actions" hidden><button type="button" class="secondary danger" id="remove-exercise"><i data-lucide="trash-2"></i> Remove exercise</button></div>
     </form>
   </dialog>
-  <dialog id="data-dialog" aria-labelledby="data-title"><div class="dialog-header"><h2 id="data-title">Your evidence locker.</h2><button class="icon-button close-dialog" aria-label="Close backups"><i data-lucide="x"></i></button></div><p class="data-copy">Your exercises and runs live in this browser, on this device. Clearing browser data can remove them. A backup keeps your extremely impressive paperwork safe.</p><div class="data-actions"><button class="secondary" id="export-data"><i data-lucide="download"></i> Download backup</button><button class="secondary" id="import-data"><i data-lucide="upload"></i> Restore a backup</button></div><input type="file" id="import-file" accept=".json,application/json" hidden=""><p class="storage-note" id="backup-summary"></p><p class="form-error" id="data-error" role="alert"></p></dialog>
+  <dialog id="data-dialog" aria-labelledby="data-title"><div class="dialog-header"><h2 id="data-title">Your evidence locker.</h2><button class="icon-button close-dialog" aria-label="Close backups"><i data-lucide="x"></i></button></div><p class="data-copy">Your exercises and runs live in this browser, on this device. Clearing browser data can remove them. A backup keeps your extremely impressive paperwork safe.</p><div class="data-actions"><button class="secondary" id="export-data"><i data-lucide="download"></i> Download backup</button><button class="secondary" id="copy-backup"><i data-lucide="clipboard"></i> Copy sync code</button><button class="secondary" id="import-data"><i data-lucide="upload"></i> Restore a backup</button><button class="secondary" id="paste-backup"><i data-lucide="clipboard-paste"></i> Paste sync code</button></div><input type="file" id="import-file" accept=".json,application/json" hidden=""><p class="storage-note" id="backup-summary"></p><p class="form-error" id="data-error" role="alert"></p></dialog>
   <dialog id="confirm-dialog" aria-labelledby="confirm-title"><div class="dialog-header"><h2 id="confirm-title">A small correction.</h2><button class="icon-button close-dialog" aria-label="Cancel confirmation"><i data-lucide="x"></i></button></div><p class="data-copy" id="confirm-copy"></p><div class="confirm-actions"><button class="secondary close-dialog">Cancel</button><button class="primary" id="confirm-action">Confirm</button></div></dialog>
   <div class="toast" id="toast" hidden=""><span id="toast-message" role="status" aria-live="polite"></span><button id="undo-action" hidden="">Undo</button><button class="icon-button" id="dismiss-toast" aria-label="Dismiss notification"><i data-lucide="x"></i></button></div>
   <noscript><div class="warning wrap">JavaScript must be enabled to save reps and show your charts.</div></noscript>
@@ -1073,7 +1073,26 @@ lucide.createIcons({icons});\``);if(typeof document>"u")throw new Error("`create
       setTimeout(() => URL.revokeObjectURL(url), 1000);
       notify('Backup downloaded. Your legacy is secure.');
     });
+    get('copy-backup').addEventListener('click', async () => {
+      try {
+        await navigator.clipboard.writeText(JSON.stringify(state));
+        notify('Sync code copied. Paste it into a private synced note or message.');
+      } catch (error) { get('data-error').textContent = 'Clipboard access was unavailable. Use Download backup instead.'; }
+    });
     get('import-data').addEventListener('click', () => get('import-file').click());
+    get('paste-backup').addEventListener('click', () => {
+      const pasted = window.prompt('Paste your sync code. It replaces this device\'s current log after confirmation.');
+      if (!pasted) return;
+      try {
+        const restored = tracker.validateState(JSON.parse(pasted));
+        get('data-dialog').close();
+        askConfirm('Replace the record?', `Restore ${number(restored.entries.length)} sets, ${restored.exercises.length} exercises and ${number(restored.runs.length)} runs? This replaces both current logs; it does not merge them. Download your current backup first if you need it.`, 'Restore backup', () => {
+          commit(restored, true);
+          undoAction = null;
+          notify('Evidence restored. The legend continues.');
+        });
+      } catch (error) { get('data-error').textContent = error instanceof SyntaxError ? 'That is not valid sync code.' : error.message; }
+    });
     get('import-file').addEventListener('change', async event => {
       const file = event.target.files[0];
       if (!file) return;
