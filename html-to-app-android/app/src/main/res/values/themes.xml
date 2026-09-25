@@ -1,3 +1,5 @@
 <resources>
-    <style name="Theme.PeakMildEffort" parent="Theme.AppCompat.DayNight.NoActionBar" />
+    <style name="Theme.PeakMildEffort" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:windowBackground">@color/paper</item>
+    </style>
 </resources>

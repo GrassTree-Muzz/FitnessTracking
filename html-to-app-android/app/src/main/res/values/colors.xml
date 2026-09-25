@@ -1,0 +1,4 @@
+<resources>
+    <!-- Matches the paper colour variable in index.html -->
+    <color name="paper">#F5F7F4</color>
+</resources>
