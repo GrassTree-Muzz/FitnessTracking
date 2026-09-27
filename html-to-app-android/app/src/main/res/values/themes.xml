@@ -1,5 +1,5 @@
 <resources>
-    <style name="Theme.PeakMildEffort" parent="Theme.AppCompat.Light.NoActionBar">
+    <style name="Theme.OlManMuz" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="android:windowBackground">@color/paper</item>
     </style>
 </resources>

@@ -14,5 +14,5 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "PeakMildEffort"
+rootProject.name = "Ol'Man Muz"
 include(":app")

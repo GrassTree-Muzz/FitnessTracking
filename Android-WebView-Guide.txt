@@ -29,7 +29,7 @@ CREATE THE STARTER PROJECT
 --------------------------
 1. In Android Studio, select New Project > Empty Views Activity.
    Choose the Views template, not the Jetpack Compose template.
-2. App name: Peak Mild Effort
+2. **App name:** Ol'Man Muz
 3. Package name: com.example.peakmildeffort
 4. Language: Kotlin
 5. Minimum SDK: API 24, provided your phone runs Android 7.0 or newer.

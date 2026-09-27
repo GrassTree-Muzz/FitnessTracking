@@ -118,7 +118,7 @@ class MainActivity : AppCompatActivity() {
                 val json = if (message.type == WebMessageCompat.TYPE_STRING) message.data else null
                 if (isMainFrame && !json.isNullOrBlank()) {
                     pendingBackup = json
-                    saveBackup.launch("peak-mild-effort-${DateFormat.format("yyyy-MM-dd", System.currentTimeMillis())}.json")
+                    saveBackup.launch("ol-man-muz-${DateFormat.format("yyyy-MM-dd", System.currentTimeMillis())}.json")
                 }
             }
         }

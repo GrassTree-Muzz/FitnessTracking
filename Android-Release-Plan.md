@@ -1,4 +1,4 @@
-# Peak Mild Effort — Android app: build, release and update plan
+# Ol'Man Muz — Android app: build, release and update plan
 
 Written 25/09/2026, then updated the same day to match the app that was actually built. The computer this was written on has no Android tools, so do all of this on a computer with **Android Studio**. This document calls that computer the **build computer**.
 
@@ -10,7 +10,7 @@ The Android app already exists and works. It is in `html-to-app-android/` on `ma
 
 ### 0.1 What you will end up with
 
-- The existing Android app **Peak Mild Effort** (package `com.example.peakmildeffort`, Android 7.0 or newer). It shows a bundled copy of the repo-root `index.html`, works fully offline, and keeps its data on the phone.
+- The existing Android app **Ol'Man Muz** (package `com.example.peakmildeffort`, Android 7.0 or newer). It shows a bundled copy of the repo-root `index.html`, works fully offline, and keeps its data on the phone.
 - A **release pipeline**. You push a version tag to GitHub and GitHub Actions builds and signs the app file (APK). It then publishes the APK as a **pre-release** on the repository's Releases page.
 - **Automatic updates** on every phone through **Obtainium**, a free app that installs and updates apps straight from GitHub Releases. Your phone gets pre-releases for testing. Friends' phones only get releases you have promoted.
 
@@ -76,7 +76,7 @@ Rules:
 - [ ] Part 2 — Repo up to date, branch `release-pipeline` created
 - [ ] Part 3 — Release settings added to the existing app (nothing else in the app changed)
 - [ ] Part 4 — Both `index.html` copies confirmed identical
-- [ ] Part 5 — Debug build ("Peak (debug)") installed on your phone, phone checklist passed
+- [ ] Part 5 — Debug build ("Ol'Man Muz (debug)") installed on your phone, phone checklist passed
 - [ ] Part 6 — GitHub Actions workflows added
 - [ ] Part 7 — READMEs updated
 - [ ] Part 8 — Pushed, "Android build check" green, merged to `main`
@@ -137,7 +137,7 @@ The build session created and tested this app. Every file was read on 25/09/2026
 
 | File in `html-to-app-android/` | What it contains |
 |---|---|
-| `settings.gradle.kts` | Project `PeakMildEffort` with one module, `:app`. Repositories: Google and Maven Central. |
+| `settings.gradle.kts` | Project `Ol'Man Muz` with one module, `:app`. Repositories: Google and Maven Central. |
 | `build.gradle.kts` | AGP **9.3.3**. |
 | `gradlew`, `gradlew.bat`, `gradle/wrapper/*` | Gradle **9.5.1**, with a `distributionSha256Sum` so a tampered download is refused. `gradlew` is already marked executable in Git. |
 | `gradle.properties` | Gradle's memory setting only. |
@@ -145,7 +145,7 @@ The build session created and tested this app. Every file was read on 25/09/2026
 | `app/build.gradle.kts` | Package `com.example.peakmildeffort`, compileSdk 37, targetSdk 36, minSdk 24 (Android 7.0+), Java 11. Libraries: activity 1.13.0, appcompat 1.8.0, core 1.19.1, webkit 1.17.1. A fixed `versionCode = 1` and no signing. **Part 3.3 changes this file.** |
 | `app/src/main/AndroidManifest.xml` | One launcher activity. **No permissions at all, not even internet.** No custom icon, so the phone shows Android's default app icon. |
 | `app/src/main/java/com/example/peakmildeffort/MainActivity.kt` | The WebView shell (see the next table). |
-| `app/src/main/res/values/` | `strings.xml` (app name "Peak Mild Effort"), `colors.xml` (`paper` `#F5F7F4`, matching the page) and `themes.xml` (AppCompat light theme, no action bar). |
+| `app/src/main/res/values/` | `strings.xml` (app name "Ol'Man Muz"), `colors.xml` (`paper` `#F5F7F4`, matching the page) and `themes.xml` (AppCompat light theme, no action bar). |
 | `app/src/main/assets/index.html` | An identical copy of the repo-root `index.html` (Part 4). |
 
 What `MainActivity.kt` does:
@@ -155,7 +155,7 @@ What `MainActivity.kt` does:
 | Loads the page offline | `WebViewAssetLoader` serves the bundled `index.html` at `https://appassets.androidplatform.net/assets/index.html`. That is a fixed, secure address handled entirely inside the app, not a website. |
 | Keeps your data | JavaScript and DOM storage (`localStorage`) are on, and the address never changes. |
 | Links | Only the app's own address loads inside the app. Other `https` links, such as the Unsplash credit, open in the phone's browser; anything else is blocked. File access is off. |
-| Download backup | The page sends the backup text to the **`AndroidBackup`** bridge. Android opens a "save as" screen suggesting `peak-mild-effort-YYYY-MM-DD.json`, writes the file, then shows "Backup saved" or "Backup could not be saved". |
+| Download backup | The page sends the backup text to the **`AndroidBackup`** bridge. Android opens a "save as" screen suggesting `ol-man-muz-YYYY-MM-DD.json`, writes the file, then shows "Backup saved" or "Backup could not be saved". |
 | Bridge security | The bridge uses `addWebMessageListener`, restricted to the origin `https://appassets.androidplatform.net` and to the main frame. No other page can reach it, and all it can do is offer to save a file that you confirm. |
 | Old WebView | If the phone's Android System WebView is too old for the bridge, Download backup says "Backup not saved. Update Android System WebView from Google Play, then try again." |
 | Restore a backup | The page's file input opens the Android document picker, which shows all file types. Cancelling does nothing. |
@@ -255,7 +255,7 @@ What changed, compared with the build session's file:
 
 - **Version numbers come from the tag.** CI passes `-PreleaseVersion=1.2.3` for tag `v1.2.3`. That becomes `versionName = "1.2.3"` and `versionCode = 1*10000 + 2*100 + 3 = 10203`, so the second and third numbers must stay between 0 and 99. Local builds default to `0.0.1`, which is versionCode 1 as before. Nobody edits `versionCode` by hand any more.
 - **Release signing** is set up only when the `RELEASE_KEYSTORE_*` environment variables exist, which happens only in CI (Part 6). No passwords are ever in the repo. Without them, a local release build is simply unsigned.
-- **Debug builds** get the package `com.example.peakmildeffort.debug` and the name "Peak (debug)" (3.4). They install **alongside** the real app with **separate, empty data**, so testing never touches your real log. Android Studio also never offers to uninstall the real app to make room.
+- **Debug builds** get the package `com.example.peakmildeffort.debug` and the name "Ol'Man Muz (debug)" (3.4). They install **alongside** the real app with **separate, empty data**, so testing never touches your real log. Android Studio also never offers to uninstall the real app to make room.
 - **Unchanged:** `namespace`, `applicationId`, compileSdk 37, minSdk 24, targetSdk 36, Java 11 and all four library versions. The release build isn't minified, as before; a WebView shell doesn't need it.
 
 > [!NOTE]
@@ -265,11 +265,11 @@ What changed, compared with the build session's file:
 
 ```xml
 <resources>
-    <string name="app_name">Peak (debug)</string>
+    <string name="app_name">Ol'Man Muz (debug)</string>
 </resources>
 ```
 
-Resources in `src/debug/` replace those in `src/main/` for debug builds only. The manifest already uses `@string/app_name`, so it needs no change, and release builds keep the name "Peak Mild Effort".
+Resources in `src/debug/` replace those in `src/main/` for debug builds only. The manifest already uses `@string/app_name`, so it needs no change, and release builds keep the name "Ol'Man Muz".
 
 ### 3.5 New file: `.gitignore` at the repo root
 
@@ -352,7 +352,7 @@ On macOS the JDK is at `/Applications/Android Studio.app/Contents/jbr/Contents/H
 
 ### 5.3 Install on your phone
 
-With the phone connected over USB (USB debugging on), press **Run ▶** in Android Studio. The app appears as **"Peak (debug)"**. It is a separate test copy with its own empty data, and it can sit alongside the real app. If the phone already has a "Peak Mild Effort" test copy from before Part 3, leave it alone for now; Part 10.2 deals with it.
+With the phone connected over USB (USB debugging on), press **Run ▶** in Android Studio. The app appears as **"Ol'Man Muz (debug)"**. It is a separate test copy with its own empty data, and it can sit alongside the real app. If the phone already has a "Peak Mild Effort" test copy from before Part 3, leave it alone for now; Part 10.2 deals with it.
 
 (Without USB: copy `app-debug.apk` to the phone and open it in the Files app. Allow that app to "Install unknown apps" temporarily, then turn the permission off again.)
 
@@ -431,7 +431,7 @@ jobs:
 
       - uses: actions/upload-artifact@v7
         with:
-          name: peak-mild-effort-debug-apk
+          name: ol-man-muz-debug-apk
           path: html-to-app-android/app/build/outputs/apk/debug/*.apk
           retention-days: 14
           if-no-files-found: error
@@ -520,7 +520,7 @@ jobs:
           GH_TOKEN: ${{ github.token }}
           GH_REPO: ${{ github.repository }}
         run: |
-          APK_NAME="peak-mild-effort-$GITHUB_REF_NAME.apk"
+          APK_NAME="ol-man-muz-$GITHUB_REF_NAME.apk"
           cp app/build/outputs/apk/release/app-release.apk "$APK_NAME"
           gh release create "$GITHUB_REF_NAME" "$APK_NAME" --prerelease --generate-notes --title "$GITHUB_REF_NAME"
 
@@ -551,7 +551,7 @@ About the action versions (checked 25/09/2026): `actions/checkout@v7`, `actions/
 
 how i track my health
 
-## Install the Android app (Peak Mild Effort)
+## Install the Android app (Ol'Man Muz)
 
 1. On your Android phone, install **Obtainium** from https://github.com/ImranR98/Obtainium/releases (or from F-Droid / IzzyOnDroid).
 2. Open Obtainium, tap **Add app**, and paste `https://github.com/GrassTree-Muzz/FitnessTracking`.
@@ -578,7 +578,7 @@ Releases are built and signed by GitHub Actions. There's no version number to ed
 3. Run `git tag vX.Y.Z` (higher than the last tag), then `git push origin vX.Y.Z`. CI publishes a signed pre-release.
 4. Install it on your phone through Obtainium and check it. Then promote it on GitHub: edit the release, untick "Set as a pre-release" and tick "Set as the latest release".
 
-Debug builds (Android Studio's Run, or `assembleDebug`) install as a separate app, "Peak (debug)" (`com.example.peakmildeffort.debug`), with their own data. Never uninstall the real app: uninstalling deletes its data.
+Debug builds (Android Studio's Run, or `assembleDebug`) install as a separate app, "Ol'Man Muz (debug)" (`com.example.peakmildeffort.debug`), with their own data. Never uninstall the real app: uninstalling deletes its data.
 
 Keep the package name (`com.example.peakmildeffort`) and the release signing key the same forever. Full details: `../Android-Release-Plan.md`.
 ```
@@ -600,7 +600,7 @@ Before committing, `git status` must list only the files from Part 3.2 (and this
 
 Check on GitHub:
 1. Open the repository → **Actions** → **Android build check**. The run for `release-pipeline` must be green.
-2. Open the run → **Artifacts** → `peak-mild-effort-debug-apk` must exist.
+2. Open the run → **Artifacts** → `ol-man-muz-debug-apk` must exist.
 3. Merge into `main`, either with a pull request on GitHub or locally:
 
 ```powershell
@@ -610,7 +610,7 @@ git merge --ff-only release-pipeline
 git push origin main
 ```
 
-Every CI debug build has a different temporary signing key. To install a newer CI debug APK over an older one, uninstall "Peak (debug)" first. Its data is only test data.
+Every CI debug build has a different temporary signing key. To install a newer CI debug APK over an older one, uninstall "Ol'Man Muz (debug)" first. Its data is only test data.
 
 ---
 
@@ -708,7 +708,7 @@ git push origin v1.0.0
 ```
 
 On GitHub → **Actions** → **Android release**: the run must be green, and the "Verify signing certificate" step must print `Signing certificate matches`.
-On GitHub → **Releases**: `v1.0.0` must show as **Pre-release** with exactly one file, `peak-mild-effort-v1.0.0.apk`.
+On GitHub → **Releases**: `v1.0.0` must show as **Pre-release** with exactly one file, `ol-man-muz-v1.0.0.apk`.
 
 ### 10.2 One time only: move your data off any test copy
 
@@ -731,15 +731,15 @@ Anyone else with a test copy, such as a friend, does the same before installing 
 4. Tap **Add**, then **Install**. Allow Obtainium to install apps when Android asks.
 5. If Play Protect warns about an app from an unknown developer, you may continue, because you built this app yourself. Never turn Play Protect off.
 
-The real app appears as **"Peak Mild Effort"**, separate from "Peak (debug)".
+The real app appears as **"Ol'Man Muz"**, separate from "Ol'Man Muz (debug)".
 
 ### 10.4 Run the phone checklist on the real app
 
-Repeat the 5.4 checklist on **Peak Mild Effort**.
+Repeat the 5.4 checklist on **Ol'Man Muz**.
 
 ### 10.5 Prove that updates keep data (the most important test)
 
-1. In **Peak Mild Effort**, add two test entries.
+1. In **Ol'Man Muz**, add two test entries.
 2. On the build computer, tag the next version. The same commit is fine; only the version number needs to increase:
 
 ```powershell
@@ -748,7 +748,7 @@ git push origin v1.0.1
 ```
 
 3. Wait for **Android release** to go green. In Obtainium, pull down to refresh; it offers **v1.0.1**. Tap **Update**.
-4. Open the app. **Both test entries must still be there.** The phone's Settings → Apps → Peak Mild Effort shows version `1.0.1`.
+4. Open the app. **Both test entries must still be there.** The phone's Settings → Apps → Ol'Man Muz shows version `1.0.1`.
 
 If the entries are gone, stop and see Part 14 before anything else.
 
@@ -781,7 +781,7 @@ Keep it to **20 devices or fewer** in total. That's the limit of the free regist
 ## 12. Every future update: the routine [YOU]
 
 1. Edit the root **`index.html`** and test it in a desktop browser. Then copy it over the app's copy (Part 4): `Copy-Item index.html html-to-app-android\app\src\main\assets\index.html`.
-2. Commit and push both files. Wait for **Android build check** to go green. (Optional: install the debug artifact or press Run in Android Studio. It installs as "Peak (debug)", with separate data.)
+2. Commit and push both files. Wait for **Android build check** to go green. (Optional: install the debug artifact or press Run in Android Studio. It installs as "Ol'Man Muz (debug)", with separate data.)
 3. Tag the next version and push the tag. It must be higher than the last one:
 
 ```powershell
@@ -891,7 +891,7 @@ Don't invite friends yet. Then:
 - **Obtainium:** the phone app that installs and updates this app from GitHub Releases.
 - **Origin:** the page address (`https://appassets.androidplatform.net`) that saved data belongs to.
 - **CI / GitHub Actions:** GitHub's servers that build the app automatically.
-- **Debug build:** a test copy ("Peak (debug)") with separate data, used for trying changes.
+- **Debug build:** a test copy ("Ol'Man Muz (debug)") with separate data, used for trying changes.
 
 ## Appendix B: Decisions and why
 
@@ -909,7 +909,7 @@ Don't invite friends yet. Then:
 | No INTERNET permission | The app is fully bundled; external links open in the browser. |
 | Two `index.html` copies, checked by CI | The app bundles its own copy in `assets/`. The root copy is the master, and CI refuses to build when the two differ, so an old page can't be released by accident. |
 | Versions from Git tags | No hand-edited `versionCode`, and the number can't go backwards by mistake (Android refuses downgrades). |
-| Debug builds as `com.example.peakmildeffort.debug` ("Peak (debug)") | Tests never touch real data, and debug and release signing keys never collide on one phone. |
+| Debug builds as `com.example.peakmildeffort.debug` ("Ol'Man Muz (debug)") | Tests never touch real data, and debug and release signing keys never collide on one phone. |
 | The CI fingerprint check before publishing | Stops the one mistake that would cut everyone off from updates. |
 
 ## Appendix C: Facts verified on 25/09/2026

@@ -1,4 +1,4 @@
-# Peak Mild Effort – Android app
+# Ol'Man Muz – Android app
 
 An offline Android app wrapping the tracker in the repository root's `index.html`. Your data lives in the app's private storage (the page's `localStorage`). The app requests no permissions, not even internet access.
 
