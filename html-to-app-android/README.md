@@ -22,7 +22,14 @@ Copy the APK to your phone, open it, and allow "Install unknown apps" for that a
 
 ## Update the app later
 
-1. Edit the root `index.html`, then copy it over `app/src/main/assets/index.html`.
+1. Edit the root `index.html`, then copy it and the root JPG images into `app/src/main/assets/`. From the repository root:
+
+	```powershell
+	Copy-Item index.html html-to-app-android\app\src\main\assets\index.html
+	Copy-Item *.JPG html-to-app-android\app\src\main\assets\
+	```
+
+	Android Studio packages files from this assets folder with the page.
 2. Increase `versionCode` in `app/build.gradle.kts`.
 3. Rebuild and install over the existing app. Don't uninstall first: uninstalling deletes the app's data.
 

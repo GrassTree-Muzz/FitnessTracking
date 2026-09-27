@@ -179,7 +179,9 @@ FitnessTracking/
         ├── build.gradle.kts                    (changed, 3.3)
         └── src/
             ├── debug/res/values/strings.xml    (new, 3.4)
-            └── main/assets/index.html          (must equal the root index.html, Part 4)
+            ├── main/assets/index.html          (copied from the root, Part 4)
+            ├── main/assets/DSC_3074.JPG        (hero image)
+            └── main/assets/20260530_140303 (1).jpg
 ```
 
 Everything else stays byte-for-byte as the build session left it, including `MainActivity.kt`, the manifest, the resources and the AGP and Gradle versions. `Android-WebView-Guide.txt` stays too, because the app's README links to its checks.
@@ -301,13 +303,19 @@ The build session already made the only Android-specific change: one line at the
 
 In a normal browser `window.AndroidBackup` doesn't exist, so Download backup works exactly as before. Inside the app, the line hands the backup to Android instead, because a WebView can't download `blob:` files on its own. Don't change or remove it: `MainActivity.kt` relies on the name `AndroidBackup` and on the message being the backup text.
 
-**The rule from now on:** edit only the root `index.html` and test it in a desktop browser, then copy it over the app's copy. PowerShell, from the repo root:
+**The rule from now on:** edit only the root `index.html` and test it in a desktop browser, then copy it and all root JPG images into the app's assets folder. PowerShell, from the repo root:
 
 ```powershell
 Copy-Item index.html html-to-app-android\app\src\main\assets\index.html
+Copy-Item *.JPG html-to-app-android\app\src\main\assets\
 ```
 
-On macOS or Linux: `cp index.html html-to-app-android/app/src/main/assets/index.html`
+On macOS or Linux:
+
+```sh
+cp index.html html-to-app-android/app/src/main/assets/index.html
+cp ./*.JPG html-to-app-android/app/src/main/assets/
+```
 
 Both workflows in Part 6 **fail if the two files differ**, so a release can never ship an out-of-date page.
 
