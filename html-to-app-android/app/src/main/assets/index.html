@@ -657,7 +657,7 @@ lucide.createIcons({icons});\``);if(typeof document>"u")throw new Error("`create
     const storageKey = 'peak-mild-effort.v1';
     const cloudStorageKey = 'peak-mild-effort.cloud.v1';
     const remoteData = { activities: [], samples: [] };
-    let cloudConfig = { endpoint: '', token: '' };
+    let cloudConfig = { endpoint: 'https://ol-man-muz-live-data.oldmanmuz-live.workers.dev', token: '' };
     let cloudTimer = null;
     let cloudRefreshing = false;
     const get = id => document.getElementById(id);

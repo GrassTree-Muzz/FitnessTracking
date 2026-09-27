@@ -36,9 +36,9 @@ Only `https://appassets.androidplatform.net` is allowed as a browser origin by d
 
 ## Connect the devices
 
-In the Android app, open the cloud-settings button, enter the Worker base URL and `PHONE_API_TOKEN`, then save. The phone token is stored in that app's local storage; do not reuse the watch token.
+In the Android app, open the cloud-settings button, confirm the prefilled Worker base URL, enter `PHONE_API_TOKEN`, then save. The phone token is stored in that app's local storage; do not reuse the watch token.
 
-In `Garmin Exportable/source/GarminLiveDataView.mc`, replace `REPLACE_WITH_WORKER_URL` in `ENDPOINT` with your Worker subdomain only (the part before `.workers.dev`), and replace `REPLACE_WITH_WATCH_API_TOKEN` in `API_TOKEN` with the `WATCH_API_TOKEN` secret. Make those secret-bearing edits locally, then rebuild and install the Garmin app. The watch sends a live activity while recording and periodic heart-rate/temperature readings while the app is open.
+`Garmin Exportable/source/GarminLiveDataView.mc` already targets the deployed Worker. Replace `REPLACE_WITH_WATCH_API_TOKEN` in `API_TOKEN` locally with the `WATCH_API_TOKEN` secret, then rebuild and install the Garmin app. Do not commit that secret-bearing edit. The watch sends a live activity while recording and periodic heart-rate/temperature readings while the app is open.
 
 ## Limits and checks
 
