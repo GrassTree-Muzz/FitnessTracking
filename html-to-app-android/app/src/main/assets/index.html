@@ -138,8 +138,10 @@
     footer svg { width: 14px; height: 14px; }
     footer a { text-underline-offset: 3px; }
     .mobile-dock { display: none; }
-    .view-tabs { display: flex; gap: 24px; border-bottom: 1px solid var(--line); }
+    .view-tabs { display: flex; gap: 20px; border-bottom: 1px solid var(--line); overflow-x: auto; scrollbar-width: none; }
+    .view-tabs::-webkit-scrollbar { display: none; }
     .view-tabs button { display: flex; align-items: center; gap: 8px; min-height: 52px; padding: 10px 2px; border-bottom: 3px solid transparent; font-size: 13px; color: var(--muted); }
+    .view-tabs button { flex: 0 0 auto; white-space: nowrap; }
     .view-tabs button[aria-selected="true"] { border-color: var(--green); color: var(--deep); font-weight: 600; }
     .view-tabs svg { width: 18px; height: 18px; }
     .runs-layout { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); gap: 38px; }
@@ -159,6 +161,23 @@
     .run-chart-section .segmented button { min-height: 40px; padding-inline: 12px; }
     .run-date-fields { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
     .run-duration { border: 0; padding: 0; margin: 15px 0; min-width: 0; }
+    .cloud-panel { padding-top: 24px; }
+    .cloud-panel .section-heading { margin-bottom: 12px; }
+    .cloud-panel .section-heading h2 { font-size: 25px; }
+    .cloud-status { color: var(--muted); font-size: 12px; min-height: 20px; margin: 4px 0 12px; overflow-wrap: anywhere; }
+    .cloud-list { border-top: 1px solid var(--line); }
+    .cloud-activity { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: 12px; padding: 15px 0; border-bottom: 1px solid var(--line); }
+    .cloud-activity h3 { font-size: 13px; }
+    .cloud-activity p { color: var(--muted); font-size: 11px; margin-top: 4px; }
+    .cloud-activity-metrics { text-align: right; font-variant-numeric: tabular-nums; }
+    .cloud-activity-metrics strong { display: block; font-size: 18px; }
+    .cloud-activity-metrics small { color: var(--muted); font-size: 10px; }
+    .health-metrics { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 20px; padding: 19px 0 22px; border-bottom: 1px solid var(--line); }
+    .health-metric { min-width: 0; }
+    .health-metric strong { display: block; font-size: 24px; line-height: 1.2; font-variant-numeric: tabular-nums; overflow-wrap: anywhere; }
+    .health-metric small { display: block; margin-top: 5px; color: var(--muted); font-size: 11px; }
+    .health-history { margin-top: 20px; }
+    .health-history h3 { margin-bottom: 8px; }
     .duration-inputs { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; margin-top: 8px; }
     .duration-inputs label { display: flex; flex-direction: column; gap: 5px; color: var(--muted); font-size: 11px; }
     .duration-inputs input { width: 100%; font-size: 20px; text-align: center; }
@@ -227,6 +246,7 @@
       main { padding-top: 24px; }
       .dashboard { grid-template-columns: 1fr; gap: 29px; }
       .runs-layout { grid-template-columns: 1fr; gap: 28px; }
+      .health-metrics { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px 20px; }
       .run-chart-section { padding: 23px 0 0; border-left: 0; border-top: 1px solid var(--line); }
       .run-row { grid-template-columns: minmax(0, 1fr) minmax(72px, auto) 68px; gap: 8px; }
       .run-row h3 { font-size: 12px; }
@@ -269,7 +289,7 @@
   <a class="skip-link" href="#main">Skip to your tracker</a>
   <header class="topbar wrap">
     <a class="brand" href="#" aria-label="Ol'Man Muz home"><span class="brand-mark"><i data-lucide="mountain-snow"></i></span><span class="brand-name">Ol'Man Muz</span></a>
-    <div class="top-actions"><span class="date-label" id="header-date"></span><a class="nav-link" href="#history"><i data-lucide="notebook-pen"></i> Field notes</a><button class="icon-button" id="open-data" title="Backups and data" aria-label="Backups and data"><i data-lucide="database"></i></button></div>
+    <div class="top-actions"><span class="date-label" id="header-date"></span><a class="nav-link" href="#history"><i data-lucide="notebook-pen"></i> Field notes</a><button class="icon-button" id="open-cloud-config" title="Cloud sync settings" aria-label="Cloud sync settings"><i data-lucide="cloud-cog"></i></button><button class="icon-button" id="open-data" title="Backups and data" aria-label="Backups and data"><i data-lucide="database"></i></button></div>
   </header>
   <section class="hero" aria-labelledby="page-title">
     <img class="hero-image" src="DSC_3074.JPG" alt="A surfer launching off a breaking wave as two others paddle nearby" fetchpriority="high">
@@ -279,7 +299,7 @@
     </div>
   </section>
   <div class="wrap">
-    <div class="view-tabs" role="tablist" aria-label="Activity tracker"><button type="button" id="exercises-tab" role="tab" aria-selected="true" aria-controls="exercise-panel" data-view="exercises"><i data-lucide="dumbbell"></i> Exercises</button><button type="button" id="runs-tab" role="tab" aria-selected="false" aria-controls="run-panel" tabindex="-1" data-view="runs"><i data-lucide="footprints"></i> Runs</button></div>
+    <div class="view-tabs" role="tablist" aria-label="Activity tracker"><button type="button" id="exercises-tab" role="tab" aria-selected="true" aria-controls="exercise-panel" data-view="exercises"><i data-lucide="dumbbell"></i> Exercises</button><button type="button" id="runs-tab" role="tab" aria-selected="false" aria-controls="run-panel" tabindex="-1" data-view="runs"><i data-lucide="footprints"></i> Runs</button><button type="button" id="activities-tab" role="tab" aria-selected="false" aria-controls="activities-panel" tabindex="-1" data-view="activities"><i data-lucide="watch"></i> Activities</button><button type="button" id="health-tab" role="tab" aria-selected="false" aria-controls="health-panel" tabindex="-1" data-view="health"><i data-lucide="heart-pulse"></i> Health Stats</button></div>
     <div class="warning" id="storage-warning" role="alert" hidden=""></div>
     <div class="stats" id="exercise-stats">
       <div class="stat"><i data-lucide="footprints"></i><strong id="week-total">0</strong><small>reps in the last 7 days</small></div>
@@ -335,8 +355,24 @@
           </section>
         </div>
       </section>
+      <section id="activities-panel" class="cloud-panel" role="tabpanel" aria-labelledby="activities-tab" hidden>
+        <div class="section-heading"><div><h2>Garmin activities</h2><p>Live and completed runs from your watch.</p></div><button class="icon-button" data-refresh-cloud title="Refresh Garmin data" aria-label="Refresh Garmin data"><i data-lucide="refresh-cw"></i></button></div>
+        <p class="cloud-status" id="activities-status" role="status" aria-live="polite">Cloud sync is not configured.</p>
+        <div class="cloud-list" id="activities-list"></div>
+      </section>
+      <section id="health-panel" class="cloud-panel" role="tabpanel" aria-labelledby="health-tab" hidden>
+        <div class="section-heading"><div><h2>Health statistics</h2><p>Watch readings sampled every five minutes.</p></div><button class="icon-button" data-refresh-cloud title="Refresh health data" aria-label="Refresh health data"><i data-lucide="refresh-cw"></i></button></div>
+        <p class="cloud-status" id="health-status" role="status" aria-live="polite">Cloud sync is not configured.</p>
+        <div class="health-metrics" aria-label="Latest health statistics">
+          <div class="health-metric"><strong id="health-current-hr">--</strong><small>latest heart rate · bpm</small></div>
+          <div class="health-metric"><strong id="health-average-hr">--</strong><small>24-hour average · bpm</small></div>
+          <div class="health-metric"><strong id="health-maximum-hr">--</strong><small>24-hour maximum · bpm</small></div>
+          <div class="health-metric"><strong id="health-temperature">--</strong><small>watch temperature · °C</small></div>
+        </div>
+        <section class="health-history" aria-labelledby="health-history-title"><h3 id="health-history-title">Recent readings</h3><div class="table-scroll"><table id="health-table"><caption class="sr-only">Recent heart rate and watch temperature readings from the Garmin watch</caption><thead><tr><th scope="col">Time</th><th scope="col">Heart rate (bpm)</th><th scope="col">Watch temperature (°C)</th></tr></thead><tbody></tbody></table></div></section>
+      </section>
     </main>
-    <footer><p><i data-lucide="hard-drive"></i> Saved in this browser</p></footer>
+    <footer><p><i data-lucide="hard-drive"></i> Exercises and manual runs stay on this device; Garmin data uses your configured cloud database.</p></footer>
   </div>
   <div class="mobile-dock" id="exercise-dock"><div class="dock-total"><strong id="today-total">0</strong> reps today</div><button class="primary open-log"><i data-lucide="plus"></i> Log a set</button></div>
   <div class="mobile-dock" id="run-dock" hidden><div class="dock-total"><strong id="run-week-dock">0</strong> km this week</div><button class="primary open-run"><i data-lucide="plus"></i> Log a run</button></div>
@@ -369,6 +405,7 @@
     </form>
   </dialog>
   <dialog id="data-dialog" aria-labelledby="data-title"><div class="dialog-header"><h2 id="data-title">Your evidence locker.</h2><button class="icon-button close-dialog" aria-label="Close backups"><i data-lucide="x"></i></button></div><p class="data-copy">Your exercises and runs live in this browser, on this device. Clearing browser data can remove them. A backup keeps your extremely impressive paperwork safe.</p><div class="data-actions"><button class="secondary" id="export-data"><i data-lucide="download"></i> Download backup</button><button class="secondary" id="copy-backup"><i data-lucide="clipboard"></i> Copy sync code</button><button class="secondary" id="import-data"><i data-lucide="upload"></i> Restore a backup</button><button class="secondary" id="paste-backup"><i data-lucide="clipboard-paste"></i> Paste sync code</button></div><input type="file" id="import-file" accept=".json,application/json" hidden=""><p class="storage-note" id="backup-summary"></p><p class="form-error" id="data-error" role="alert"></p></dialog>
+  <dialog id="cloud-config-dialog" aria-labelledby="cloud-config-title"><form id="cloud-config-form"><div class="dialog-header"><h2 id="cloud-config-title">Cloud sync.</h2><button type="button" class="icon-button close-dialog" aria-label="Close cloud settings"><i data-lucide="x"></i></button></div><p class="data-copy">Only Garmin activity and health readings are sent to this service. They are stored outside this phone. Your exercise log and manually entered runs remain local.</p><div class="form-field"><label for="cloud-endpoint">Worker URL</label><input id="cloud-endpoint" type="url" inputmode="url" placeholder="https://your-worker.workers.dev" autocomplete="url" required></div><div class="form-field"><label for="cloud-token">Phone read token</label><input id="cloud-token" type="password" autocomplete="new-password" required></div><p class="storage-note">The read token is saved in this app's local storage. Use a separate write token for the Garmin watch.</p><p class="form-error" id="cloud-config-error" role="alert"></p><div class="data-actions"><button type="submit" class="primary"><i data-lucide="cloud-cog"></i> Save and connect</button><button type="button" class="secondary danger" id="disconnect-cloud">Disconnect this device</button></div></form></dialog>
   <dialog id="confirm-dialog" aria-labelledby="confirm-title"><div class="dialog-header"><h2 id="confirm-title">A small correction.</h2><button class="icon-button close-dialog" aria-label="Cancel confirmation"><i data-lucide="x"></i></button></div><p class="data-copy" id="confirm-copy"></p><div class="confirm-actions"><button class="secondary close-dialog">Cancel</button><button class="primary" id="confirm-action">Confirm</button></div></dialog>
   <div class="toast" id="toast" hidden=""><span id="toast-message" role="status" aria-live="polite"></span><button id="undo-action" hidden="">Undo</button><button class="icon-button" id="dismiss-toast" aria-label="Dismiss notification"><i data-lucide="x"></i></button></div>
   <noscript><div class="warning wrap">JavaScript must be enabled to save reps and show your charts.</div></noscript>
@@ -618,6 +655,11 @@ lucide.createIcons({icons});\``);if(typeof document>"u")throw new Error("`create
     'use strict';
     const tracker = PeakTracker;
     const storageKey = 'peak-mild-effort.v1';
+    const cloudStorageKey = 'peak-mild-effort.cloud.v1';
+    const remoteData = { activities: [], samples: [] };
+    let cloudConfig = { endpoint: '', token: '' };
+    let cloudTimer = null;
+    let cloudRefreshing = false;
     const get = id => document.getElementById(id);
     const number = value => new Intl.NumberFormat().format(value);
     const formatDuration = seconds => `${Math.floor(seconds / 60)}:${String(seconds % 60).padStart(2, '0')}`;
@@ -663,6 +705,16 @@ lucide.createIcons({icons});\``);if(typeof document>"u")throw new Error("`create
       readOnly = true;
       warn('Your saved log could not be opened. Nothing has been overwritten. Enable browser storage or restore a valid backup from the data menu.');
     }
+    try {
+      const savedCloud = localStorage.getItem(cloudStorageKey);
+      if (savedCloud) {
+        const parsedCloud = JSON.parse(savedCloud);
+        const endpoint = new URL(parsedCloud.endpoint);
+        if (endpoint.protocol === 'https:' && typeof parsedCloud.token === 'string' && parsedCloud.token.length >= 32) {
+          cloudConfig = { endpoint: endpoint.href.replace(/\/+$/, ''), token: parsedCloud.token };
+        }
+      }
+    } catch (error) { cloudConfig = { endpoint: '', token: '' }; }
     function commit(nextState, force = false) {
       if (readOnly && !force) throw new Error('Storage is unavailable or your saved log needs recovery. Open Backups and data.');
       try { localStorage.setItem(storageKey, JSON.stringify(nextState)); }
@@ -671,6 +723,80 @@ lucide.createIcons({icons});\``);if(typeof document>"u")throw new Error("`create
       readOnly = false;
       get('storage-warning').hidden = true;
       render();
+    }
+    function setCloudStatus(message) {
+      get('activities-status').textContent = message;
+      get('health-status').textContent = message;
+    }
+    async function cloudRequest(path) {
+      const result = await fetch(`${cloudConfig.endpoint}/api/${path}`, {
+        headers: { Authorization: `Bearer ${cloudConfig.token}` },
+        cache: 'no-store'
+      });
+      const data = await result.json().catch(() => ({}));
+      if (!result.ok) throw new Error(data.error || `Cloud request failed (${result.status}).`);
+      return data;
+    }
+    function renderActivities() {
+      const activities = [...remoteData.activities].sort((first, second) => Number(second.started_at) - Number(first.started_at));
+      get('activities-list').innerHTML = activities.map(activity => {
+        const date = new Date(Number(activity.started_at) * 1000);
+        const when = Number.isFinite(date.getTime()) ? date.toLocaleString(undefined, { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric', hour: 'numeric', minute: '2-digit' }) : 'Unknown start';
+        const distance = Number(activity.distance_meters) || 0;
+        const elapsed = Number(activity.elapsed_time_ms) || 0;
+        const pace = distance > 0 ? `${formatElapsed(Math.round(elapsed / distance))} /km` : 'Pace unavailable';
+        const status = activity.recording ? 'In progress' : Number(activity.fit_saved) === 1 ? 'FIT saved on watch' : 'Completed';
+        return `<article class="cloud-activity"><div><h3>${escapeHTML(when)}</h3><p>${status} · ${pace}${activity.heart_rate_bpm ? ` · ${number(activity.heart_rate_bpm)} bpm` : ''}</p></div><div class="cloud-activity-metrics"><strong>${formatKm(distance)}</strong><small>km · ${formatElapsed(Math.round(elapsed / 1000))}</small></div></article>`;
+      }).join('') || '<div class="history-empty"><i data-lucide="watch"></i><p>No Garmin activities have arrived yet.</p></div>';
+      icons();
+    }
+    function renderHealth() {
+      const cutoff = Date.now() - 24 * 60 * 60 * 1000;
+      const samples = remoteData.samples.filter(sample => Number.isFinite(Number(sample.sample_time)) && Number(sample.sample_time) >= cutoff && Number(sample.sample_time) <= Date.now());
+      const rates = samples.map(sample => Number(sample.heart_rate_bpm)).filter(value => Number.isFinite(value) && value > 0);
+      const latestRate = samples.find(sample => Number.isFinite(Number(sample.heart_rate_bpm)) && Number(sample.heart_rate_bpm) > 0);
+      const latestTemperature = samples.find(sample => sample.temperature_c !== null && sample.temperature_c !== undefined && Number.isFinite(Number(sample.temperature_c)));
+      get('health-current-hr').textContent = latestRate ? number(Number(latestRate.heart_rate_bpm)) : '--';
+      get('health-average-hr').textContent = rates.length ? number(Math.round(rates.reduce((sum, value) => sum + value, 0) / rates.length)) : '--';
+      get('health-maximum-hr').textContent = rates.length ? number(Math.max(...rates)) : '--';
+      get('health-temperature').textContent = latestTemperature ? Number(latestTemperature.temperature_c).toFixed(1) : '--';
+      get('health-table').querySelector('tbody').innerHTML = samples.map(sample => {
+        const date = new Date(Number(sample.sample_time));
+        const time = Number.isFinite(date.getTime()) ? date.toLocaleString(undefined, { month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' }) : 'Unknown';
+        const rate = sample.heart_rate_bpm !== null && sample.heart_rate_bpm !== undefined && Number.isFinite(Number(sample.heart_rate_bpm)) ? number(Number(sample.heart_rate_bpm)) : '--';
+        const temperature = sample.temperature_c !== null && sample.temperature_c !== undefined && Number.isFinite(Number(sample.temperature_c)) ? Number(sample.temperature_c).toFixed(1) : '--';
+        return `<tr><th scope="row">${escapeHTML(time)}</th><td>${rate}</td><td>${temperature}</td></tr>`;
+      }).join('') || '<tr><td colspan="3">No health readings have arrived yet.</td></tr>';
+    }
+    async function refreshCloud(silent = false) {
+      if (!cloudConfig.endpoint || !cloudConfig.token) {
+        setCloudStatus('Cloud sync is not configured.');
+        return;
+      }
+      if (cloudRefreshing) return;
+      cloudRefreshing = true;
+      if (!silent) setCloudStatus('Refreshing Garmin data…');
+      try {
+        const [activities, health] = await Promise.all([cloudRequest('activities'), cloudRequest('health')]);
+        if (!Array.isArray(activities.activities) || !Array.isArray(health.samples)) throw new Error('The service returned an invalid response.');
+        remoteData.activities = activities.activities;
+        remoteData.samples = health.samples;
+        renderActivities();
+        renderHealth();
+        renderStats();
+        setCloudStatus(`Updated ${new Date().toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' })}.`);
+      } catch (error) {
+        setCloudStatus(`Could not refresh cloud data: ${error.message}`);
+      } finally {
+        cloudRefreshing = false;
+      }
+    }
+    function updateCloudPolling() {
+      clearInterval(cloudTimer);
+      cloudTimer = null;
+      if (cloudConfig.endpoint && cloudConfig.token && !document.hidden && ['activities', 'health'].includes(activeView)) {
+        cloudTimer = setInterval(() => { void refreshCloud(true); }, 60000);
+      }
     }
     function notify(message, undo = null) {
       clearTimeout(toastTimer);
@@ -696,8 +822,11 @@ lucide.createIcons({icons});\``);if(typeof document>"u")throw new Error("`create
       for (const entry of repEntries) totals.set(entry.date, (totals.get(entry.date) || 0) + entry.reps);
       const lifetime = repEntries.reduce((sum, entry) => sum + entry.reps, 0);
       const runDistance = state.runs.reduce((sum, run) => sum + run.distanceMeters, 0);
-      get('lifetime').textContent = activeView === 'runs' ? formatKm(runDistance) : number(lifetime);
-      document.querySelector('.hero-score .eyebrow').textContent = activeView === 'runs' ? 'Lifetime km' : 'Lifetime reps';
+      const currentHeartRate = remoteData.samples.find(sample => Number.isInteger(sample.heart_rate_bpm) && sample.heart_rate_bpm > 0)?.heart_rate_bpm;
+      const heroValue = activeView === 'runs' ? formatKm(runDistance) : activeView === 'activities' ? number(remoteData.activities.length) : activeView === 'health' ? (currentHeartRate ?? '--') : number(lifetime);
+      const heroLabel = activeView === 'runs' ? 'Lifetime km' : activeView === 'activities' ? 'Garmin activities' : activeView === 'health' ? 'Current bpm' : 'Lifetime reps';
+      get('lifetime').textContent = heroValue;
+      document.querySelector('.hero-score .eyebrow').textContent = heroLabel;
       get('week-total').textContent = number(points.reduce((sum, point) => sum + point.total, 0));
       get('active-days').textContent = number(new Set(state.entries.map(entry => entry.date)).size);
       get('best-day').textContent = number(Math.max(0, ...totals.values()));
@@ -815,17 +944,23 @@ lucide.createIcons({icons});\``);if(typeof document>"u")throw new Error("`create
       get('run-table').querySelector('tbody').innerHTML = [...points].reverse().map(point => `<tr><th scope="row">${weekly ? `${formatDay(point.start, { day: 'numeric', month: 'short', year: 'numeric' })} - ${formatDay(point.end)}` : formatDay(point.start, { month: 'long', year: 'numeric' })}</th><td>${formatKm(point.distanceMeters)}</td><td>${number(point.runCount)}</td></tr>`).join('');
     }
     function switchView(view) {
+      if (!['exercises', 'runs', 'activities', 'health'].includes(view)) return;
       activeView = view;
       const runs = view === 'runs';
-      get('exercise-panel').hidden = runs;
-      get('exercise-stats').hidden = runs;
-      get('exercise-dock').hidden = runs;
+      const exercises = view === 'exercises';
+      get('exercise-panel').hidden = !exercises;
+      get('exercise-stats').hidden = !exercises;
+      get('exercise-dock').hidden = !exercises;
       get('run-panel').hidden = !runs;
       get('run-stats').hidden = !runs;
       get('run-dock').hidden = !runs;
+      get('activities-panel').hidden = view !== 'activities';
+      get('health-panel').hidden = view !== 'health';
       document.querySelector('.nav-link').setAttribute('href', runs ? '#run-log' : '#history');
       document.querySelectorAll('[data-view]').forEach(button => { button.setAttribute('aria-selected', button.dataset.view === view); button.tabIndex = button.dataset.view === view ? 0 : -1; });
       render();
+      updateCloudPolling();
+      if (view === 'activities' || view === 'health') void refreshCloud();
     }
     function openRun(run = null) {
       editingRun = run?.id || null;
@@ -842,7 +977,7 @@ lucide.createIcons({icons});\``);if(typeof document>"u")throw new Error("`create
       get('run-error').textContent = '';
       get('run-dialog').showModal();
     }
-    function render() { renderStats(); renderExercises(); renderHistory(); renderRuns(); if (activeView === 'runs') renderRunChart(); else renderChart(); icons(); }
+    function render() { renderStats(); renderExercises(); renderHistory(); renderRuns(); renderActivities(); renderHealth(); if (activeView === 'runs') renderRunChart(); else if (activeView === 'exercises') renderChart(); icons(); }
     function logSet(exerciseId, amount, date) {
       const result = tracker.addEntry(state, exerciseId, amount, date);
       commit(result.state);
@@ -908,9 +1043,12 @@ lucide.createIcons({icons});\``);if(typeof document>"u")throw new Error("`create
     document.querySelector('.view-tabs').addEventListener('keydown', event => {
       if (!['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(event.key)) return;
       event.preventDefault();
-      const view = event.key === 'Home' ? 'exercises' : event.key === 'End' ? 'runs' : activeView === 'runs' ? 'exercises' : 'runs';
+      const tabs = [...document.querySelectorAll('[data-view]')];
+      const currentIndex = tabs.findIndex(button => button.dataset.view === activeView);
+      const nextIndex = event.key === 'Home' ? 0 : event.key === 'End' ? tabs.length - 1 : (currentIndex + (event.key === 'ArrowRight' ? 1 : tabs.length - 1)) % tabs.length;
+      const view = tabs[nextIndex].dataset.view;
       switchView(view);
-      get(view === 'runs' ? 'runs-tab' : 'exercises-tab').focus();
+      tabs[nextIndex].focus();
     });
     get('run-period-control').addEventListener('click', event => {
       const button = event.target.closest('[data-run-period]');
@@ -1040,6 +1178,46 @@ lucide.createIcons({icons});\``);if(typeof document>"u")throw new Error("`create
     get('dismiss-toast').addEventListener('click', () => { get('toast').hidden = true; });
     get('confirm-action').addEventListener('click', () => { try { confirmAction?.(); get('confirm-dialog').close(); } catch (error) { notify(error.message); } });
     get('open-data').addEventListener('click', () => { get('backup-summary').textContent = `${number(state.entries.length)} sets. ${state.exercises.length} exercises. ${number(state.runs.length)} runs. One very relaxed athlete.`; get('data-error').textContent = ''; get('data-dialog').showModal(); });
+    get('open-cloud-config').addEventListener('click', () => {
+      get('cloud-endpoint').value = cloudConfig.endpoint;
+      get('cloud-token').value = cloudConfig.token;
+      get('cloud-config-error').textContent = '';
+      get('cloud-config-dialog').showModal();
+    });
+    get('cloud-config-form').addEventListener('submit', event => {
+      event.preventDefault();
+      try {
+        const endpoint = new URL(get('cloud-endpoint').value.trim());
+        const token = get('cloud-token').value.trim();
+        if (endpoint.protocol !== 'https:' || endpoint.username || endpoint.password || endpoint.pathname !== '/' || endpoint.search || endpoint.hash) throw new Error('Enter the HTTPS base URL of your Worker, without a path.');
+        if (token.length < 32) throw new Error('The phone read token must be at least 32 characters.');
+        const nextConfig = { endpoint: endpoint.href.replace(/\/+$/, ''), token };
+        localStorage.setItem(cloudStorageKey, JSON.stringify(nextConfig));
+        cloudConfig = nextConfig;
+        get('cloud-config-dialog').close();
+        updateCloudPolling();
+        setCloudStatus('Connecting to your cloud database…');
+        void refreshCloud();
+        notify('Cloud connection saved on this device.');
+      } catch (error) { get('cloud-config-error').textContent = error.message; }
+    });
+    get('disconnect-cloud').addEventListener('click', () => {
+      try { localStorage.removeItem(cloudStorageKey); }
+      catch (error) { get('cloud-config-error').textContent = 'The cloud connection could not be removed from local storage.'; return; }
+      cloudConfig = { endpoint: '', token: '' };
+      get('cloud-endpoint').value = '';
+      get('cloud-token').value = '';
+      remoteData.activities = [];
+      remoteData.samples = [];
+      updateCloudPolling();
+      setCloudStatus('Disconnected on this device. Data remains in the cloud database.');
+      renderActivities();
+      renderHealth();
+      renderStats();
+      get('cloud-config-dialog').close();
+      notify('Cloud sync disconnected on this device. Remote data was not deleted.');
+    });
+    document.querySelectorAll('[data-refresh-cloud]').forEach(button => button.addEventListener('click', () => { void refreshCloud(); }));
     get('export-data').addEventListener('click', () => {
       if (window.AndroidBackup) { AndroidBackup.postMessage(JSON.stringify(state, null, 2)); return; }
       const file = new Blob([JSON.stringify(state, null, 2)], { type: 'application/json' });
@@ -1092,8 +1270,14 @@ lucide.createIcons({icons});\``);if(typeof document>"u")throw new Error("`create
       catch (error) { readOnly = true; warn('The saved log changed in another tab but could not be opened. Restore a valid backup to continue.'); }
     });
     document.addEventListener('visibilitychange', () => {
+      if (document.hidden) {
+        clearInterval(cloudTimer);
+        cloudTimer = null;
+        return;
+      }
+      updateCloudPolling();
       const today = tracker.dayKey();
-      if (document.hidden || currentDay === today) return;
+      if (currentDay === today) return;
       if (endDate === currentDay) endDate = today;
       if (logDate === currentDay) { logDate = today; get('log-date').value = today; }
       currentDay = today;
@@ -1104,6 +1288,10 @@ lucide.createIcons({icons});\``);if(typeof document>"u")throw new Error("`create
       render();
     });
     render();
+    if (cloudConfig.endpoint && cloudConfig.token) {
+      void refreshCloud(true);
+      updateCloudPolling();
+    }
   </script>
 
 </body></html>
