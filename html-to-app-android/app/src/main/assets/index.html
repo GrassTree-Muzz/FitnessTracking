@@ -159,25 +159,108 @@
     .run-chart-section h2 { font-size: 25px; }
     .run-chart-section .chart-wrap { height: 230px; }
     .run-chart-section .segmented button { min-height: 40px; padding-inline: 12px; }
+    .history-row.activity-row { grid-template-columns: auto minmax(0, 1fr) auto 40px; }
+    .sport-title { font-size: 15px; margin-top: 24px; }
+    .sport-list { display: grid; gap: 12px; margin-top: 12px; }
+    .sport-row { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 11px; align-items: center; }
+    .sport-row .exercise-symbol { width: 32px; height: 32px; }
+    .sport-row .exercise-symbol svg { width: 16px; height: 16px; }
+    .sport-row strong { display: flex; justify-content: space-between; gap: 10px; font-size: 13px; }
+    .sport-row strong span { color: var(--muted); font-size: 11px; font-weight: 400; white-space: nowrap; }
+    .sport-track { display: block; height: 7px; margin-top: 6px; overflow: hidden; border-radius: 4px; background: var(--mint); }
+    .sport-fill { display: block; height: 100%; border-radius: 4px; background: var(--exercise); }
     .run-date-fields { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
     .run-duration { border: 0; padding: 0; margin: 15px 0; min-width: 0; }
-    .cloud-panel { padding-top: 24px; }
-    .cloud-panel .section-heading { margin-bottom: 12px; }
-    .cloud-panel .section-heading h2 { font-size: 25px; }
-    .cloud-status { color: var(--muted); font-size: 12px; min-height: 20px; margin: 4px 0 12px; overflow-wrap: anywhere; }
-    .cloud-list { border-top: 1px solid var(--line); }
-    .cloud-activity { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: 12px; padding: 15px 0; border-bottom: 1px solid var(--line); }
-    .cloud-activity h3 { font-size: 13px; }
-    .cloud-activity p { color: var(--muted); font-size: 11px; margin-top: 4px; }
-    .cloud-activity-metrics { text-align: right; font-variant-numeric: tabular-nums; }
-    .cloud-activity-metrics strong { display: block; font-size: 18px; }
-    .cloud-activity-metrics small { color: var(--muted); font-size: 10px; }
-    .health-metrics { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 20px; padding: 19px 0 22px; border-bottom: 1px solid var(--line); }
-    .health-metric { min-width: 0; }
-    .health-metric strong { display: block; font-size: 24px; line-height: 1.2; font-variant-numeric: tabular-nums; overflow-wrap: anywhere; }
-    .health-metric small { display: block; margin-top: 5px; color: var(--muted); font-size: 11px; }
-    .health-history { margin-top: 20px; }
-    .health-history h3 { margin-bottom: 8px; }
+    .garmin-bar { display: flex; align-items: center; gap: 10px; margin-top: 16px; padding: 8px 8px 8px 14px; border: 1px solid var(--line); border-radius: 8px; background: #fcfdfb; color: var(--muted); font-size: 12px; }
+    .garmin-bar > svg { width: 18px; height: 18px; color: var(--green); }
+    .garmin-bar p { flex: 1; min-width: 0; overflow-wrap: anywhere; }
+    .garmin-bar .secondary { min-height: 38px; padding: 6px 12px; font-size: 12px; flex: 0 0 auto; }
+    .garmin-bar .secondary svg { width: 15px; height: 15px; }
+    .garmin-bar.is-busy > svg { animation: pulse 1.2s ease-in-out infinite; }
+    .garmin-bar.is-error { border-color: #cc8f64; background: #fff1df; color: #6b4425; }
+    .source-badge { display: inline-flex; align-items: center; gap: 4px; margin-left: 7px; padding: 1px 7px 1px 5px; border-radius: 999px; background: #e3ecf4; color: #3f6485; font-size: 10px; font-weight: 600; vertical-align: 1px; }
+    .source-badge svg { width: 12px; height: 12px; }
+    .run-hr { color: #a8473a; }
+    .health-panel { min-width: 0; }
+    .health-empty { display: flex; align-items: flex-start; gap: 18px; padding: 28px; border: 1px dashed #b5c8b6; border-radius: 8px; background: #fcfdfb; }
+    .health-empty > svg { width: 34px; height: 34px; color: var(--green); }
+    .health-empty h2 { font-size: 25px; }
+    .health-empty p { color: var(--muted); font-size: 13px; margin-top: 6px; max-width: 540px; }
+    .health-empty .primary { margin-top: 18px; }
+    .health-toolbar { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-bottom: 16px; }
+    .health-toolbar h2 { font-size: 25px; }
+    .health-grid { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); gap: 18px; }
+    .health-card { min-width: 0; padding: 18px 20px; border: 1px solid var(--line); border-radius: 8px; background: #fcfdfb; animation: arrive .3s both; }
+    .health-card + .health-card { animation-delay: .05s; }
+    .health-card-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; }
+    .health-card .eyebrow { display: flex; align-items: center; gap: 6px; color: var(--muted); }
+    .health-card .eyebrow svg { width: 15px; height: 15px; }
+    .big-number { font: 600 44px/1.05 'Fraunces', Georgia, serif; font-variant-numeric: tabular-nums; margin-top: 8px; }
+    .big-number small { font: 500 13px 'DM Sans', sans-serif; color: var(--muted); margin-left: 5px; }
+    .health-sub { color: var(--muted); font-size: 12px; margin-top: 5px; }
+    .delta { display: inline-flex; align-items: center; padding: 3px 9px; border-radius: 999px; background: var(--mint); color: var(--deep); font-size: 11px; font-weight: 600; white-space: nowrap; }
+    .delta.down { background: #f6e6dc; color: #9a4f2f; }
+    .hypnogram-wrap { display: grid; grid-template-columns: 42px minmax(0, 1fr); gap: 8px; margin-top: 18px; }
+    .hypnogram-labels { display: grid; grid-template-rows: repeat(4, 1fr); align-items: center; color: var(--muted); font-size: 10px; }
+    .hypnogram { display: block; width: 100%; height: 108px; border-radius: 6px; background: #f0f4ee; }
+    .stage-deep { fill: #28594b; }
+    .stage-light, .stage-other { fill: #658bb4; }
+    .stage-rem { fill: #ab7190; }
+    .stage-awake { fill: #c37754; }
+    .hypnogram-times { display: flex; justify-content: space-between; margin: 5px 0 0 50px; color: var(--muted); font-size: 10px; }
+    .stage-legend { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; margin-top: 16px; }
+    .stage-legend div { padding-top: 6px; border-top: 3px solid var(--stage); color: var(--muted); font-size: 10px; }
+    .stage-legend strong { display: block; color: var(--ink); font-size: 15px; font-variant-numeric: tabular-nums; }
+    .heart-spark { display: block; width: 100%; height: 118px; margin-top: 14px; overflow: visible; }
+    .heart-spark .line { fill: none; stroke: #c2503f; stroke-width: 2; stroke-linejoin: round; vector-effect: non-scaling-stroke; }
+    .heart-spark .area { fill: url(#hr-fill); stroke: none; }
+    .heart-spark .rest { stroke: #28594b; stroke-width: 1; stroke-dasharray: 4 4; vector-effect: non-scaling-stroke; }
+    .spark-axis { display: flex; justify-content: space-between; margin-top: 4px; color: var(--muted); font-size: 10px; }
+    .heart-figures { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; margin-top: 16px; }
+    .heart-figures div { padding-left: 12px; border-left: 1px solid var(--line); }
+    .heart-figures div:first-child { padding-left: 0; border: 0; }
+    .heart-figures strong { display: block; font-size: 20px; font-variant-numeric: tabular-nums; }
+    .heart-figures small { color: var(--muted); font-size: 10px; }
+    .health-tiles { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; margin-top: 18px; }
+    .health-tile { display: flex; align-items: center; gap: 12px; min-width: 0; padding: 14px; border: 1px solid var(--line); border-radius: 8px; background: #fcfdfb; }
+    .health-tile > svg { width: 24px; height: 24px; color: #7c9580; }
+    .health-tile > .step-ring { width: 52px; height: 52px; transform: rotate(-90deg); }
+    .health-tile strong { display: block; font-size: 21px; line-height: 1.1; font-variant-numeric: tabular-nums; }
+    .health-tile small { color: var(--muted); font-size: 11px; }
+    .step-ring circle { fill: none; stroke-width: 10; }
+    .step-ring .track { stroke: #e3eadf; }
+    .step-ring .progress { stroke: var(--green); stroke-linecap: round; transition: stroke-dashoffset .6s ease; }
+    .health-trends { margin-top: 30px; padding-top: 25px; border-top: 1px solid var(--line); }
+    .health-trends h2 { font-size: 25px; }
+    .trend-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 22px; margin-top: 12px; }
+    .trend-card h3 { display: flex; justify-content: space-between; gap: 8px; font-size: 12px; }
+    .trend-card h3 span { color: var(--muted); font-weight: 400; }
+    .trend-chart { position: relative; height: 150px; margin-top: 6px; }
+    .wide-dialog { width: min(760px, calc(100% - 28px)); }
+    .dialog-kicker { display: flex; align-items: center; gap: 6px; margin-bottom: 4px; color: var(--muted); font-size: 11px; }
+    .dialog-kicker svg { width: 14px; height: 14px; }
+    .run-stat-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 1px; overflow: hidden; border: 1px solid var(--line); border-radius: 8px; background: var(--line); }
+    .run-stat { min-width: 0; padding: 12px 14px; background: #fcfdfb; }
+    .run-stat strong { display: block; font: 600 22px/1.15 'Fraunces', Georgia, serif; font-variant-numeric: tabular-nums; }
+    .run-stat small { color: var(--muted); font-size: 11px; }
+    .run-detail-section { margin-top: 22px; }
+    .run-detail-section .section-heading span { color: var(--muted); font-size: 11px; }
+    .detail-chart { position: relative; height: 190px; }
+    .zone-bar { display: flex; height: 12px; margin-top: 12px; overflow: hidden; border-radius: 6px; background: var(--mint); }
+    .zone-bar span { height: 100%; }
+    .zone-legend { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 8px; margin-top: 9px; color: var(--muted); font-size: 10px; }
+    .zone-legend strong { display: block; color: var(--ink); font-size: 12px; font-variant-numeric: tabular-nums; }
+    .zone-dot { display: inline-block; width: 8px; height: 8px; margin-right: 4px; border-radius: 2px; }
+    .split-list { display: grid; gap: 6px; margin-top: 14px; }
+    .split-row { display: grid; grid-template-columns: 58px minmax(0, 1fr) 46px; align-items: center; gap: 10px; font-size: 11px; font-variant-numeric: tabular-nums; }
+    .split-row strong { text-align: right; }
+    .split-head { color: var(--muted); font-size: 10px; }
+    .split-head strong { font-weight: 400; }
+    .split-track { height: 8px; overflow: hidden; border-radius: 4px; background: var(--mint); }
+    .split-fill { display: block; height: 100%; border-radius: 4px; background: #658bb4; }
+    .split-row.fastest .split-fill { background: var(--green); }
+    .max-hr-field { max-width: 260px; }
+    @keyframes pulse { 50% { opacity: .35; } }
     .duration-inputs { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; margin-top: 8px; }
     .duration-inputs label { display: flex; flex-direction: column; gap: 5px; color: var(--muted); font-size: 11px; }
     .duration-inputs input { width: 100%; font-size: 20px; text-align: center; }
@@ -220,6 +303,8 @@
     @media (max-width: 1000px) { .wrap { width: calc(100% - 48px); } .dashboard { gap: 25px; grid-template-columns: minmax(0, 1.4fr) minmax(275px, 1fr); } .exercise-column { padding-left: 23px; } .stats { gap: 15px; } }
     @media (max-width: 760px) {
       .wrap { width: calc(100% - 36px); }
+      .view-tabs { gap: 12px; }
+      .view-tabs button { gap: 6px; }
       .topbar { height: 64px; }
       .brand-name { font-size: 14px; }
       .brand-mark { width: 34px; height: 34px; }
@@ -246,7 +331,14 @@
       main { padding-top: 24px; }
       .dashboard { grid-template-columns: 1fr; gap: 29px; }
       .runs-layout { grid-template-columns: 1fr; gap: 28px; }
-      .health-metrics { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px 20px; }
+      .garmin-bar { margin-top: 12px; }
+      .health-empty { flex-direction: column; padding: 22px; }
+      .health-toolbar { flex-wrap: wrap; }
+      .health-grid { grid-template-columns: 1fr; }
+      .health-tiles { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+      .big-number { font-size: 38px; }
+      .run-stat-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .zone-legend { grid-template-columns: repeat(3, minmax(0, 1fr)); }
       .run-chart-section { padding: 23px 0 0; border-left: 0; border-top: 1px solid var(--line); }
       .run-row { grid-template-columns: minmax(0, 1fr) minmax(72px, auto) 68px; gap: 8px; }
       .run-row h3 { font-size: 12px; }
@@ -289,7 +381,7 @@
   <a class="skip-link" href="#main">Skip to your tracker</a>
   <header class="topbar wrap">
     <a class="brand" href="#" aria-label="Ol'Man Muz home"><span class="brand-mark"><i data-lucide="mountain-snow"></i></span><span class="brand-name">Ol'Man Muz</span></a>
-    <div class="top-actions"><span class="date-label" id="header-date"></span><a class="nav-link" href="#history"><i data-lucide="notebook-pen"></i> Field notes</a><button class="icon-button" id="open-cloud-config" title="Cloud sync settings" aria-label="Cloud sync settings"><i data-lucide="cloud-cog"></i></button><button class="icon-button" id="open-data" title="Backups and data" aria-label="Backups and data"><i data-lucide="database"></i></button></div>
+    <div class="top-actions"><span class="date-label" id="header-date"></span><a class="nav-link" href="#history"><i data-lucide="notebook-pen"></i> Field notes</a><button class="icon-button" id="open-data" title="Backups and data" aria-label="Backups and data"><i data-lucide="database"></i></button></div>
   </header>
   <section class="hero" aria-labelledby="page-title">
     <img class="hero-image" src="DSC_3074.JPG" alt="A surfer launching off a breaking wave as two others paddle nearby" fetchpriority="high">
@@ -299,7 +391,7 @@
     </div>
   </section>
   <div class="wrap">
-    <div class="view-tabs" role="tablist" aria-label="Activity tracker"><button type="button" id="exercises-tab" role="tab" aria-selected="true" aria-controls="exercise-panel" data-view="exercises"><i data-lucide="dumbbell"></i> Exercises</button><button type="button" id="runs-tab" role="tab" aria-selected="false" aria-controls="run-panel" tabindex="-1" data-view="runs"><i data-lucide="footprints"></i> Runs</button><button type="button" id="activities-tab" role="tab" aria-selected="false" aria-controls="activities-panel" tabindex="-1" data-view="activities"><i data-lucide="watch"></i> Activities</button><button type="button" id="health-tab" role="tab" aria-selected="false" aria-controls="health-panel" tabindex="-1" data-view="health"><i data-lucide="heart-pulse"></i> Health Stats</button></div>
+    <div class="view-tabs" role="tablist" aria-label="Activity tracker"><button type="button" id="exercises-tab" role="tab" aria-selected="true" aria-controls="exercise-panel" data-view="exercises"><i data-lucide="dumbbell"></i> Exercises</button><button type="button" id="runs-tab" role="tab" aria-selected="false" aria-controls="run-panel" tabindex="-1" data-view="runs"><i data-lucide="footprints"></i> Runs</button><button type="button" id="activities-tab" role="tab" aria-selected="false" aria-controls="activity-panel" tabindex="-1" data-view="activities"><i data-lucide="activity"></i> Activities</button><button type="button" id="health-tab" role="tab" aria-selected="false" aria-controls="health-panel" tabindex="-1" data-view="health"><i data-lucide="heart-pulse"></i> Health</button></div>
     <div class="warning" id="storage-warning" role="alert" hidden=""></div>
     <div class="stats" id="exercise-stats">
       <div class="stat"><i data-lucide="footprints"></i><strong id="week-total">0</strong><small>reps in the last 7 days</small></div>
@@ -313,6 +405,17 @@
       <div class="stat"><i data-lucide="footprints"></i><strong id="run-count">0</strong><small>runs on the record</small></div>
       <button class="primary open-run"><i data-lucide="plus"></i> Log a run</button>
     </div>
+    <div class="stats" id="activity-stats" hidden>
+      <div class="stat"><i data-lucide="calendar-days"></i><strong id="activity-week-count">0</strong><small>sessions this week</small></div>
+      <div class="stat"><i data-lucide="timer"></i><strong id="activity-month-hours">0</strong><small>active hours this month</small></div>
+      <div class="stat"><i data-lucide="shapes"></i><strong id="activity-kinds">0</strong><small>kinds of activity this year</small></div>
+    </div>
+    <div class="stats" id="health-stats" hidden>
+      <div class="stat"><i data-lucide="heart-pulse"></i><strong id="health-stat-rest">--</strong><small>resting bpm · 7-day avg</small></div>
+      <div class="stat"><i data-lucide="moon"></i><strong id="health-stat-sleep">--</strong><small>avg sleep · last 7 nights</small></div>
+      <div class="stat"><i data-lucide="footprints"></i><strong id="health-stat-steps">--</strong><small>avg steps · last 7 days</small></div>
+    </div>
+    <div class="garmin-bar" id="garmin-bar" hidden><i data-lucide="watch"></i><p id="garmin-bar-text" role="status" aria-live="polite"></p><button type="button" class="secondary" id="garmin-bar-action" hidden></button></div>
     <main id="main">
       <div id="exercise-panel" role="tabpanel" aria-labelledby="exercises-tab">
       <div class="dashboard">
@@ -355,27 +458,56 @@
           </section>
         </div>
       </section>
-      <section id="activities-panel" class="cloud-panel" role="tabpanel" aria-labelledby="activities-tab" hidden>
-        <div class="section-heading"><div><h2>Garmin activities</h2><p>Live and completed runs from your watch.</p></div><button class="icon-button" data-refresh-cloud title="Refresh Garmin data" aria-label="Refresh Garmin data"><i data-lucide="refresh-cw"></i></button></div>
-        <p class="cloud-status" id="activities-status" role="status" aria-live="polite">Cloud sync is not configured.</p>
-        <div class="cloud-list" id="activities-list"></div>
-      </section>
-      <section id="health-panel" class="cloud-panel" role="tabpanel" aria-labelledby="health-tab" hidden>
-        <div class="section-heading"><div><h2>Health statistics</h2><p>Watch readings sampled every five minutes.</p></div><button class="icon-button" data-refresh-cloud title="Refresh health data" aria-label="Refresh health data"><i data-lucide="refresh-cw"></i></button></div>
-        <p class="cloud-status" id="health-status" role="status" aria-live="polite">Cloud sync is not configured.</p>
-        <div class="health-metrics" aria-label="Latest health statistics">
-          <div class="health-metric"><strong id="health-current-hr">--</strong><small>latest heart rate · bpm</small></div>
-          <div class="health-metric"><strong id="health-average-hr">--</strong><small>24-hour average · bpm</small></div>
-          <div class="health-metric"><strong id="health-maximum-hr">--</strong><small>24-hour maximum · bpm</small></div>
-          <div class="health-metric"><strong id="health-temperature">--</strong><small>watch temperature · °C</small></div>
+      <section id="activity-panel" class="health-panel" role="tabpanel" aria-labelledby="activities-tab" hidden>
+        <div class="health-empty" id="activity-empty"><i data-lucide="activity"></i><div><h2 id="activity-empty-title">Your activities live on your phone.</h2><p id="activity-empty-copy"></p><button type="button" class="primary" id="activity-empty-action" hidden></button></div></div>
+        <div class="runs-layout" id="activity-content" hidden>
+          <section class="run-log-section" id="activity-log" aria-labelledby="activity-log-title">
+            <div class="history-heading"><h2 id="activity-log-title">Assorted adventures.</h2><select id="activity-filter" aria-label="Filter activities by type"><option value="">All activities</option></select></div>
+            <p class="history-caption" id="activity-summary"></p>
+            <div id="activity-list" class="history-list"></div>
+            <button class="text-button" id="more-activities" hidden>More adventures <i data-lucide="arrow-down"></i></button>
+          </section>
+          <section class="run-chart-section" aria-labelledby="activity-chart-title">
+            <div class="section-heading"><div><h2 id="activity-chart-title">Where the time went.</h2><p>Hours per week, last 12 weeks</p></div><i data-lucide="medal" class="run-flame" aria-hidden="true"></i></div>
+            <div class="chart-wrap"><canvas id="activity-week-chart" role="img" aria-label="Hours of each activity per week for the last 12 weeks. Totals for each activity are listed below."></canvas><div class="chart-empty" id="activity-chart-empty" hidden><strong>A blank canvas.</strong><p>Nothing recorded in the last 12 weeks.</p></div></div>
+            <h3 class="sport-title">Your year in sport</h3>
+            <div class="sport-list" id="activity-types"></div>
+          </section>
         </div>
-        <section class="health-history" aria-labelledby="health-history-title"><h3 id="health-history-title">Recent readings</h3><div class="table-scroll"><table id="health-table"><caption class="sr-only">Recent heart rate and watch temperature readings from the Garmin watch</caption><thead><tr><th scope="col">Time</th><th scope="col">Heart rate (bpm)</th><th scope="col">Watch temperature (°C)</th></tr></thead><tbody></tbody></table></div></section>
+      </section>
+      <section id="health-panel" class="health-panel" role="tabpanel" aria-labelledby="health-tab" hidden>
+        <div class="health-empty" id="health-empty"><i data-lucide="watch"></i><div><h2 id="health-empty-title">Health stats live on your phone.</h2><p id="health-empty-copy"></p><button type="button" class="primary" id="health-empty-action" hidden></button></div></div>
+        <div id="health-content" hidden>
+          <div class="health-toolbar"><div><h2 id="health-day-title">Today, so far.</h2><p class="history-caption" id="health-day-caption"></p></div><div class="period-nav"><button class="icon-button" id="health-prev-day" aria-label="Previous day" title="Previous day"><i data-lucide="chevron-left"></i></button><span class="period-label" id="health-day-label"></span><button class="icon-button" id="health-next-day" aria-label="Next day" title="Next day"><i data-lucide="chevron-right"></i></button></div></div>
+          <div class="health-grid">
+            <article class="health-card" aria-labelledby="sleep-card-title"><div class="health-card-head"><div><p class="eyebrow" id="sleep-card-title"><i data-lucide="moon"></i> Last night</p><p class="big-number" id="sleep-total">--</p><p class="health-sub" id="sleep-window"></p></div><span class="delta" id="sleep-delta" hidden></span></div><div id="sleep-chart"></div></article>
+            <article class="health-card" aria-labelledby="heart-card-title"><div class="health-card-head"><div><p class="eyebrow" id="heart-card-title"><i data-lucide="heart-pulse"></i> Resting heart rate</p><p class="big-number" id="heart-resting">--</p><p class="health-sub" id="heart-caption"></p></div><span class="delta" id="heart-delta" hidden></span></div><div id="heart-chart"></div><div class="heart-figures"><div><strong id="heart-min">--</strong><small>lowest bpm</small></div><div><strong id="heart-avg">--</strong><small>average bpm</small></div><div><strong id="heart-max">--</strong><small>highest bpm</small></div></div></article>
+          </div>
+          <div class="health-tiles">
+            <div class="health-tile"><svg class="step-ring" viewBox="0 0 100 100" aria-hidden="true"><circle class="track" cx="50" cy="50" r="42"></circle><circle class="progress" id="steps-ring" cx="50" cy="50" r="42" stroke-dasharray="263.9" stroke-dashoffset="263.9"></circle></svg><div><strong id="tile-steps">--</strong><small id="tile-steps-caption">steps</small></div></div>
+            <div class="health-tile"><i data-lucide="route"></i><div><strong id="tile-distance">--</strong><small>km on foot</small></div></div>
+            <div class="health-tile"><i data-lucide="mountain"></i><div><strong id="tile-floors">--</strong><small>floors climbed</small></div></div>
+            <div class="health-tile"><i data-lucide="flame"></i><div><strong id="tile-calories">--</strong><small>calories burned</small></div></div>
+          </div>
+          <section class="health-trends" aria-labelledby="health-trends-title">
+            <div class="section-heading"><div><h2 id="health-trends-title">The long view.</h2><p>Trends from your watch. Mildly scientific.</p></div><div class="segmented" id="health-range" role="group" aria-label="Trend range"><button type="button" data-health-range="7" aria-pressed="false">7D</button><button type="button" data-health-range="30" aria-pressed="true">30D</button><button type="button" data-health-range="90" aria-pressed="false">90D</button></div></div>
+            <div class="trend-grid">
+              <div class="trend-card"><h3>Sleep <span id="trend-sleep-note"></span></h3><div class="trend-chart"><canvas id="trend-sleep" role="img" aria-label="Hours asleep each night"></canvas></div></div>
+              <div class="trend-card"><h3>Resting heart rate <span id="trend-rest-note"></span></h3><div class="trend-chart"><canvas id="trend-rest" role="img" aria-label="Estimated resting heart rate each day"></canvas></div></div>
+              <div class="trend-card"><h3>Steps <span id="trend-steps-note"></span></h3><div class="trend-chart"><canvas id="trend-steps" role="img" aria-label="Steps each day"></canvas></div></div>
+              <div class="trend-card" id="trend-weight-card" hidden><h3>Weight <span id="trend-weight-note"></span></h3><div class="trend-chart"><canvas id="trend-weight" role="img" aria-label="Weight readings"></canvas></div></div>
+            </div>
+            <p class="storage-note">Resting heart rate is an estimate: your lowest 30-minute average while asleep. Garmin doesn't share its own figure with Health Connect.</p>
+          </section>
+        </div>
       </section>
     </main>
-    <footer><p><i data-lucide="hard-drive"></i> Exercises and manual runs stay on this device; Garmin data uses your configured cloud database.</p></footer>
+    <footer><p><i data-lucide="hard-drive"></i> Everything stays on this device. Garmin data is read from Health Connect and never uploaded.</p></footer>
   </div>
   <div class="mobile-dock" id="exercise-dock"><div class="dock-total"><strong id="today-total">0</strong> reps today</div><button class="primary open-log"><i data-lucide="plus"></i> Log a set</button></div>
   <div class="mobile-dock" id="run-dock" hidden><div class="dock-total"><strong id="run-week-dock">0</strong> km this week</div><button class="primary open-run"><i data-lucide="plus"></i> Log a run</button></div>
+  <div class="mobile-dock" id="activity-dock" hidden><div class="dock-total"><strong id="activity-dock-count">0</strong> sessions this week</div><button class="primary" data-garmin-refresh><i data-lucide="refresh-cw"></i> Refresh</button></div>
+  <div class="mobile-dock" id="health-dock" hidden><div class="dock-total"><strong id="health-dock-value">--</strong> resting bpm</div><button class="primary" data-garmin-refresh><i data-lucide="refresh-cw"></i> Refresh</button></div>
 
   <dialog id="run-dialog" aria-labelledby="run-dialog-title">
     <form id="run-form"><div class="dialog-header"><h2 id="run-dialog-title">A scenic detour.</h2><button type="button" class="icon-button close-dialog" aria-label="Close run form"><i data-lucide="x"></i></button></div>
@@ -405,7 +537,14 @@
     </form>
   </dialog>
   <dialog id="data-dialog" aria-labelledby="data-title"><div class="dialog-header"><h2 id="data-title">Your evidence locker.</h2><button class="icon-button close-dialog" aria-label="Close backups"><i data-lucide="x"></i></button></div><p class="data-copy">Your exercises and runs live in this browser, on this device. Clearing browser data can remove them. A backup keeps your extremely impressive paperwork safe.</p><div class="data-actions"><button class="secondary" id="export-data"><i data-lucide="download"></i> Download backup</button><button class="secondary" id="copy-backup"><i data-lucide="clipboard"></i> Copy sync code</button><button class="secondary" id="import-data"><i data-lucide="upload"></i> Restore a backup</button><button class="secondary" id="paste-backup"><i data-lucide="clipboard-paste"></i> Paste sync code</button></div><input type="file" id="import-file" accept=".json,application/json" hidden=""><p class="storage-note" id="backup-summary"></p><p class="form-error" id="data-error" role="alert"></p></dialog>
-  <dialog id="cloud-config-dialog" aria-labelledby="cloud-config-title"><form id="cloud-config-form"><div class="dialog-header"><h2 id="cloud-config-title">Cloud sync.</h2><button type="button" class="icon-button close-dialog" aria-label="Close cloud settings"><i data-lucide="x"></i></button></div><p class="data-copy">Only Garmin activity and health readings are sent to this service. They are stored outside this phone. Your exercise log and manually entered runs remain local.</p><div class="form-field"><label for="cloud-endpoint">Worker URL</label><input id="cloud-endpoint" type="url" inputmode="url" placeholder="https://your-worker.workers.dev" autocomplete="url" required></div><div class="form-field"><label for="cloud-token">Phone read token</label><input id="cloud-token" type="password" autocomplete="new-password" required></div><p class="storage-note">The read token is saved in this app's local storage. Use a separate write token for the Garmin watch.</p><p class="form-error" id="cloud-config-error" role="alert"></p><div class="data-actions"><button type="submit" class="primary"><i data-lucide="cloud-cog"></i> Save and connect</button><button type="button" class="secondary danger" id="disconnect-cloud">Disconnect this device</button></div></form></dialog>
+  <dialog id="activity-dialog" class="wide-dialog" aria-labelledby="activity-detail-title">
+    <div class="dialog-header"><div><p class="dialog-kicker"><i data-lucide="watch"></i><span id="activity-detail-date"></span></p><h2 id="activity-detail-title">An activity.</h2><p class="health-sub" id="activity-detail-effort"></p></div><button class="icon-button close-dialog" aria-label="Close activity details"><i data-lucide="x"></i></button></div>
+    <div class="run-stat-grid" id="activity-detail-stats"></div>
+    <p class="storage-note" id="activity-detail-status" role="status" aria-live="polite"></p>
+    <section class="run-detail-section" id="activity-hr-section" aria-labelledby="activity-hr-title" hidden><div class="section-heading"><h3 id="activity-hr-title">Heart rate</h3><span id="activity-zone-note"></span></div><div class="detail-chart"><canvas id="activity-hr-chart" role="img" aria-label="Heart rate during the activity, coloured by zone"></canvas></div><div class="zone-bar" id="activity-zone-bar" aria-hidden="true"></div><div class="zone-legend" id="activity-zone-legend"></div></section>
+    <section class="run-detail-section" id="activity-speed-section" aria-labelledby="activity-speed-title" hidden><div class="section-heading"><h3 id="activity-speed-title">Pace</h3><span id="activity-speed-note"></span></div><div class="detail-chart"><canvas id="activity-speed-chart" role="img" aria-label="Pace or speed during the activity"></canvas></div><div class="split-list" id="activity-splits"></div></section>
+    <div class="form-field max-hr-field"><label for="max-hr">Max heart rate for zones (bpm)</label><input id="max-hr" type="number" inputmode="numeric" min="120" max="230" step="1"></div>
+  </dialog>
   <dialog id="confirm-dialog" aria-labelledby="confirm-title"><div class="dialog-header"><h2 id="confirm-title">A small correction.</h2><button class="icon-button close-dialog" aria-label="Cancel confirmation"><i data-lucide="x"></i></button></div><p class="data-copy" id="confirm-copy"></p><div class="confirm-actions"><button class="secondary close-dialog">Cancel</button><button class="primary" id="confirm-action">Confirm</button></div></dialog>
   <div class="toast" id="toast" hidden=""><span id="toast-message" role="status" aria-live="polite"></span><button id="undo-action" hidden="">Undo</button><button class="icon-button" id="dismiss-toast" aria-label="Dismiss notification"><i data-lucide="x"></i></button></div>
   <noscript><div class="warning wrap">JavaScript must be enabled to save reps and show your charts.</div></noscript>
@@ -655,11 +794,20 @@ lucide.createIcons({icons});\``);if(typeof document>"u")throw new Error("`create
     'use strict';
     const tracker = PeakTracker;
     const storageKey = 'peak-mild-effort.v1';
-    const cloudStorageKey = 'peak-mild-effort.cloud.v1';
-    const remoteData = { activities: [], samples: [] };
-    let cloudConfig = { endpoint: 'https://ol-man-muz-live-data.oldmanmuz-live.workers.dev', token: '' };
-    let cloudTimer = null;
-    let cloudRefreshing = false;
+    const garminCacheKey = 'peak-mild-effort.garmin.v1';
+    const maxHeartRateKey = 'peak-mild-effort.max-hr.v1';
+    const healthBridge = window.AndroidHealth || null;
+    const garmin = { status: null, data: null, index: null, syncing: false, error: '', lastSync: 0, timer: null, askedToConnect: false };
+    const healthCharts = [];
+    const detailCharts = [];
+    const activityCharts = [];
+    let healthDay = tracker.dayKey();
+    let healthRange = 30;
+    let maxHeartRate = 0;
+    let openActivityId = null;
+    let activityFilter = '';
+    let activityLimit = 10;
+    let garminDetail = null;
     const get = id => document.getElementById(id);
     const number = value => new Intl.NumberFormat().format(value);
     const formatDuration = seconds => `${Math.floor(seconds / 60)}:${String(seconds % 60).padStart(2, '0')}`;
@@ -706,15 +854,15 @@ lucide.createIcons({icons});\``);if(typeof document>"u")throw new Error("`create
       warn('Your saved log could not be opened. Nothing has been overwritten. Enable browser storage or restore a valid backup from the data menu.');
     }
     try {
-      const savedCloud = localStorage.getItem(cloudStorageKey);
-      if (savedCloud) {
-        const parsedCloud = JSON.parse(savedCloud);
-        const endpoint = new URL(parsedCloud.endpoint);
-        if (endpoint.protocol === 'https:' && typeof parsedCloud.token === 'string' && parsedCloud.token.length >= 32) {
-          cloudConfig = { endpoint: endpoint.href.replace(/\/+$/, ''), token: parsedCloud.token };
-        }
+      localStorage.removeItem('peak-mild-effort.cloud.v1');
+      const savedMax = Number(localStorage.getItem(maxHeartRateKey));
+      if (Number.isInteger(savedMax) && savedMax >= 120 && savedMax <= 230) maxHeartRate = savedMax;
+      const cached = healthBridge ? localStorage.getItem(garminCacheKey) : null;
+      if (cached) {
+        garmin.data = normalizeGarmin(JSON.parse(cached));
+        garmin.index = buildGarminIndex(garmin.data);
       }
-    } catch (error) { cloudConfig = { endpoint: '', token: '' }; }
+    } catch (error) { garmin.data = null; garmin.index = null; }
     function commit(nextState, force = false) {
       if (readOnly && !force) throw new Error('Storage is unavailable or your saved log needs recovery. Open Backups and data.');
       try { localStorage.setItem(storageKey, JSON.stringify(nextState)); }
@@ -724,79 +872,664 @@ lucide.createIcons({icons});\``);if(typeof document>"u")throw new Error("`create
       get('storage-warning').hidden = true;
       render();
     }
-    function setCloudStatus(message) {
-      get('activities-status').textContent = message;
-      get('health-status').textContent = message;
-    }
-    async function cloudRequest(path) {
-      const result = await fetch(`${cloudConfig.endpoint}/api/${path}`, {
-        headers: { Authorization: `Bearer ${cloudConfig.token}` },
-        cache: 'no-store'
+    function finiteNumber(value) { return typeof value === 'number' && Number.isFinite(value) ? value : null; }
+    function numberPairs(value) { return Array.isArray(value) ? value.filter(pair => Array.isArray(pair) && Number.isFinite(pair[0]) && Number.isFinite(pair[1])).map(pair => [pair[0], pair[1]]) : []; }
+    function normalizeGarmin(input, previous = null) {
+      if (!input || typeof input !== 'object') throw new Error('Health Connect sent an unexpected reply.');
+      const list = value => Array.isArray(value) ? value : [];
+      const byTime = (first, second) => first[0] - second[0];
+      // The phone only re-sends activities that changed; "same" entries reuse the summary already held here.
+      const kept = new Map((previous?.activities || []).map(activity => [activity.id, activity]));
+      let unresolved = 0;
+      const activities = list(input.activities).flatMap(item => {
+        if (!item || typeof item.id !== 'string' || !item.id) return [];
+        if (item.same === true) {
+          if (!kept.has(item.id)) unresolved++;
+          return kept.has(item.id) ? [kept.get(item.id)] : [];
+        }
+        if (finiteNumber(item.start) === null || !(finiteNumber(item.end) > item.start)) return [];
+        return [{
+          id: item.id.slice(0, 128), type: Number.isInteger(item.type) ? item.type : 0, start: item.start, end: item.end, modified: finiteNumber(item.modified), title: typeof item.title === 'string' ? item.title.trim().slice(0, 80) : '',
+          durationMs: finiteNumber(item.durationMs), distanceM: finiteNumber(item.distanceM), elevationM: finiteNumber(item.elevationM), activeKcal: finiteNumber(item.activeKcal),
+          totalKcal: finiteNumber(item.totalKcal), steps: finiteNumber(item.steps), avgHr: finiteNumber(item.avgHr), maxHr: finiteNumber(item.maxHr)
+        }];
       });
-      const data = await result.json().catch(() => ({}));
-      if (!result.ok) throw new Error(data.error || `Cloud request failed (${result.status}).`);
-      return data;
+      const days = list(input.days).filter(day => day && /^\d{4}-\d{2}-\d{2}$/.test(day.date)).map(day => ({ date: day.date, steps: finiteNumber(day.steps), distanceM: finiteNumber(day.distanceM), floors: finiteNumber(day.floors), kcal: finiteNumber(day.kcal), hrMin: finiteNumber(day.hrMin), hrAvg: finiteNumber(day.hrAvg), hrMax: finiteNumber(day.hrMax) }));
+      const sleep = list(input.sleep).filter(session => session && finiteNumber(session.start) !== null && finiteNumber(session.end) > session.start).map(session => ({
+        start: session.start, end: session.end, stages: list(session.stages).filter(stage => Array.isArray(stage) && stage.length === 3 && stage.every(Number.isFinite) && stage[1] > stage[0]).map(stage => [...stage])
+      }));
+      return { generatedAt: finiteNumber(input.generatedAt) ?? Date.now(), history: input.history === true, activities, days, sleep, hr30: numberPairs(input.hr30).sort(byTime), weight: numberPairs(input.weight).sort(byTime), bodyFat: numberPairs(input.bodyFat).sort(byTime), unresolved };
     }
-    function renderActivities() {
-      const activities = [...remoteData.activities].sort((first, second) => Number(second.started_at) - Number(first.started_at));
-      get('activities-list').innerHTML = activities.map(activity => {
-        const date = new Date(Number(activity.started_at) * 1000);
-        const when = Number.isFinite(date.getTime()) ? date.toLocaleString(undefined, { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric', hour: 'numeric', minute: '2-digit' }) : 'Unknown start';
-        const distance = Number(activity.distance_meters) || 0;
-        const elapsed = Number(activity.elapsed_time_ms) || 0;
-        const pace = distance > 0 ? `${formatElapsed(Math.round(elapsed / distance))} /km` : 'Pace unavailable';
-        const status = activity.recording ? 'In progress' : Number(activity.fit_saved) === 1 ? 'FIT saved on watch' : 'Completed';
-        return `<article class="cloud-activity"><div><h3>${escapeHTML(when)}</h3><p>${status} · ${pace}${activity.heart_rate_bpm ? ` · ${number(activity.heart_rate_bpm)} bpm` : ''}</p></div><div class="cloud-activity-metrics"><strong>${formatKm(distance)}</strong><small>km · ${formatElapsed(Math.round(elapsed / 1000))}</small></div></article>`;
-      }).join('') || '<div class="history-empty"><i data-lucide="watch"></i><p>No Garmin activities have arrived yet.</p></div>';
+    function buildGarminIndex(data) {
+      const days = new Map(data.days.map(day => [day.date, day]));
+      const hrByDay = new Map();
+      for (const reading of data.hr30) {
+        const key = tracker.dayKey(new Date(reading[0]));
+        if (!hrByDay.has(key)) hrByDay.set(key, []);
+        hrByDay.get(key).push(reading);
+      }
+      const sleepByDay = new Map();
+      for (const session of data.sleep) {
+        const key = tracker.dayKey(new Date(session.end));
+        const current = sleepByDay.get(key);
+        if (!current || session.end - session.start > current.end - current.start) sleepByDay.set(key, session);
+      }
+      // Garmin doesn't share its resting figure, so use the lowest 30-minute average while asleep (or before 10am).
+      const restingByDay = new Map();
+      for (const key of new Set([...hrByDay.keys(), ...sleepByDay.keys()])) {
+        const night = sleepByDay.get(key);
+        let pool = night ? data.hr30.filter(([time]) => time >= night.start && time < night.end) : [];
+        if (!pool.length) {
+          const morning = tracker.parseDay(key);
+          morning.setHours(10, 0, 0, 0);
+          pool = (hrByDay.get(key) || []).filter(([time]) => time < morning.getTime());
+        }
+        if (pool.length) restingByDay.set(key, Math.round(Math.min(...pool.map(([, bpm]) => bpm))));
+      }
+      return { days, hrByDay, sleepByDay, restingByDay };
+    }
+    const formatClock = time => new Date(time).toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' });
+    const formatSleep = ms => { const minutes = Math.round(ms / 60000); return minutes < 60 ? `${minutes}m` : `${Math.floor(minutes / 60)}h ${String(minutes % 60).padStart(2, '0')}m`; };
+    const formatKmShort = meters => new Intl.NumberFormat(undefined, { maximumFractionDigits: 1 }).format(meters / 1000);
+    const average = values => { const valid = values.filter(Number.isFinite); return valid.length ? valid.reduce((sum, value) => sum + value, 0) / valid.length : null; };
+    const orDash = (value, format = number) => Number.isFinite(value) ? format(value) : '--';
+    const destroyCharts = charts => charts.splice(0).forEach(chart => chart.destroy());
+    const sleepStageKinds = { 1: 'awake', 2: 'other', 3: 'awake', 4: 'light', 5: 'deep', 6: 'rem', 7: 'awake' };
+    const stageLanes = { awake: 0, rem: 1, light: 2, other: 2, deep: 3 };
+    const zoneColors = ['#9aa7a0', '#658bb4', '#5e9b62', '#d08a3c', '#c2503f'];
+    const zoneNames = ['Easy', 'Aerobic', 'Tempo', 'Threshold', 'Max'];
+    // Health Connect exercise types: [label, icon, kind]. Kind picks the headline figure: pace, speed, swim pace or just time.
+    const activityTypes = {
+      0: ['Workout', 'activity', 'time'], 2: ['Badminton', 'circle-dot', 'time'], 4: ['Baseball', 'circle-dot', 'time'], 5: ['Basketball', 'circle-dot', 'time'],
+      8: ['Ride', 'bike', 'speed'], 9: ['Indoor ride', 'bike', 'time'], 10: ['Boot camp', 'zap', 'time'], 11: ['Boxing', 'swords', 'time'], 13: ['Calisthenics', 'dumbbell', 'time'],
+      14: ['Cricket', 'circle-dot', 'time'], 16: ['Dancing', 'music', 'time'], 25: ['Elliptical', 'activity', 'time'], 26: ['Exercise class', 'users', 'time'], 27: ['Fencing', 'swords', 'time'],
+      28: ['Gridiron', 'circle-dot', 'time'], 29: ['Footy', 'circle-dot', 'time'], 31: ['Frisbee', 'circle-dot', 'time'], 32: ['Golf', 'flag', 'time'], 33: ['Breathwork', 'wind', 'time'],
+      34: ['Gymnastics', 'activity', 'time'], 35: ['Handball', 'circle-dot', 'time'], 36: ['HIIT', 'zap', 'time'], 37: ['Hike', 'mountain', 'pace'], 38: ['Ice hockey', 'circle-dot', 'time'],
+      39: ['Ice skating', 'mountain-snow', 'speed'], 44: ['Martial arts', 'swords', 'time'], 46: ['Paddle', 'waves', 'speed'], 47: ['Paragliding', 'wind', 'speed'], 48: ['Pilates', 'flower-2', 'time'],
+      50: ['Racquetball', 'circle-dot', 'time'], 51: ['Climbing', 'mountain', 'time'], 52: ['Roller hockey', 'circle-dot', 'time'], 53: ['Row', 'waves', 'speed'], 54: ['Rowing machine', 'waves', 'time'],
+      55: ['Rugby', 'circle-dot', 'time'], 56: ['Run', 'footprints', 'pace'], 57: ['Treadmill run', 'footprints', 'pace'], 58: ['Sail', 'sailboat', 'speed'], 59: ['Dive', 'fish', 'time'],
+      60: ['Skate', 'activity', 'speed'], 61: ['Ski', 'mountain-snow', 'speed'], 62: ['Snowboard', 'mountain-snow', 'speed'], 63: ['Snowshoe', 'mountain-snow', 'pace'], 64: ['Soccer', 'circle-dot', 'time'],
+      65: ['Softball', 'circle-dot', 'time'], 66: ['Squash', 'circle-dot', 'time'], 68: ['Stairs', 'trending-up', 'time'], 69: ['Stair machine', 'trending-up', 'time'], 70: ['Strength', 'dumbbell', 'time'],
+      71: ['Stretching', 'flower-2', 'time'], 72: ['Surf', 'waves', 'time'], 73: ['Open-water swim', 'waves', 'swim'], 74: ['Pool swim', 'waves', 'swim'], 75: ['Table tennis', 'circle-dot', 'time'],
+      76: ['Tennis', 'circle-dot', 'time'], 78: ['Volleyball', 'volleyball', 'time'], 79: ['Walk', 'person-standing', 'pace'], 80: ['Water polo', 'waves', 'time'], 81: ['Weightlifting', 'dumbbell', 'time'],
+      82: ['Wheelchair', 'accessibility', 'pace'], 83: ['Yoga', 'flower-2', 'time']
+    };
+    const activityColors = { 8: '#658bb4', 37: '#a66454', 46: '#438e94', 56: '#326f60', 57: '#6f9a5c', 70: '#736ca6', 73: '#3f6485', 74: '#3f6485', 76: '#c37754', 79: '#828145', 83: '#ab7190' };
+    const activityColor = type => activityColors[type] || tracker.palette[type % tracker.palette.length];
+    const activityInfo = type => { const [label, icon, kind] = activityTypes[type] || activityTypes[0]; return { label, icon, kind }; };
+    const activitySeconds = activity => Math.max(0, Math.round((activity.durationMs ?? activity.end - activity.start) / 1000));
+    const isRun = activity => activity.type === 56 || activity.type === 57;
+    const formatHours = seconds => `${new Intl.NumberFormat(undefined, { maximumFractionDigits: seconds < 36000 ? 1 : 0 }).format(seconds / 3600)} h`;
+    const weekStart = (time = Date.now()) => { const day = new Date(time); day.setHours(0, 0, 0, 0); day.setDate(day.getDate() - (day.getDay() + 6) % 7); return day; };
+    function requestHealth(message) {
+      try { healthBridge.postMessage(JSON.stringify(message)); }
+      catch (error) { garmin.syncing = false; garmin.error = 'The Android app could not be reached. Close it and open it again.'; }
+    }
+    function garminState() {
+      if (!healthBridge) return 'browser';
+      if (!garmin.status) return 'checking';
+      if (!garmin.status.available) return 'unavailable';
+      return garmin.status.connected ? 'connected' : 'disconnected';
+    }
+    function syncGarmin(force = false) {
+      if (garmin.syncing || garminState() !== 'connected' || (!force && Date.now() - garmin.lastSync < 120000)) return;
+      garmin.syncing = true;
+      garmin.error = '';
+      clearTimeout(garmin.timer);
+      garmin.timer = setTimeout(() => {
+        if (!garmin.syncing) return;
+        garmin.syncing = false;
+        garmin.error = 'Health Connect took too long to answer. Try again.';
+        renderGarminViews();
+      }, 90000);
+      // Tell the phone what's already here so unchanged activities skip the per-activity read. Refresh re-reads everything.
+      const known = force ? {} : Object.fromEntries(garminActivities().filter(activity => activity.modified !== null).map(activity => [activity.id, activity.modified]));
+      requestHealth({ type: 'sync', activityDays: 365, healthDays: 90, known });
+      renderGarminViews();
+    }
+    function garminAction(action) {
+      if (action === 'connect') { garmin.askedToConnect = true; requestHealth({ type: 'connect' }); }
+      else if (action === 'settings') requestHealth({ type: 'settings' });
+      else if (action === 'sync') syncGarmin(true);
+    }
+    function handleHealthMessage(raw) {
+      let message;
+      try { message = JSON.parse(raw); } catch (error) { return; }
+      if (!message || typeof message !== 'object') return;
+      if (message.type === 'status') {
+        garmin.status = { available: message.available === true, updateRequired: message.updateRequired === true, connected: message.connected === true, complete: message.complete === true };
+        if (!garmin.status.connected && garmin.data) {
+          garmin.data = null;
+          garmin.index = null;
+          try { localStorage.removeItem(garminCacheKey); } catch (error) { /* nothing was cached */ }
+        }
+        syncGarmin();
+        renderGarminViews();
+      } else if (message.type === 'data') {
+        clearTimeout(garmin.timer);
+        garmin.syncing = false;
+        garmin.lastSync = Date.now();
+        const previousIds = garmin.data ? new Set(garmin.data.activities.map(activity => activity.id)) : null;
+        try {
+          const next = normalizeGarmin(message, garmin.data);
+          const unresolved = next.unresolved;
+          delete next.unresolved;
+          garmin.data = next;
+          garmin.index = buildGarminIndex(next);
+          garmin.error = '';
+          try { localStorage.setItem(garminCacheKey, JSON.stringify(next)); } catch (error) { /* the cache only speeds up the next launch */ }
+          const added = previousIds ? next.activities.filter(activity => !previousIds.has(activity.id)).length : 0;
+          if (added > 0) notify(`${added} new Garmin ${added === 1 ? 'activity' : 'activities'} just landed. The sofa is devastated.`);
+          // The local copy lost track of something the phone said was unchanged, so read everything again.
+          if (unresolved) { garmin.lastSync = 0; setTimeout(() => syncGarmin(true)); }
+        } catch (error) { garmin.error = error.message; }
+        renderGarminViews();
+      } else if (message.type === 'activity') {
+        if (message.id === openActivityId) renderActivityDetail({ hr: numberPairs(message.hr), speed: numberPairs(message.speed) });
+      } else if (message.type === 'error') {
+        const text = typeof message.message === 'string' && message.message ? message.message.slice(0, 200) : 'Health Connect could not be read.';
+        if (message.request === 'activity') {
+          if (message.id === openActivityId) get('activity-detail-status').textContent = text;
+          return;
+        }
+        if (message.request === 'status' && !garmin.status) garmin.status = { available: true, updateRequired: false, connected: false, complete: false };
+        clearTimeout(garmin.timer);
+        garmin.syncing = false;
+        garmin.error = text;
+        renderGarminViews();
+      }
+    }
+    function renderGarminViews() {
+      renderGarminBar();
+      renderStats();
+      renderRuns();
+      if (activeView === 'runs') renderRunChart();
+      if (activeView === 'activities') renderActivities();
+      if (activeView === 'health') renderHealth();
       icons();
     }
-    function renderHealth() {
-      const cutoff = Date.now() - 24 * 60 * 60 * 1000;
-      const samples = remoteData.samples.filter(sample => Number.isFinite(Number(sample.sample_time)) && Number(sample.sample_time) >= cutoff && Number(sample.sample_time) <= Date.now());
-      const rates = samples.map(sample => Number(sample.heart_rate_bpm)).filter(value => Number.isFinite(value) && value > 0);
-      const latestRate = samples.find(sample => Number.isFinite(Number(sample.heart_rate_bpm)) && Number(sample.heart_rate_bpm) > 0);
-      const latestTemperature = samples.find(sample => sample.temperature_c !== null && sample.temperature_c !== undefined && Number.isFinite(Number(sample.temperature_c)));
-      get('health-current-hr').textContent = latestRate ? number(Number(latestRate.heart_rate_bpm)) : '--';
-      get('health-average-hr').textContent = rates.length ? number(Math.round(rates.reduce((sum, value) => sum + value, 0) / rates.length)) : '--';
-      get('health-maximum-hr').textContent = rates.length ? number(Math.max(...rates)) : '--';
-      get('health-temperature').textContent = latestTemperature ? Number(latestTemperature.temperature_c).toFixed(1) : '--';
-      get('health-table').querySelector('tbody').innerHTML = samples.map(sample => {
-        const date = new Date(Number(sample.sample_time));
-        const time = Number.isFinite(date.getTime()) ? date.toLocaleString(undefined, { month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' }) : 'Unknown';
-        const rate = sample.heart_rate_bpm !== null && sample.heart_rate_bpm !== undefined && Number.isFinite(Number(sample.heart_rate_bpm)) ? number(Number(sample.heart_rate_bpm)) : '--';
-        const temperature = sample.temperature_c !== null && sample.temperature_c !== undefined && Number.isFinite(Number(sample.temperature_c)) ? Number(sample.temperature_c).toFixed(1) : '--';
-        return `<tr><th scope="row">${escapeHTML(time)}</th><td>${rate}</td><td>${temperature}</td></tr>`;
-      }).join('') || '<tr><td colspan="3">No health readings have arrived yet.</td></tr>';
+    function garminActivities() { return garmin.data?.activities || []; }
+    function garminRuns() {
+      return garminActivities().filter(isRun).map(run => {
+        const start = new Date(run.start);
+        return { id: `garmin:${run.id}`, garminId: run.id, date: tracker.dayKey(start), startTime: `${String(start.getHours()).padStart(2, '0')}:${String(start.getMinutes()).padStart(2, '0')}`, distanceMeters: Math.max(0, Math.round(run.distanceM || 0)), durationSeconds: Math.max(0, Math.round((run.durationMs ?? run.end - run.start) / 1000)), createdAt: run.start, avgHr: run.avgHr };
+      });
     }
-    async function refreshCloud(silent = false) {
-      if (!cloudConfig.endpoint || !cloudConfig.token) {
-        setCloudStatus('Cloud sync is not configured.');
+    function allRuns() { return [...state.runs, ...garminRuns()]; }
+    function runState() { return { ...state, runs: allRuns() }; }
+    function latestResting() {
+      if (!garmin.index) return null;
+      for (let offset = 0; offset < 3; offset++) {
+        const value = garmin.index.restingByDay.get(tracker.shiftDay(tracker.dayKey(), -offset));
+        if (value !== undefined) return value;
+      }
+      return null;
+    }
+    function renderGarminBar() {
+      const bar = get('garmin-bar');
+      const view = garminState();
+      document.querySelectorAll('[data-garmin-refresh]').forEach(button => { button.hidden = !healthBridge; button.disabled = view !== 'connected' || garmin.syncing; });
+      bar.hidden = view === 'browser' || !['runs', 'activities', 'health'].includes(activeView);
+      if (bar.hidden) return;
+      let text = '';
+      let action = '';
+      let label = '';
+      if (view === 'checking') text = 'Checking Health Connect…';
+      else if (view === 'unavailable') text = garmin.status.updateRequired ? 'Health Connect needs an update from Google Play.' : "Health Connect isn't available on this phone.";
+      else if (view === 'disconnected') {
+        text = 'Connect Health Connect to bring in your Garmin activities, sleep and heart rate.';
+        action = garmin.askedToConnect ? 'settings' : 'connect';
+        label = garmin.askedToConnect ? 'Open Health Connect' : 'Connect';
+      } else if (garmin.syncing) text = 'Reading Garmin data from Health Connect…';
+      else if (garmin.error) { text = garmin.error; action = 'sync'; label = 'Try again'; }
+      else {
+        text = garmin.data ? `Garmin via Health Connect · updated ${formatClock(garmin.data.generatedAt)}` : 'Garmin via Health Connect';
+        if (!garmin.status.complete) {
+          text += ' · some access is switched off';
+          action = garmin.askedToConnect ? 'settings' : 'connect';
+          label = 'Review';
+        } else {
+          if (garmin.data && !garmin.data.history) text += ' · last 30 days only';
+          action = 'sync';
+          label = 'Refresh';
+        }
+      }
+      bar.classList.toggle('is-error', Boolean(garmin.error) && !garmin.syncing && view === 'connected');
+      bar.classList.toggle('is-busy', garmin.syncing || view === 'checking');
+      get('garmin-bar-text').textContent = text;
+      const button = get('garmin-bar-action');
+      button.hidden = !action;
+      button.dataset.action = action;
+      button.innerHTML = action === 'sync' ? `<i data-lucide="refresh-cw"></i> ${escapeHTML(label)}` : escapeHTML(label);
+    }
+    function sleepSummary(session) {
+      const totals = { deep: 0, light: 0, rem: 0, other: 0, awake: 0 };
+      for (const [start, end, stage] of session.stages) {
+        const kind = sleepStageKinds[stage];
+        if (kind) totals[kind] += end - start;
+      }
+      const sleeping = totals.deep + totals.light + totals.rem + totals.other;
+      return { ...totals, asleep: sleeping || Math.max(0, session.end - session.start - totals.awake), detailed: totals.deep + totals.light + totals.rem > 0 };
+    }
+    function hypnogram(session) {
+      const span = session.end - session.start;
+      const stages = session.stages.length ? session.stages : [[session.start, session.end, 2]];
+      const bars = stages.map(([start, end, stage]) => {
+        const kind = sleepStageKinds[stage];
+        if (!kind) return '';
+        const width = Math.max(.25, (end - start) / span * 100);
+        return `<rect class="stage-${kind}" x="${((start - session.start) / span * 100).toFixed(2)}" y="${stageLanes[kind] * 25 + 4}" width="${width.toFixed(2)}" height="17"></rect>`;
+      }).join('');
+      const from = escapeHTML(formatClock(session.start));
+      const to = escapeHTML(formatClock(session.end));
+      return `<div class="hypnogram-wrap"><div class="hypnogram-labels" aria-hidden="true"><span>Awake</span><span>REM</span><span>Light</span><span>Deep</span></div><svg class="hypnogram" viewBox="0 0 100 100" preserveAspectRatio="none" role="img" aria-label="Sleep stages from ${from} to ${to}">${bars}</svg></div><div class="hypnogram-times" aria-hidden="true"><span>${from}</span><span>${to}</span></div>`;
+    }
+    function heartSpark(key, readings, resting) {
+      const dayStart = tracker.parseDay(key);
+      dayStart.setHours(0, 0, 0, 0);
+      const start = dayStart.getTime();
+      const values = readings.map(([, bpm]) => bpm);
+      const low = Math.min(...values, Number.isFinite(resting) ? resting : Infinity) - 5;
+      const high = Math.max(...values) + 5;
+      const x = time => ((time + 900000 - start) / 86400000 * 288).toFixed(1);
+      const y = bpm => (96 - (bpm - low) / (high - low) * 88).toFixed(1);
+      const segments = [];
+      for (const reading of readings) {
+        const last = segments.at(-1);
+        if (last && reading[0] - last.at(-1)[0] <= 3600000) last.push(reading); else segments.push([reading]);
+      }
+      const area = segments.map(segment => `M${x(segment[0][0])},100 ${segment.map(([time, bpm]) => `L${x(time)},${y(bpm)}`).join(' ')} L${x(segment.at(-1)[0])},100Z`).join(' ');
+      const line = segments.map(segment => segment.map(([time, bpm], index) => `${index ? 'L' : 'M'}${x(time)},${y(bpm)}`).join(' ')).join(' ');
+      const rest = Number.isFinite(resting) ? `<line class="rest" x1="0" x2="288" y1="${y(resting)}" y2="${y(resting)}"></line>` : '';
+      return `<svg class="heart-spark" viewBox="0 0 288 100" preserveAspectRatio="none" role="img" aria-label="Heart rate through the day in 30-minute averages"><defs><linearGradient id="hr-fill" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#c2503f" stop-opacity=".3"></stop><stop offset="1" stop-color="#c2503f" stop-opacity="0"></stop></linearGradient></defs><path class="area" d="${area}"></path>${rest}<path class="line" d="${line}"></path></svg><div class="spark-axis" aria-hidden="true"><span>00:00</span><span>06:00</span><span>12:00</span><span>18:00</span><span>24:00</span></div>`;
+    }
+    function trendChart(id, type, labels, values, color, format) {
+      const tick = { color: '#758176', font: { family: 'DM Sans', size: 10 } };
+      return new Chart(get(id), {
+        type,
+        data: { labels, datasets: [{ data: values, borderColor: color, backgroundColor: type === 'bar' ? color + 'b8' : color + '1f', fill: type === 'line', tension: .3, spanGaps: true, pointRadius: labels.length <= 31 ? 2 : 0, pointHoverRadius: 4, borderWidth: type === 'bar' ? 0 : 2, borderRadius: 3, maxBarThickness: 14 }] },
+        options: {
+          responsive: true, maintainAspectRatio: false, animation: false, interaction: { mode: 'index', intersect: false },
+          plugins: { legend: { display: false }, tooltip: { backgroundColor: '#294638', padding: 10, callbacks: { title: items => formatDay(labels[items[0].dataIndex], { weekday: 'short', day: 'numeric', month: 'short' }), label: item => ` ${format(item.parsed.y)}` } } },
+          scales: {
+            x: { grid: { display: false }, border: { display: false }, ticks: { ...tick, maxTicksLimit: 4, maxRotation: 0, callback: function (value) { return formatDay(this.getLabelForValue(value)); } } },
+            y: { beginAtZero: type === 'bar', grace: '10%', border: { display: false }, grid: { color: '#e3eadf' }, ticks: { ...tick, maxTicksLimit: 4 } }
+          }
+        }
+      });
+    }
+    function renderGarminEmpty(prefix, view) {
+      let title = 'Reading Health Connect…';
+      let copy = 'Fetching your Garmin history. The watch did all the hard work.';
+      let action = '';
+      let label = '';
+      if (view === 'browser' && prefix === 'activity') { title = 'Your activities live on your phone.'; copy = "Open Ol'Man Muz on your Android phone. It reads every Garmin activity from Health Connect (runs, paddles, tennis and whatever else you got up to), and they never leave that phone."; }
+      else if (view === 'browser') { title = 'Health stats live on your phone.'; copy = "Open Ol'Man Muz on your Android phone. It reads your Garmin sleep, heart rate and steps from Health Connect, and they never leave that phone."; }
+      else if (view === 'checking') { title = 'Checking Health Connect…'; copy = 'One moment.'; }
+      else if (view === 'unavailable') { title = "Health Connect isn't available."; copy = garmin.status.updateRequired ? 'Update Health Connect from Google Play, then come back.' : "This phone doesn't support Health Connect, so Garmin data can't be shown here."; }
+      else if (view === 'disconnected') {
+        title = 'Bring in your Garmin data.';
+        copy = "Garmin Connect copies your activities, sleep, heart rate and steps into Health Connect after every watch sync. Let Ol'Man Muz read them. Nothing leaves this phone.";
+        action = garmin.askedToConnect ? 'settings' : 'connect';
+        label = garmin.askedToConnect ? 'Open Health Connect' : 'Connect Health Connect';
+      } else if (garmin.error && !garmin.syncing) { title = "Couldn't read Health Connect."; copy = garmin.error; action = 'sync'; label = 'Try again'; }
+      get(`${prefix}-empty-title`).textContent = title;
+      get(`${prefix}-empty-copy`).textContent = copy;
+      const button = get(`${prefix}-empty-action`);
+      button.hidden = !action;
+      button.dataset.action = action;
+      button.innerHTML = `<i data-lucide="${action === 'sync' ? 'refresh-cw' : 'link'}"></i> ${escapeHTML(label)}`;
+    }
+    function renderSleepCard(session, index) {
+      const delta = get('sleep-delta');
+      if (!session) {
+        get('sleep-total').textContent = '--';
+        get('sleep-window').textContent = 'No sleep recorded for the night before.';
+        get('sleep-chart').innerHTML = '';
+        delta.hidden = true;
         return;
       }
-      if (cloudRefreshing) return;
-      cloudRefreshing = true;
-      if (!silent) setCloudStatus('Refreshing Garmin data…');
-      try {
-        const [activities, health] = await Promise.all([cloudRequest('activities'), cloudRequest('health')]);
-        if (!Array.isArray(activities.activities) || !Array.isArray(health.samples)) throw new Error('The service returned an invalid response.');
-        remoteData.activities = activities.activities;
-        remoteData.samples = health.samples;
-        renderActivities();
-        renderHealth();
-        renderStats();
-        setCloudStatus(`Updated ${new Date().toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' })}.`);
-      } catch (error) {
-        setCloudStatus(`Could not refresh cloud data: ${error.message}`);
-      } finally {
-        cloudRefreshing = false;
+      const summary = sleepSummary(session);
+      const usual = average(Array.from({ length: 7 }, (_, offset) => index.sleepByDay.get(tracker.shiftDay(healthDay, -offset - 1))).filter(Boolean).map(item => sleepSummary(item).asleep));
+      const hours = summary.asleep / 3600000;
+      get('sleep-total').textContent = formatSleep(summary.asleep);
+      get('sleep-window').textContent = `${formatClock(session.start)} – ${formatClock(session.end)} · ${hours >= 8 ? 'Championship-level horizontal.' : hours >= 7 ? 'Solidly rested.' : hours >= 6 ? 'Functional. Mostly.' : 'Running on vibes.'}`;
+      delta.hidden = usual === null;
+      if (usual !== null) {
+        const minutes = Math.round((summary.asleep - usual) / 60000);
+        delta.className = minutes < 0 ? 'delta down' : 'delta';
+        delta.textContent = `${minutes < 0 ? '−' : '+'}${formatSleep(Math.abs(minutes) * 60000)} vs usual`;
       }
+      const total = summary.deep + summary.light + summary.rem + summary.other + summary.awake || 1;
+      const legend = summary.detailed ? `<div class="stage-legend">${[['deep', 'Deep', '#28594b'], ['light', 'Light', '#658bb4'], ['rem', 'REM', '#ab7190'], ['awake', 'Awake', '#c37754']].map(([kind, label, color]) => `<div style="--stage:${color}"><strong>${formatSleep(summary[kind])}</strong>${label} · ${Math.round(summary[kind] / total * 100)}%</div>`).join('')}</div>` : '';
+      get('sleep-chart').innerHTML = hypnogram(session) + legend;
     }
-    function updateCloudPolling() {
-      clearInterval(cloudTimer);
-      cloudTimer = null;
-      if (cloudConfig.endpoint && cloudConfig.token && !document.hidden && ['activities', 'health'].includes(activeView)) {
-        cloudTimer = setInterval(() => { void refreshCloud(true); }, 60000);
+    function renderHeartCard(readings, resting, day, index) {
+      get('heart-resting').innerHTML = Number.isFinite(resting) ? `${number(resting)}<small>bpm</small>` : '--';
+      const usual = average(Array.from({ length: 30 }, (_, offset) => index.restingByDay.get(tracker.shiftDay(healthDay, -offset - 1))));
+      const delta = get('heart-delta');
+      delta.hidden = !Number.isFinite(resting) || usual === null;
+      if (!delta.hidden) {
+        const change = Math.round(resting - usual);
+        delta.className = change > 2 ? 'delta down' : 'delta';
+        delta.textContent = change === 0 ? 'Bang on your usual' : `${change > 0 ? '+' : '−'}${Math.abs(change)} vs 30-day avg`;
       }
+      get('heart-caption').textContent = !Number.isFinite(resting) ? 'No overnight heart rate yet.' : `Estimate: lowest 30-minute average ${index.sleepByDay.has(healthDay) ? 'while asleep' : 'this morning'} (dashed line).`;
+      get('heart-chart').innerHTML = readings.length ? heartSpark(healthDay, readings, resting) : '<p class="health-sub">No heart rate recorded for this day.</p>';
+      get('heart-min').textContent = orDash(day?.hrMin);
+      get('heart-avg').textContent = orDash(day?.hrAvg);
+      get('heart-max').textContent = orDash(day?.hrMax);
+    }
+    function renderHealthTiles(day) {
+      const steps = day?.steps ?? null;
+      get('tile-steps').textContent = orDash(steps);
+      get('tile-steps-caption').textContent = steps === null ? 'steps' : steps >= 10000 ? 'steps · 10k smashed' : `steps · ${number(10000 - steps)} to 10k`;
+      get('steps-ring').style.strokeDashoffset = String(263.9 * (1 - Math.min(1, (steps || 0) / 10000)));
+      get('tile-distance').textContent = orDash(day?.distanceM, formatKmShort);
+      get('tile-floors').textContent = orDash(day?.floors, value => number(Math.round(value)));
+      get('tile-calories').textContent = orDash(day?.kcal, value => number(Math.round(value)));
+    }
+    function renderHealthTrends(index) {
+      destroyCharts(healthCharts);
+      const today = tracker.dayKey();
+      const labels = Array.from({ length: healthRange }, (_, offset) => tracker.shiftDay(today, offset - healthRange + 1));
+      const sleep = labels.map(key => { const session = index.sleepByDay.get(key); return session ? Math.round(sleepSummary(session).asleep / 360000) / 10 : null; });
+      const resting = labels.map(key => index.restingByDay.get(key) ?? null);
+      const steps = labels.map(key => index.days.get(key)?.steps ?? null);
+      const since = tracker.parseDay(labels[0]).setHours(0, 0, 0, 0);
+      const weights = garmin.data.weight.filter(([time]) => time >= since);
+      const sleepAverage = average(sleep);
+      const restingAverage = average(resting);
+      const stepsAverage = average(steps);
+      get('trend-sleep-note').textContent = sleepAverage === null ? '' : `avg ${formatSleep(sleepAverage * 3600000)}`;
+      get('trend-rest-note').textContent = restingAverage === null ? '' : `avg ${Math.round(restingAverage)} bpm`;
+      get('trend-steps-note').textContent = stepsAverage === null ? '' : `avg ${number(Math.round(stepsAverage))}`;
+      get('trend-weight-card').hidden = !weights.length;
+      get('trend-weight-note').textContent = weights.length ? `latest ${weights.at(-1)[1].toFixed(1)} kg` : '';
+      if (!window.Chart) return;
+      healthCharts.push(trendChart('trend-sleep', 'bar', labels, sleep, '#658bb4', value => formatSleep(value * 3600000)));
+      healthCharts.push(trendChart('trend-rest', 'line', labels, resting, '#c2503f', value => `${Math.round(value)} bpm`));
+      healthCharts.push(trendChart('trend-steps', 'bar', labels, steps, '#326f60', value => `${number(Math.round(value))} steps`));
+      if (weights.length) healthCharts.push(trendChart('trend-weight', 'line', weights.map(([time]) => tracker.dayKey(new Date(time))), weights.map(([, kg]) => Math.round(kg * 10) / 10), '#ab7190', value => `${value.toFixed(1)} kg`));
+    }
+    function renderHealthStats() {
+      const index = garmin.index;
+      const lastWeek = Array.from({ length: 7 }, (_, offset) => tracker.shiftDay(tracker.dayKey(), -offset));
+      const resting = index ? average(lastWeek.map(key => index.restingByDay.get(key))) : null;
+      const sleep = index ? average(lastWeek.map(key => index.sleepByDay.get(key)).filter(Boolean).map(session => sleepSummary(session).asleep)) : null;
+      const steps = index ? average(lastWeek.map(key => index.days.get(key)?.steps)) : null;
+      get('health-stat-rest').textContent = orDash(resting, value => number(Math.round(value)));
+      get('health-stat-sleep').textContent = orDash(sleep, formatSleep);
+      get('health-stat-steps').textContent = orDash(steps, value => number(Math.round(value)));
+      get('health-dock-value').textContent = orDash(latestResting());
+    }
+    function renderHealth() {
+      const view = garminState();
+      const showContent = Boolean(garmin.data) && (view === 'connected' || view === 'checking');
+      get('health-empty').hidden = showContent;
+      get('health-content').hidden = !showContent;
+      renderHealthStats();
+      if (!showContent) { destroyCharts(healthCharts); renderGarminEmpty('health', view); return; }
+      const index = garmin.index;
+      const today = tracker.dayKey();
+      const earliest = tracker.shiftDay(today, -89);
+      if (healthDay > today) healthDay = today;
+      if (healthDay < earliest) healthDay = earliest;
+      get('health-next-day').disabled = healthDay >= today;
+      get('health-prev-day').disabled = healthDay <= earliest;
+      get('health-day-label').textContent = formatDay(healthDay, { weekday: 'short', day: 'numeric', month: 'short' });
+      get('health-day-title').textContent = healthDay === today ? 'Today, so far.' : healthDay === tracker.shiftDay(today, -1) ? 'Yesterday.' : `${formatDay(healthDay, { weekday: 'long', day: 'numeric', month: 'long' })}.`;
+      const day = index.days.get(healthDay);
+      const session = index.sleepByDay.get(healthDay);
+      const readings = index.hrByDay.get(healthDay) || [];
+      const resting = index.restingByDay.get(healthDay) ?? null;
+      get('health-day-caption').textContent = day || session || readings.length ? 'Straight from your Garmin, via Health Connect.' : 'Nothing from Garmin for this day. Sync your watch in Garmin Connect, then refresh.';
+      renderSleepCard(session, index);
+      renderHeartCard(readings, resting, day, index);
+      renderHealthTiles(day);
+      renderHealthTrends(index);
+    }
+    function renderActivityStats(activities) {
+      const monthStart = new Date();
+      monthStart.setDate(1);
+      monthStart.setHours(0, 0, 0, 0);
+      const yearStart = new Date(monthStart.getFullYear(), 0, 1).getTime();
+      const week = activities.filter(activity => activity.start >= weekStart().getTime()).length;
+      const monthSeconds = activities.filter(activity => activity.start >= monthStart.getTime()).reduce((sum, activity) => sum + activitySeconds(activity), 0);
+      get('activity-week-count').textContent = number(week);
+      get('activity-dock-count').textContent = number(week);
+      get('activity-month-hours').textContent = new Intl.NumberFormat(undefined, { maximumFractionDigits: 1 }).format(monthSeconds / 3600);
+      get('activity-kinds').textContent = number(new Set(activities.filter(activity => activity.start >= yearStart).map(activity => activity.type)).size);
+    }
+    function activityRow(activity) {
+      const info = activityInfo(activity.type);
+      const start = new Date(activity.start);
+      const seconds = activitySeconds(activity);
+      const when = `${tracker.dayKey(start) === tracker.dayKey() ? 'Today' : start.toLocaleDateString(undefined, { weekday: 'short', day: 'numeric', month: 'short' })}, ${formatClock(activity.start)}`;
+      const byDistance = info.kind !== 'time' && activity.distanceM >= 50;
+      const metric = !byDistance ? `${formatElapsed(seconds)} <small>${seconds < 3600 ? 'min' : 'hrs'}</small>` : info.kind === 'swim' ? `${number(Math.round(activity.distanceM))} <small>m</small>` : `${formatKmShort(activity.distanceM)} <small>km</small>`;
+      const meta = [when, byDistance ? formatElapsed(seconds) : '', activity.avgHr ? `${number(Math.round(activity.avgHr))} bpm` : ''].filter(Boolean).join(' · ');
+      return `<article class="history-row activity-row" style="--exercise:${activityColor(activity.type)}"><span class="exercise-symbol" title="${escapeHTML(info.label)}"><i data-lucide="${info.icon}"></i></span><div><strong>${escapeHTML(activity.title || info.label)}</strong><small>${escapeHTML(meta)}</small></div><span class="history-reps">${metric}</span><div class="row-actions"><button class="icon-button" data-activity="${escapeHTML(activity.id)}" aria-label="Open details for ${escapeHTML(info.label.toLowerCase())} on ${escapeHTML(when)}" title="Details"><i data-lucide="chart-line"></i></button></div></article>`;
+    }
+    function renderActivityTypes(activities) {
+      const totals = new Map();
+      for (const activity of activities) {
+        const total = totals.get(activity.type) || { count: 0, seconds: 0, metres: 0 };
+        total.count++;
+        total.seconds += activitySeconds(activity);
+        total.metres += activity.distanceM || 0;
+        totals.set(activity.type, total);
+      }
+      const rows = [...totals].sort((first, second) => second[1].seconds - first[1].seconds);
+      const most = rows[0]?.[1].seconds || 1;
+      get('activity-types').innerHTML = rows.map(([type, total]) => {
+        const info = activityInfo(type);
+        const distance = info.kind !== 'time' && total.metres >= 1000 ? ` · ${formatKmShort(total.metres)} km` : '';
+        return `<div class="sport-row" style="--exercise:${activityColor(type)}"><span class="exercise-symbol"><i data-lucide="${info.icon}"></i></span><div><strong>${escapeHTML(info.label)}<span>${number(total.count)}× · ${formatHours(total.seconds)}${distance}</span></strong><span class="sport-track"><span class="sport-fill" style="width:${Math.max(3, total.seconds / most * 100).toFixed(1)}%"></span></span></div></div>`;
+      }).join('') || '<p class="history-caption">Nothing yet. The year is young.</p>';
+    }
+    function renderActivityChart(activities) {
+      destroyCharts(activityCharts);
+      const thisWeek = weekStart();
+      const weeks = Array.from({ length: 12 }, (_, index) => { const start = new Date(thisWeek); start.setDate(start.getDate() - (11 - index) * 7); return start.getTime(); });
+      const recent = activities.filter(activity => activity.start >= weeks[0]);
+      get('activity-chart-empty').hidden = recent.length > 0;
+      if (!window.Chart || !recent.length) return;
+      const hours = new Map();
+      for (const activity of recent) hours.set(activity.type, (hours.get(activity.type) || 0) + activitySeconds(activity));
+      const ranked = [...hours].sort((first, second) => second[1] - first[1]).map(([type]) => type);
+      const top = ranked.slice(0, ranked.length > 6 ? 5 : 6);
+      const groups = top.map(type => ({ label: activityInfo(type).label, color: activityColor(type), match: activity => activity.type === type }));
+      if (ranked.length > top.length) groups.push({ label: 'Other', color: '#9aa7a0', match: activity => !top.includes(activity.type) });
+      const datasets = groups.map(group => {
+        const data = weeks.map(() => 0);
+        for (const activity of recent) {
+          if (!group.match(activity)) continue;
+          const index = weeks.findLastIndex(start => activity.start >= start);
+          if (index >= 0) data[index] += activitySeconds(activity) / 3600;
+        }
+        return { label: group.label, data: data.map(value => Math.round(value * 10) / 10), backgroundColor: group.color, borderRadius: 3, maxBarThickness: 22 };
+      });
+      const tick = { color: '#758176', font: { family: 'DM Sans', size: 10 } };
+      activityCharts.push(new Chart(get('activity-week-chart'), {
+        type: 'bar', data: { labels: weeks.map(start => tracker.dayKey(new Date(start))), datasets },
+        options: {
+          responsive: true, maintainAspectRatio: false, animation: false, interaction: { mode: 'index', intersect: false },
+          plugins: {
+            legend: { position: 'bottom', labels: { ...tick, boxWidth: 8, boxHeight: 8, usePointStyle: true, pointStyle: 'rectRounded' } },
+            tooltip: { backgroundColor: '#294638', padding: 10, filter: item => item.parsed.y > 0, callbacks: { title: items => `Week of ${formatDay(items[0].label)}`, label: item => ` ${item.dataset.label}: ${item.parsed.y} h` } }
+          },
+          scales: {
+            x: { stacked: true, grid: { display: false }, border: { display: false }, ticks: { ...tick, maxRotation: 0, autoSkip: true, maxTicksLimit: 6, callback: function (value) { return formatDay(this.getLabelForValue(value)); } } },
+            y: { stacked: true, beginAtZero: true, border: { display: false }, grid: { color: '#e3eadf' }, ticks: { ...tick, maxTicksLimit: 5, callback: value => `${value} h` } }
+          }
+        }
+      }));
+    }
+    function renderActivities() {
+      const view = garminState();
+      const activities = garminActivities();
+      const showContent = Boolean(garmin.data) && (view === 'connected' || view === 'checking');
+      get('activity-empty').hidden = showContent;
+      get('activity-content').hidden = !showContent;
+      renderActivityStats(activities);
+      if (!showContent) { destroyCharts(activityCharts); renderGarminEmpty('activity', view); return; }
+      const counts = new Map();
+      for (const activity of activities) counts.set(activity.type, (counts.get(activity.type) || 0) + 1);
+      if (activityFilter !== '' && !counts.has(Number(activityFilter))) activityFilter = '';
+      const filter = get('activity-filter');
+      filter.innerHTML = '<option value="">All activities</option>' + [...counts].sort((first, second) => second[1] - first[1]).map(([type, count]) => `<option value="${type}">${escapeHTML(activityInfo(type).label)} (${number(count)})</option>`).join('');
+      filter.value = activityFilter;
+      const shown = activities.filter(activity => activityFilter === '' || activity.type === Number(activityFilter)).sort((first, second) => second.start - first.start);
+      const totalSeconds = shown.reduce((sum, activity) => sum + activitySeconds(activity), 0);
+      get('activity-summary').textContent = shown.length ? `${number(shown.length)} ${shown.length === 1 ? 'session' : 'sessions'} in the last year. ${formatHours(totalSeconds)} of assorted effort.` : 'Nothing from Garmin yet. Sync your watch in Garmin Connect, then refresh.';
+      get('activity-list').innerHTML = shown.slice(0, activityLimit).map(activityRow).join('') || '<div class="history-empty"><i data-lucide="armchair"></i><p>No activities yet. The sofa remains undefeated.</p></div>';
+      get('more-activities').hidden = shown.length <= activityLimit;
+      renderActivityTypes(activities.filter(activity => activity.start >= new Date(new Date().getFullYear(), 0, 1).getTime()));
+      renderActivityChart(activities);
+    }
+    function maxHeartRateFor() {
+      if (maxHeartRate) return maxHeartRate;
+      const seen = Math.max(0, ...garminActivities().map(activity => activity.maxHr || 0));
+      return seen >= 150 ? Math.min(230, Math.round(seen)) : 190;
+    }
+    function effortLabel(ratio) { return ratio >= .9 ? 'All gas, no brakes.' : ratio >= .8 ? 'Properly working.' : ratio >= .7 ? 'Steady effort. Mildly heroic.' : ratio >= .6 ? 'Comfortably chatty.' : 'A gentle stroll with ambition.'; }
+    function zoneOf(bpm, max) { const ratio = bpm / max; return ratio >= .9 ? 4 : ratio >= .8 ? 3 : ratio >= .7 ? 2 : ratio >= .6 ? 1 : 0; }
+    function thin(points, limit) { const step = Math.ceil(points.length / limit); return step > 1 ? points.filter((_, index) => index % step === 0) : points; }
+    function detailChartOptions(formatY, reverse = false) {
+      const tick = { color: '#758176', font: { family: 'DM Sans', size: 10 } };
+      return {
+        responsive: true, maintainAspectRatio: false, animation: false, parsing: false, normalized: true,
+        interaction: { mode: 'nearest', axis: 'x', intersect: false },
+        plugins: { legend: { display: false }, tooltip: { backgroundColor: '#294638', padding: 10, callbacks: { title: items => `${Math.round(items[0].parsed.x)} min in`, label: item => ` ${formatY(item.parsed.y)}` } } },
+        scales: {
+          x: { type: 'linear', grid: { display: false }, border: { display: false }, ticks: { ...tick, maxTicksLimit: 6, callback: value => `${Math.round(value)} min` } },
+          y: { reverse, grace: '5%', border: { display: false }, grid: { color: '#e3eadf' }, ticks: { ...tick, maxTicksLimit: 5, callback: value => formatY(value) } }
+        }
+      };
+    }
+    function openActivity(id) {
+      const activity = garminActivities().find(item => item.id === id);
+      if (!activity) return;
+      openActivityId = id;
+      garminDetail = null;
+      destroyCharts(detailCharts);
+      const info = activityInfo(activity.type);
+      const seconds = activitySeconds(activity);
+      const distance = activity.distanceM || 0;
+      const start = new Date(activity.start);
+      const hour = start.getHours();
+      const whole = value => number(Math.round(value));
+      get('activity-detail-date').textContent = start.toLocaleString(undefined, { weekday: 'long', day: 'numeric', month: 'long', hour: 'numeric', minute: '2-digit' });
+      get('activity-detail-title').textContent = activity.title || `${hour < 12 ? 'Morning' : hour < 17 ? 'Afternoon' : 'Evening'} ${info.label.replace(/^[A-Z](?=[a-z])/, letter => letter.toLowerCase())}.`;
+      get('activity-detail-effort').textContent = activity.avgHr ? effortLabel(activity.avgHr / maxHeartRateFor()) : '';
+      const stats = [[seconds ? formatElapsed(seconds) : '--', 'time']];
+      if (info.kind === 'time') { if (distance >= 1000) stats.push([formatKmShort(distance), 'km covered']); }
+      else if (distance >= 50 && seconds) {
+        if (info.kind === 'swim') stats.push([whole(distance), 'metres'], [formatDuration(Math.round(seconds * 100 / distance)), 'avg pace /100 m']);
+        else if (info.kind === 'speed') stats.push([formatKm(distance), 'km'], [new Intl.NumberFormat(undefined, { maximumFractionDigits: 1 }).format(distance / seconds * 3.6), 'avg km/h']);
+        else stats.push([formatKm(distance), 'km'], [formatDuration(Math.round(seconds * 1000 / distance)), 'avg pace /km']);
+      }
+      stats.push([orDash(activity.avgHr, whole), 'avg bpm'], [orDash(activity.maxHr, whole), 'max bpm'], [orDash(activity.activeKcal ?? activity.totalKcal, whole), 'calories']);
+      if (activity.elevationM >= 1 && info.kind !== 'swim') stats.push([whole(activity.elevationM), 'metres climbed']);
+      if (activity.steps && seconds) stats.push(info.kind === 'pace' ? [whole(activity.steps / (seconds / 60)), 'steps per min'] : [whole(activity.steps), 'steps']);
+      get('activity-detail-stats').innerHTML = stats.map(([value, label]) => `<div class="run-stat"><strong>${escapeHTML(value)}</strong><small>${label}</small></div>`).join('');
+      get('activity-detail-status').textContent = info.kind === 'time' ? 'Fetching heart rate…' : 'Fetching heart rate and pace…';
+      get('activity-hr-section').hidden = true;
+      get('activity-speed-section').hidden = true;
+      get('max-hr').value = maxHeartRateFor();
+      requestHealth({ type: 'activity', id });
+      get('activity-dialog').showModal();
+    }
+    function renderActivityDetail(detail) {
+      const activity = garminActivities().find(item => item.id === openActivityId);
+      if (!activity) return;
+      garminDetail = detail;
+      destroyCharts(detailCharts);
+      const moving = activityInfo(activity.type).kind !== 'time';
+      get('activity-detail-status').textContent = detail.hr.length || (moving && detail.speed.length) ? '' : `Garmin didn't share heart rate${moving ? ' or pace' : ''} samples for this one.`;
+      renderActivityZones(activity, detail.hr);
+      renderActivitySpeed(activity, detail.speed);
+    }
+    function renderActivityZones(run, hr) {
+      get('activity-hr-section').hidden = !hr.length;
+      if (!hr.length) return;
+      const max = maxHeartRateFor();
+      const time = [0, 0, 0, 0, 0];
+      hr.forEach(([at, bpm], index) => { if (index < hr.length - 1) time[zoneOf(bpm, max)] += Math.min(hr[index + 1][0] - at, 30000); });
+      const total = time.reduce((sum, value) => sum + value, 0) || 1;
+      get('activity-zone-note').textContent = `Zones from a max of ${max} bpm`;
+      get('activity-zone-bar').innerHTML = time.map((ms, zone) => ms ? `<span style="width:${(ms / total * 100).toFixed(2)}%;background:${zoneColors[zone]}"></span>` : '').join('');
+      get('activity-zone-legend').innerHTML = time.map((ms, zone) => `<div><span class="zone-dot" style="background:${zoneColors[zone]}"></span>Z${zone + 1} ${zoneNames[zone]}<strong>${formatElapsed(Math.round(ms / 1000))} · ${Math.round(ms / total * 100)}%</strong></div>`).join('');
+      if (!window.Chart) return;
+      const points = thin(hr, 500).map(([at, bpm]) => ({ x: (at - run.start) / 60000, y: bpm }));
+      detailCharts.push(new Chart(get('activity-hr-chart'), { type: 'line', data: { datasets: [{ data: points, borderColor: zoneColors[2], borderWidth: 2, pointRadius: 0, tension: .25, segment: { borderColor: context => zoneColors[zoneOf(context.p1.parsed.y, max)] } }] }, options: detailChartOptions(value => `${Math.round(value)} bpm`) }));
+    }
+    function renderActivitySpeed(activity, speed) {
+      const kind = activityInfo(activity.type).kind;
+      get('activity-speed-section').hidden = true;
+      get('activity-splits').innerHTML = '';
+      if (kind === 'time') return;
+      const buckets = new Map();
+      for (const [at, metresPerSecond] of speed) {
+        const key = Math.floor((at - activity.start) / 30000);
+        const bucket = buckets.get(key) || { sum: 0, count: 0 };
+        bucket.sum += metresPerSecond;
+        bucket.count++;
+        buckets.set(key, bucket);
+      }
+      const view = {
+        pace: { min: .8, value: mps => 1000 / mps, format: value => `${formatDuration(Math.round(value))} /km`, title: 'Pace', note: 'min per km · faster is higher', reverse: true },
+        swim: { min: .2, value: mps => 100 / mps, format: value => `${formatDuration(Math.round(value))} /100 m`, title: 'Pace', note: 'min per 100 m · faster is higher', reverse: true },
+        speed: { min: .3, value: mps => mps * 3.6, format: value => `${value.toFixed(1)} km/h`, title: 'Speed', note: 'km/h', reverse: false }
+      }[kind];
+      const points = [...buckets].map(([key, bucket]) => ({ x: key / 2, speed: bucket.sum / bucket.count })).filter(point => point.speed >= view.min).map(point => ({ x: point.x, y: view.value(point.speed) }));
+      if (!points.length) return;
+      get('activity-speed-section').hidden = false;
+      get('activity-speed-title').textContent = view.title;
+      get('activity-speed-note').textContent = view.note;
+      // Trim GPS spikes so one silly sample doesn't flatten the chart.
+      const sorted = points.map(point => point.y).sort((first, second) => first - second);
+      const cap = view.reverse ? sorted[Math.floor((sorted.length - 1) * .95)] * 1.15 : sorted[Math.floor((sorted.length - 1) * .98)] * 1.2;
+      points.forEach(point => { point.y = Math.min(point.y, cap); });
+      if (kind !== 'swim') renderSplits(activity, speed);
+      if (!window.Chart) return;
+      detailCharts.push(new Chart(get('activity-speed-chart'), { type: 'line', data: { datasets: [{ data: points, borderColor: '#658bb4', borderWidth: 2, pointRadius: 0, tension: .3 }] }, options: detailChartOptions(view.format, view.reverse) }));
+    }
+    function renderSplits(activity, speed) {
+      // Integrate speed over time, skipping gaps over 10 s (auto-pause), then scale to Garmin's distance.
+      let distance = 0;
+      let moving = 0;
+      const track = [[0, 0]];
+      for (let index = 0; index < speed.length - 1; index++) {
+        const seconds = (speed[index + 1][0] - speed[index][0]) / 1000;
+        if (seconds <= 0 || seconds > 10) continue;
+        distance += speed[index][1] * seconds;
+        moving += seconds;
+        track.push([distance, moving]);
+      }
+      const list = get('activity-splits');
+      if (distance < 500) { list.innerHTML = ''; return; }
+      const scale = activity.distanceM > 0 ? activity.distanceM / distance : 1;
+      const splits = [];
+      let km = 1;
+      let lastTime = 0;
+      for (let index = 1; index < track.length; index++) {
+        const [d0, t0] = track[index - 1];
+        const [d1, t1] = track[index];
+        while (d1 * scale >= km * 1000) {
+          const at = t0 + (t1 - t0) * ((km * 1000 / scale - d0) / (d1 - d0 || 1));
+          splits.push({ label: `km ${km}`, pace: at - lastTime });
+          lastTime = at;
+          km++;
+        }
+      }
+      const rest = distance * scale - (km - 1) * 1000;
+      if (rest >= 100) splits.push({ label: `+${Math.round(rest)} m`, pace: (moving - lastTime) / rest * 1000 });
+      if (!splits.length) { list.innerHTML = ''; return; }
+      const fastest = Math.min(...splits.map(split => split.pace));
+      const slowest = Math.max(...splits.map(split => split.pace));
+      list.innerHTML = '<div class="split-row split-head"><span>Split</span><span></span><strong>/km</strong></div>' + splits.map(split => `<div class="split-row${split.pace === fastest && splits.length > 1 ? ' fastest' : ''}"><span>${split.label}</span><span class="split-track"><span class="split-fill" style="width:${(slowest === fastest ? 100 : 40 + 60 * (slowest - split.pace) / (slowest - fastest)).toFixed(1)}%"></span></span><strong>${formatDuration(Math.round(split.pace))}</strong></div>`).join('');
     }
     function notify(message, undo = null) {
       clearTimeout(toastTimer);
@@ -821,10 +1554,10 @@ lucide.createIcons({icons});\``);if(typeof document>"u")throw new Error("`create
       const totals = new Map();
       for (const entry of repEntries) totals.set(entry.date, (totals.get(entry.date) || 0) + entry.reps);
       const lifetime = repEntries.reduce((sum, entry) => sum + entry.reps, 0);
-      const runDistance = state.runs.reduce((sum, run) => sum + run.distanceMeters, 0);
-      const currentHeartRate = remoteData.samples.find(sample => Number.isInteger(sample.heart_rate_bpm) && sample.heart_rate_bpm > 0)?.heart_rate_bpm;
-      const heroValue = activeView === 'runs' ? formatKm(runDistance) : activeView === 'activities' ? number(remoteData.activities.length) : activeView === 'health' ? (currentHeartRate ?? '--') : number(lifetime);
-      const heroLabel = activeView === 'runs' ? 'Lifetime km' : activeView === 'activities' ? 'Garmin activities' : activeView === 'health' ? 'Current bpm' : 'Lifetime reps';
+      const runDistance = allRuns().reduce((sum, run) => sum + run.distanceMeters, 0);
+      const activeSeconds = garminActivities().reduce((sum, activity) => sum + activitySeconds(activity), 0);
+      const heroValue = activeView === 'runs' ? formatKm(runDistance) : activeView === 'activities' ? number(Math.round(activeSeconds / 3600)) : activeView === 'health' ? orDash(latestResting()) : number(lifetime);
+      const heroLabel = activeView === 'runs' ? 'Lifetime km' : activeView === 'activities' ? 'Active hours' : activeView === 'health' ? 'Resting bpm' : 'Lifetime reps';
       get('lifetime').textContent = heroValue;
       document.querySelector('.hero-score .eyebrow').textContent = heroLabel;
       get('week-total').textContent = number(points.reduce((sum, point) => sum + point.total, 0));
@@ -902,23 +1635,29 @@ lucide.createIcons({icons});\``);if(typeof document>"u")throw new Error("`create
       get('more-history').hidden = entries.length <= historyLimit;
     }
     function renderRuns() {
-      const weekly = tracker.runSeries(state, tracker.dayKey(), 'week', 1)[0];
-      const monthly = tracker.runSeries(state, tracker.dayKey(), 'month', 1)[0];
-      const totalDistance = state.runs.reduce((sum, run) => sum + run.distanceMeters, 0);
+      const runs = allRuns();
+      const current = { ...state, runs };
+      const weekly = tracker.runSeries(current, tracker.dayKey(), 'week', 1)[0];
+      const monthly = tracker.runSeries(current, tracker.dayKey(), 'month', 1)[0];
+      const totalDistance = runs.reduce((sum, run) => sum + run.distanceMeters, 0);
       get('run-week-total').textContent = formatKm(weekly.distanceMeters);
       get('run-week-dock').textContent = formatKm(weekly.distanceMeters);
       get('run-month-total').textContent = formatKm(monthly.distanceMeters);
-      get('run-count').textContent = number(state.runs.length);
-      get('run-log-summary').textContent = state.runs.length ? `${number(state.runs.length)} ${state.runs.length === 1 ? 'run' : 'runs'}. ${formatKm(totalDistance)} km. The sofa is taking this personally.` : 'No finish line. Just a very long way home.';
-      const runs = [...state.runs].sort((first, second) => second.date.localeCompare(first.date) || second.startTime.localeCompare(first.startTime) || second.createdAt - first.createdAt);
-      get('run-list').innerHTML = runs.slice(0, runHistoryLimit).map(run => {
-        const pace = formatDuration(Math.round(run.durationSeconds * 1000 / run.distanceMeters));
-        return `<article class="run-row"><div><h3>${run.date === tracker.dayKey() ? 'Today' : formatDay(run.date, { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric' })}</h3><p class="run-meta">${run.startTime ? `<span>${escapeHTML(run.startTime)}</span>` : ''}<span title="Average pace">${pace} /km</span></p></div><div class="run-metrics"><strong>${formatKm(run.distanceMeters)}</strong> <small>km</small><span class="run-time" aria-label="Elapsed time ${formatElapsed(run.durationSeconds)}" title="Elapsed time"><i data-lucide="clock-3"></i>${formatElapsed(run.durationSeconds)}</span></div><div class="row-actions"><button class="icon-button" data-edit-run="${escapeHTML(run.id)}" aria-label="Edit run on ${run.date}${run.startTime ? ' at ' + run.startTime : ''}" title="Edit run"><i data-lucide="pencil"></i></button><button class="icon-button danger" data-delete-run="${escapeHTML(run.id)}" aria-label="Delete run on ${run.date}${run.startTime ? ' at ' + run.startTime : ''}" title="Delete run"><i data-lucide="trash-2"></i></button></div></article>`;
+      get('run-count').textContent = number(runs.length);
+      get('run-log-summary').textContent = runs.length ? `${number(runs.length)} ${runs.length === 1 ? 'run' : 'runs'}. ${formatKm(totalDistance)} km. The sofa is taking this personally.` : 'No finish line. Just a very long way home.';
+      const sorted = [...runs].sort((first, second) => second.date.localeCompare(first.date) || second.startTime.localeCompare(first.startTime) || second.createdAt - first.createdAt);
+      get('run-list').innerHTML = sorted.slice(0, runHistoryLimit).map(run => {
+        const when = run.date === tracker.dayKey() ? 'Today' : formatDay(run.date, { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric' });
+        const pace = run.distanceMeters ? `${formatDuration(Math.round(run.durationSeconds * 1000 / run.distanceMeters))} /km` : 'No distance';
+        const at = run.startTime ? ' at ' + run.startTime : '';
+        const metrics = `<div class="run-metrics"><strong>${formatKm(run.distanceMeters)}</strong> <small>km</small><span class="run-time" aria-label="Elapsed time ${formatElapsed(run.durationSeconds)}" title="Elapsed time"><i data-lucide="clock-3"></i>${formatElapsed(run.durationSeconds)}</span></div>`;
+        if (run.garminId) return `<article class="run-row"><div><h3>${when}<span class="source-badge"><i data-lucide="watch"></i>Garmin</span></h3><p class="run-meta"><span>${escapeHTML(run.startTime)}</span><span title="Average pace">${pace}</span>${run.avgHr ? `<span class="run-hr" title="Average heart rate">${number(Math.round(run.avgHr))} bpm</span>` : ''}</p></div>${metrics}<div class="row-actions"><button class="icon-button" data-activity="${escapeHTML(run.garminId)}" aria-label="Open details for the run on ${run.date}${at}" title="Run details"><i data-lucide="chart-line"></i></button></div></article>`;
+        return `<article class="run-row"><div><h3>${when}</h3><p class="run-meta">${run.startTime ? `<span>${escapeHTML(run.startTime)}</span>` : ''}<span title="Average pace">${pace}</span></p></div>${metrics}<div class="row-actions"><button class="icon-button" data-edit-run="${escapeHTML(run.id)}" aria-label="Edit run on ${run.date}${at}" title="Edit run"><i data-lucide="pencil"></i></button><button class="icon-button danger" data-delete-run="${escapeHTML(run.id)}" aria-label="Delete run on ${run.date}${at}" title="Delete run"><i data-lucide="trash-2"></i></button></div></article>`;
       }).join('') || '<div class="history-empty"><i data-lucide="footprints"></i><p>No runs yet. Excellent shoe preservation.</p></div>';
       get('more-runs').hidden = runs.length <= runHistoryLimit;
     }
     function renderRunChart() {
-      const points = tracker.runSeries(state, tracker.dayKey(), runPeriod);
+      const points = tracker.runSeries(runState(), tracker.dayKey(), runPeriod);
       const weekly = runPeriod === 'week';
       const hasData = points.some(point => point.distanceMeters);
       get('run-chart-caption').textContent = weekly ? 'Weekly distance (km)' : 'Monthly distance (km)';
@@ -948,19 +1687,23 @@ lucide.createIcons({icons});\``);if(typeof document>"u")throw new Error("`create
       activeView = view;
       const runs = view === 'runs';
       const exercises = view === 'exercises';
+      const activitiesView = view === 'activities';
+      const healthView = view === 'health';
       get('exercise-panel').hidden = !exercises;
       get('exercise-stats').hidden = !exercises;
       get('exercise-dock').hidden = !exercises;
       get('run-panel').hidden = !runs;
       get('run-stats').hidden = !runs;
       get('run-dock').hidden = !runs;
-      get('activities-panel').hidden = view !== 'activities';
-      get('health-panel').hidden = view !== 'health';
-      document.querySelector('.nav-link').setAttribute('href', runs ? '#run-log' : '#history');
+      get('activity-panel').hidden = !activitiesView;
+      get('activity-stats').hidden = !activitiesView;
+      get('activity-dock').hidden = !activitiesView;
+      get('health-panel').hidden = !healthView;
+      get('health-stats').hidden = !healthView;
+      get('health-dock').hidden = !healthView;
+      document.querySelector('.nav-link').setAttribute('href', runs ? '#run-log' : activitiesView ? '#activity-panel' : healthView ? '#health-panel' : '#history');
       document.querySelectorAll('[data-view]').forEach(button => { button.setAttribute('aria-selected', button.dataset.view === view); button.tabIndex = button.dataset.view === view ? 0 : -1; });
       render();
-      updateCloudPolling();
-      if (view === 'activities' || view === 'health') void refreshCloud();
     }
     function openRun(run = null) {
       editingRun = run?.id || null;
@@ -977,7 +1720,7 @@ lucide.createIcons({icons});\``);if(typeof document>"u")throw new Error("`create
       get('run-error').textContent = '';
       get('run-dialog').showModal();
     }
-    function render() { renderStats(); renderExercises(); renderHistory(); renderRuns(); renderActivities(); renderHealth(); if (activeView === 'runs') renderRunChart(); else if (activeView === 'exercises') renderChart(); icons(); }
+    function render() { renderStats(); renderExercises(); renderHistory(); renderRuns(); renderGarminBar(); if (activeView === 'runs') renderRunChart(); else if (activeView === 'exercises') renderChart(); else if (activeView === 'activities') renderActivities(); else renderHealth(); icons(); }
     function logSet(exerciseId, amount, date) {
       const result = tracker.addEntry(state, exerciseId, amount, date);
       commit(result.state);
@@ -1072,6 +1815,7 @@ lucide.createIcons({icons});\``);if(typeof document>"u")throw new Error("`create
     get('run-list').addEventListener('click', event => {
       const button = event.target.closest('button');
       if (!button) return;
+      if (button.dataset.activity) { openActivity(button.dataset.activity); icons(); return; }
       const id = button.dataset.editRun || button.dataset.deleteRun;
       const run = state.runs.find(run => run.id === id);
       if (!run) return;
@@ -1178,46 +1922,36 @@ lucide.createIcons({icons});\``);if(typeof document>"u")throw new Error("`create
     get('dismiss-toast').addEventListener('click', () => { get('toast').hidden = true; });
     get('confirm-action').addEventListener('click', () => { try { confirmAction?.(); get('confirm-dialog').close(); } catch (error) { notify(error.message); } });
     get('open-data').addEventListener('click', () => { get('backup-summary').textContent = `${number(state.entries.length)} sets. ${state.exercises.length} exercises. ${number(state.runs.length)} runs. One very relaxed athlete.`; get('data-error').textContent = ''; get('data-dialog').showModal(); });
-    get('open-cloud-config').addEventListener('click', () => {
-      get('cloud-endpoint').value = cloudConfig.endpoint;
-      get('cloud-token').value = cloudConfig.token;
-      get('cloud-config-error').textContent = '';
-      get('cloud-config-dialog').showModal();
+    get('garmin-bar-action').addEventListener('click', event => garminAction(event.currentTarget.dataset.action));
+    get('health-empty-action').addEventListener('click', event => garminAction(event.currentTarget.dataset.action));
+    get('activity-empty-action').addEventListener('click', event => garminAction(event.currentTarget.dataset.action));
+    document.querySelectorAll('[data-garmin-refresh]').forEach(button => button.addEventListener('click', () => syncGarmin(true)));
+    get('activity-list').addEventListener('click', event => {
+      const button = event.target.closest('[data-activity]');
+      if (button) { openActivity(button.dataset.activity); icons(); }
     });
-    get('cloud-config-form').addEventListener('submit', event => {
-      event.preventDefault();
-      try {
-        const endpoint = new URL(get('cloud-endpoint').value.trim());
-        const token = get('cloud-token').value.trim();
-        if (endpoint.protocol !== 'https:' || endpoint.username || endpoint.password || endpoint.pathname !== '/' || endpoint.search || endpoint.hash) throw new Error('Enter the HTTPS base URL of your Worker, without a path.');
-        if (token.length < 32) throw new Error('The phone read token must be at least 32 characters.');
-        const nextConfig = { endpoint: endpoint.href.replace(/\/+$/, ''), token };
-        localStorage.setItem(cloudStorageKey, JSON.stringify(nextConfig));
-        cloudConfig = nextConfig;
-        get('cloud-config-dialog').close();
-        updateCloudPolling();
-        setCloudStatus('Connecting to your cloud database…');
-        void refreshCloud();
-        notify('Cloud connection saved on this device.');
-      } catch (error) { get('cloud-config-error').textContent = error.message; }
-    });
-    get('disconnect-cloud').addEventListener('click', () => {
-      try { localStorage.removeItem(cloudStorageKey); }
-      catch (error) { get('cloud-config-error').textContent = 'The cloud connection could not be removed from local storage.'; return; }
-      cloudConfig = { endpoint: '', token: '' };
-      get('cloud-endpoint').value = '';
-      get('cloud-token').value = '';
-      remoteData.activities = [];
-      remoteData.samples = [];
-      updateCloudPolling();
-      setCloudStatus('Disconnected on this device. Data remains in the cloud database.');
-      renderActivities();
+    get('activity-filter').addEventListener('change', event => { activityFilter = event.target.value; activityLimit = 10; renderActivities(); icons(); });
+    get('more-activities').addEventListener('click', () => { activityLimit += 20; renderActivities(); icons(); });
+    get('health-prev-day').addEventListener('click', () => { healthDay = tracker.shiftDay(healthDay, -1); renderHealth(); icons(); });
+    get('health-next-day').addEventListener('click', () => { healthDay = [tracker.dayKey(), tracker.shiftDay(healthDay, 1)].sort()[0]; renderHealth(); icons(); });
+    get('health-range').addEventListener('click', event => {
+      const button = event.target.closest('[data-health-range]');
+      if (!button) return;
+      healthRange = Number(button.dataset.healthRange);
+      document.querySelectorAll('[data-health-range]').forEach(item => item.setAttribute('aria-pressed', item === button));
       renderHealth();
-      renderStats();
-      get('cloud-config-dialog').close();
-      notify('Cloud sync disconnected on this device. Remote data was not deleted.');
+      icons();
     });
-    document.querySelectorAll('[data-refresh-cloud]').forEach(button => button.addEventListener('click', () => { void refreshCloud(); }));
+    get('max-hr').addEventListener('change', event => {
+      const value = Math.round(Number(event.target.value));
+      if (!(value >= 120 && value <= 230)) { event.target.value = maxHeartRateFor(); return; }
+      maxHeartRate = value;
+      try { localStorage.setItem(maxHeartRateKey, String(value)); } catch (error) { /* still applies until the app closes */ }
+      const activity = garminActivities().find(item => item.id === openActivityId);
+      if (activity?.avgHr) get('activity-detail-effort').textContent = effortLabel(activity.avgHr / value);
+      if (activity && garminDetail) renderActivityDetail(garminDetail);
+    });
+    get('activity-dialog').addEventListener('close', () => { openActivityId = null; garminDetail = null; destroyCharts(detailCharts); });
     get('export-data').addEventListener('click', () => {
       if (window.AndroidBackup) { AndroidBackup.postMessage(JSON.stringify(state, null, 2)); return; }
       const file = new Blob([JSON.stringify(state, null, 2)], { type: 'application/json' });
@@ -1270,15 +2004,12 @@ lucide.createIcons({icons});\``);if(typeof document>"u")throw new Error("`create
       catch (error) { readOnly = true; warn('The saved log changed in another tab but could not be opened. Restore a valid backup to continue.'); }
     });
     document.addEventListener('visibilitychange', () => {
-      if (document.hidden) {
-        clearInterval(cloudTimer);
-        cloudTimer = null;
-        return;
-      }
-      updateCloudPolling();
+      if (document.hidden) return;
+      if (healthBridge) requestHealth({ type: 'status' });
       const today = tracker.dayKey();
       if (currentDay === today) return;
       if (endDate === currentDay) endDate = today;
+      if (healthDay === currentDay) healthDay = today;
       if (logDate === currentDay) { logDate = today; get('log-date').value = today; }
       currentDay = today;
       get('log-date').max = today;
@@ -1287,11 +2018,11 @@ lucide.createIcons({icons});\``);if(typeof document>"u")throw new Error("`create
       get('header-date').textContent = new Date().toLocaleDateString(undefined, { weekday: 'short', day: 'numeric', month: 'long' });
       render();
     });
-    render();
-    if (cloudConfig.endpoint && cloudConfig.token) {
-      void refreshCloud(true);
-      updateCloudPolling();
+    if (healthBridge) {
+      healthBridge.onmessage = event => handleHealthMessage(event.data);
+      requestHealth({ type: 'status' });
     }
+    render();
   </script>
 
 </body></html>

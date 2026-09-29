@@ -19,16 +19,29 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.health.connect.client.HealthConnectClient
+import androidx.health.connect.client.PermissionController
+import androidx.lifecycle.lifecycleScope
+import androidx.webkit.JavaScriptReplyProxy
 import androidx.webkit.WebMessageCompat
 import androidx.webkit.WebViewAssetLoader
 import androidx.webkit.WebViewCompat
 import androidx.webkit.WebViewFeature
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
+import org.json.JSONObject
+import kotlin.coroutines.cancellation.CancellationException
 
 class MainActivity : AppCompatActivity() {
 
     private val appHost = WebViewAssetLoader.DEFAULT_DOMAIN
     private var fileCallback: ValueCallback<Array<Uri>>? = null
     private var pendingBackup: String? = null
+    private var healthReply: JavaScriptReplyProxy? = null
+    private var healthSync: Job? = null
+
+    private val requestHealthPermissions =
+        registerForActivityResult(PermissionController.createRequestPermissionResultContract()) { sendHealthStatus() }
 
     private val openBackup = registerForActivityResult(ActivityResultContracts.OpenDocument()) { uri ->
         fileCallback?.onReceiveValue(uri?.let { arrayOf(it) })
@@ -121,8 +134,80 @@ class MainActivity : AppCompatActivity() {
                     saveBackup.launch("ol-man-muz-${DateFormat.format("yyyy-MM-dd", System.currentTimeMillis())}.json")
                 }
             }
+            WebViewCompat.addWebMessageListener(webView, "AndroidHealth", setOf("https://$appHost")) { _, message, _, isMainFrame, replyProxy ->
+                val json = if (message.type == WebMessageCompat.TYPE_STRING) message.data else null
+                if (isMainFrame && !json.isNullOrBlank()) {
+                    healthReply = replyProxy
+                    onHealthMessage(json)
+                }
+            }
         }
 
         webView.loadUrl("https://$appHost/assets/index.html")
+    }
+
+    private fun onHealthMessage(json: String) {
+        val request = runCatching { JSONObject(json) }.getOrNull() ?: return
+        when (request.optString("type")) {
+            "status" -> sendHealthStatus()
+            "connect" -> {
+                val reader = healthReader()
+                if (reader == null) sendHealthStatus() else requestHealthPermissions.launch(reader.requestedPermissions())
+            }
+            "settings" -> runCatching { startActivity(Intent(HealthConnectClient.ACTION_HEALTH_CONNECT_SETTINGS)) }
+            "sync" -> {
+                val activityDays = request.optLong("activityDays", 365).coerceIn(1, 3650)
+                val healthDays = request.optLong("healthDays", 90).coerceIn(1, 365)
+                val known = request.optJSONObject("known")?.let { json ->
+                    json.keys().asSequence().filter { RECORD_ID.matches(it) }.take(5000).associateWith { json.optLong(it) }
+                } ?: emptyMap()
+                healthSync?.cancel()
+                healthSync = launchHealth("sync") { it.sync(activityDays, healthDays, known) }
+            }
+            "activity" -> {
+                val id = request.optString("id")
+                if (RECORD_ID.matches(id)) launchHealth("activity", id) { it.activityDetail(id) }
+            }
+        }
+    }
+
+    private fun sendHealthStatus() {
+        launchHealth("status") { it.status() }
+    }
+
+    private fun healthReader(): HealthReader? =
+        if (HealthConnectClient.getSdkStatus(this) == HealthConnectClient.SDK_AVAILABLE) {
+            HealthReader(HealthConnectClient.getOrCreate(this))
+        } else {
+            null
+        }
+
+    private fun launchHealth(request: String, id: String? = null, read: suspend (HealthReader) -> JSONObject): Job =
+        lifecycleScope.launch {
+            val reader = healthReader()
+            val reply = if (reader == null) {
+                JSONObject()
+                    .put("type", "status")
+                    .put("available", false)
+                    .put("updateRequired", HealthConnectClient.getSdkStatus(this@MainActivity) == HealthConnectClient.SDK_UNAVAILABLE_PROVIDER_UPDATE_REQUIRED)
+            } else {
+                try {
+                    read(reader)
+                } catch (e: CancellationException) {
+                    throw e
+                } catch (e: Exception) {
+                    val message = if (e is SecurityException) {
+                        "Health Connect access is off for some data. Review it in Health Connect."
+                    } else {
+                        "Health Connect couldn't be read (${e.javaClass.simpleName}). Try again."
+                    }
+                    JSONObject().put("type", "error").put("request", request).putOpt("id", id).put("message", message)
+                }
+            }
+            runCatching { healthReply?.postMessage(reply.toString()) }
+        }
+
+    private companion object {
+        val RECORD_ID = Regex("^[A-Za-z0-9._-]{1,128}$")
     }
 }

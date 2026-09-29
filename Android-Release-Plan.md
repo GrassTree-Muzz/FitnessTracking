@@ -10,7 +10,7 @@ The Android app already exists and works. It is in `html-to-app-android/` on `ma
 
 ### 0.1 What you will end up with
 
-- The existing Android app **Ol'Man Muz** (package `com.example.peakmildeffort`, Android 7.0 or newer). It shows a bundled copy of the repo-root `index.html`; exercise logs and manually entered runs stay on the phone, while optional Garmin sync needs internet and stores Garmin data in the configured Cloudflare D1 database.
+- The existing Android app **Ol'Man Muz** (package `com.example.peakmildeffort`, Android 8.0 or newer). It shows a bundled copy of the repo-root `index.html`, works offline and keeps its data on the phone. Garmin activities, sleep and heart rate are read from Android Health Connect on the phone (Android 14 or newer), never uploaded.
 - A **release pipeline**. You push a version tag to GitHub and GitHub Actions builds and signs the app file (APK). It then publishes the APK as a **pre-release** on the repository's Releases page.
 - **Automatic updates** on every phone through **Obtainium**, a free app that installs and updates apps straight from GitHub Releases. Your phone gets pre-releases for testing. Friends' phones only get releases you have promoted.
 
@@ -91,7 +91,7 @@ Rules:
 
 1. **Android Studio** Quail 2 or newer, the version the app was built with. It must support Android Gradle Plugin (AGP) **9.3.3**. The build computer that created the app already meets this. If Gradle sync on another computer says the AGP version is too new, update Android Studio (Help → Check for Updates).
 2. **Git**. On Windows, install "Git for Windows" if `git --version` doesn't work in a terminal.
-3. **A phone** running Android 7.0 or newer, plus a USB cable, for testing debug builds (optional but strongly recommended). To install from Android Studio over USB, turn on Developer options and USB debugging on the phone.
+3. **A phone** running Android 8.0 or newer (Android 14 or newer for Garmin data), plus a USB cable, for testing debug builds (optional but strongly recommended). To install from Android Studio over USB, turn on Developer options and USB debugging on the phone.
 4. **Your GitHub account** (`GrassTree-Muzz`), with two-factor sign-in turned on (Part 9.5). The repository must stay **public**, because Obtainium reads public releases without a token.
 5. **A password manager**, to store the signing key and its password in Part 9.
 
@@ -142,9 +142,11 @@ The build session created and tested this app. Every file was read on 25/09/2026
 | `gradlew`, `gradlew.bat`, `gradle/wrapper/*` | Gradle **9.5.1**, with a `distributionSha256Sum` so a tampered download is refused. `gradlew` is already marked executable in Git. |
 | `gradle.properties` | Gradle's memory setting only. |
 | `.gitignore`, `.gitattributes` | Ignore build output, `local.properties`, `*.jks` and `*.keystore`. Keep `gradlew` with Linux line endings for CI. |
-| `app/build.gradle.kts` | Package `com.example.peakmildeffort`, compileSdk 37, targetSdk 36, minSdk 24 (Android 7.0+), Java 11. Libraries: activity 1.13.0, appcompat 1.8.0, core 1.19.1, webkit 1.17.1. A fixed `versionCode = 1` and no signing. **Part 3.3 changes this file.** |
-| `app/src/main/AndroidManifest.xml` | One launcher activity and the `INTERNET` permission for optional HTTPS sync. No custom icon, so the phone shows Android's default app icon. |
+| `app/build.gradle.kts` | Package `com.example.peakmildeffort`, compileSdk 37, targetSdk 36, minSdk 26 (Android 8.0+, the Health Connect library's minimum), Java 11. Libraries: activity 1.13.0, appcompat 1.8.0, core 1.19.1, Health Connect client 1.1.0, lifecycle-runtime-ktx 2.11.0, webkit 1.17.1. A fixed `versionCode` and no signing. **Part 3.3 changes this file.** |
+| `app/src/main/AndroidManifest.xml` | The launcher activity, read-only Health Connect permissions, and the privacy screen Health Connect requires before it shows its permission prompt. No internet permission. No custom icon, so the phone shows Android's default app icon. |
 | `app/src/main/java/com/example/peakmildeffort/MainActivity.kt` | The WebView shell (see the next table). |
+| `app/src/main/java/com/example/peakmildeffort/HealthReader.kt` | Reads what Garmin Connect shared with Health Connect and packs it into JSON for the page. |
+| `app/src/main/java/com/example/peakmildeffort/PermissionsRationaleActivity.kt` | The privacy text Health Connect shows from its permission screen. |
 | `app/src/main/res/values/` | `strings.xml` (app name "Ol'Man Muz"), `colors.xml` (`paper` `#F5F7F4`, matching the page) and `themes.xml` (AppCompat light theme, no action bar). |
 | `app/src/main/assets/index.html` | An identical copy of the repo-root `index.html` (Part 4). |
 
@@ -152,11 +154,11 @@ What `MainActivity.kt` does:
 
 | Feature | How |
 |---|---|
-| Loads the page offline | `WebViewAssetLoader` serves the bundled `index.html` at `https://appassets.androidplatform.net/assets/index.html`. That is a fixed, secure address handled inside the app; cloud sync alone requires internet. |
-| Keeps manual data local | Exercise logs and manually entered runs use JavaScript and DOM storage (`localStorage`) at the fixed app address. The optional Worker URL and phone read token are also saved there. Garmin activity and health readings are stored in D1 outside the phone. |
+| Loads the page offline | `WebViewAssetLoader` serves the bundled `index.html` at `https://appassets.androidplatform.net/assets/index.html`. That is a fixed, secure address handled entirely inside the app, not a website. |
+| Keeps your data | JavaScript and DOM storage (`localStorage`) are on, and the address never changes. Garmin data is read from Health Connect on the phone and cached there too. |
 | Links | Only the app's own address loads inside the app. Other `https` links, such as the Unsplash credit, open in the phone's browser; anything else is blocked. File access is off. |
 | Download backup | The page sends the backup text to the **`AndroidBackup`** bridge. Android opens a "save as" screen suggesting `ol-man-muz-YYYY-MM-DD.json`, writes the file, then shows "Backup saved" or "Backup could not be saved". |
-| Bridge security | The bridge uses `addWebMessageListener`, restricted to the origin `https://appassets.androidplatform.net` and to the main frame. No other page can reach it, and all it can do is offer to save a file that you confirm. |
+| Bridge security | Both bridges (`AndroidBackup` and `AndroidHealth`) use `addWebMessageListener`, restricted to the origin `https://appassets.androidplatform.net` and to the main frame. No other page can reach them. `AndroidBackup` can only offer to save a file you confirm; `AndroidHealth` can only read the Health Connect data you allowed. |
 | Old WebView | If the phone's Android System WebView is too old for the bridge, Download backup says "Backup not saved. Update Android System WebView from Google Play, then try again." |
 | Restore a backup | The page's file input opens the Android document picker, which shows all file types. Cancelling does nothing. |
 | Browser dialogs | A `WebChromeClient` is installed, so `window.prompt` (Paste sync code) and `alert` messages work. |
@@ -212,7 +214,7 @@ android {
 
     defaultConfig {
         applicationId = "com.example.peakmildeffort"
-        minSdk = 24
+        minSdk = 26
         targetSdk = 36
         versionCode = releaseVersionCode
         versionName = releaseVersion
@@ -249,6 +251,8 @@ dependencies {
     implementation("androidx.activity:activity:1.13.0")
     implementation("androidx.appcompat:appcompat:1.8.0")
     implementation("androidx.core:core:1.19.1")
+    implementation("androidx.health.connect:connect-client:1.1.0")
+    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.11.0")
     implementation("androidx.webkit:webkit:1.17.1")
 }
 ```
@@ -258,7 +262,7 @@ What changed, compared with the build session's file:
 - **Version numbers come from the tag.** CI passes `-PreleaseVersion=1.2.3` for tag `v1.2.3`. That becomes `versionName = "1.2.3"` and `versionCode = 1*10000 + 2*100 + 3 = 10203`, so the second and third numbers must stay between 0 and 99. Local builds default to `0.0.1`, which is versionCode 1 as before. Nobody edits `versionCode` by hand any more.
 - **Release signing** is set up only when the `RELEASE_KEYSTORE_*` environment variables exist, which happens only in CI (Part 6). No passwords are ever in the repo. Without them, a local release build is simply unsigned.
 - **Debug builds** get the package `com.example.peakmildeffort.debug` and the name "Ol'Man Muz (debug)" (3.4). They install **alongside** the real app with **separate, empty data**, so testing never touches your real log. Android Studio also never offers to uninstall the real app to make room.
-- **Unchanged:** `namespace`, `applicationId`, compileSdk 37, minSdk 24, targetSdk 36, Java 11 and all four library versions. The release build isn't minified, as before; a WebView shell doesn't need it.
+- **Unchanged:** `namespace`, `applicationId`, compileSdk 37, minSdk 26, targetSdk 36, Java 11 and all library versions. The release build isn't minified, as before; a WebView shell doesn't need it.
 
 > [!NOTE]
 > Before this change, debug builds used the **real** package name `com.example.peakmildeffort`. If one of those test copies is on a phone, the signed release can't update it. Part 10.2 moves its data across once.
@@ -909,12 +913,12 @@ Don't invite friends yet. Then:
 | Distribution through GitHub Releases + Obtainium, not Google Play | Free, no store review, and you can reach friends and family (up to 20 devices). Pushing a tag is the whole release process. |
 | Pre-release first, then promote | You test the exact same file on your own phone before anyone else gets it. |
 | Package `com.example.peakmildeffort` | Already used by the working app, so keeping it avoids an extra migration. Google Play would reject `com.example.*`, but Play isn't used. Whether the Android Developer Console accepts it is unconfirmed, so register early (Part 13.1), with a fallback in 13.3. |
-| Android 7.0+ (minSdk 24), compileSdk 37, targetSdk 36 | As built. targetSdk 36 gives current platform behaviour: edge-to-edge display and the new back handling. |
+| Android 8.0+ (minSdk 26), compileSdk 37, targetSdk 36 | minSdk 26 is the Health Connect library's minimum. targetSdk 36 gives current platform behaviour: edge-to-edge display and the new back handling. |
 | AGP 9.3.3 + Gradle 9.5.1 | As built, and known to work on the build computer. AGP 9.3 supports up to API 37. Upgrade only deliberately, keeping AGP and Gradle matched. |
-| Exercise logs and manually entered runs stay in WebView `localStorage`; Garmin activity and health samples are stored in the configured D1 database. | The page keeps these data paths separate. |
+| Data stays in WebView `localStorage`; Garmin data is read from Health Connect on the phone | Garmin Connect copies activities, sleep and heart rate into Health Connect after each watch sync, so no server or Garmin developer account is needed. The earlier live cloud sync is archived in `archive/garmin-cloud-sync/`. |
 | `WebViewAssetLoader` + fixed `https://appassets.androidplatform.net` origin | Google's recommended secure way to load bundled pages. It gives a stable secure origin, so `localStorage` and `crypto.randomUUID` work. |
 | `AndroidBackup` bridge through `addWebMessageListener`, not `addJavascriptInterface` | It's restricted to the app's own origin and the main frame, and all it can do is offer to save a file you confirm. |
-| `INTERNET` permission for optional sync | The page remains bundled and local tracking works offline. Only authenticated requests to the Worker send Garmin data; external links still open in the browser. |
+| No INTERNET permission; read-only Health Connect permissions | The app is fully bundled and reads Garmin data locally; external links open in the browser. |
 | Two `index.html` copies, checked by CI | The app bundles its own copy in `assets/`. The root copy is the master, and CI refuses to build when the two differ, so an old page can't be released by accident. |
 | Versions from Git tags | No hand-edited `versionCode`, and the number can't go backwards by mistake (Android refuses downgrades). |
 | Debug builds as `com.example.peakmildeffort.debug` ("Ol'Man Muz (debug)") | Tests never touch real data, and debug and release signing keys never collide on one phone. |
@@ -924,7 +928,7 @@ Don't invite friends yet. Then:
 
 | Fact | Source |
 |---|---|
-| The app configuration in this repository: AGP 9.3.3; Gradle 9.5.1 with a checksum; compileSdk 37, targetSdk 36, minSdk 24, Java 11; activity 1.13.0, appcompat 1.8.0, core 1.19.1, webkit 1.17.1; `INTERNET` permission for optional Worker sync; `AndroidBackup` bridge restricted to `https://appassets.androidplatform.net`; both `index.html` copies kept identical | This repository |
+| The app configuration in this repository: AGP 9.3.3; Gradle 9.5.1 with a checksum; compileSdk 37, targetSdk 36, minSdk 26, Java 11; activity 1.13.0, appcompat 1.8.0, core 1.19.1, Health Connect client 1.1.0, lifecycle-runtime-ktx 2.11.0, webkit 1.17.1; read-only Health Connect permissions and no internet permission; `AndroidBackup` and `AndroidHealth` bridges restricted to `https://appassets.androidplatform.net`; both `index.html` copies kept identical | This repository (updated 29/09/2026) |
 | AGP 9.3 supports up to API 37 and needs Gradle 9.5.0+ and JDK 17; patch 9.3.3 exists | https://developer.android.com/build/releases/agp-9-3-0-release-notes |
 | AGP 9 has built-in Kotlin (don't apply `kotlin-android`); Kotlin `jvmTarget` defaults to `compileOptions.targetCompatibility` | https://developer.android.com/build/migrate-to-built-in-kotlin |
 | Developer verification: 30/09/2026 regional start, global from 2027; ADB installs are exempt; unregistered apps otherwise need the advanced flow | https://developer.android.com/developer-verification and https://developer.android.com/developer-verification/guides/faq |
