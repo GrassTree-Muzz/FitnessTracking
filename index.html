@@ -37,7 +37,7 @@
     .nav-link { text-decoration: none; font-size: 13px; min-height: 44px; display: flex; align-items: center; gap: 7px; }
     .icon-button { width: 44px; height: 44px; padding: 0; display: inline-grid; place-items: center; border-radius: 6px; flex: 0 0 auto; }
     .icon-button:hover { background: var(--mint); }
-    .hero { position: relative; min-height: 302px; overflow: hidden; background: #123842; color: white; }
+    .hero { position: relative; min-height: 302px; background: #123842; color: white; }
     .hero-image { position: absolute; width: 100%; height: 100%; object-fit: cover; object-position: center 49%; }
     .hero::after { content: ''; position: absolute; inset: 0; background: linear-gradient(90deg, rgb(8 32 42 / 80%), rgb(10 40 50 / 28%) 58%, rgb(9 34 44 / 55%)); }
     .hero-inner { position: relative; z-index: 1; min-height: 302px; display: flex; align-items: center; justify-content: space-between; gap: 30px; padding-block: 30px; }
@@ -50,12 +50,28 @@
     .hero-score { align-self: center; text-align: right; min-width: 150px; }
     .hero-score strong { display: block; font: 600 65px/1.1 'Fraunces', Georgia, serif; font-variant-numeric: tabular-nums; overflow-wrap: anywhere; }
     .hero-score .eyebrow { display: block; margin: 0; }
-    .hero.compact { min-height: 0; }
-    .hero.compact .hero-inner { min-height: 150px; padding-block: 22px; }
-    .hero.compact h1 { font-size: 44px; }
-    .hero.compact h1 span { display: inline; }
-    .hero.compact .hero-copy { margin-top: 6px; }
-    .hero.compact .hero-score, .hero:not(.compact) .hero-greeting { display: none; }
+    .hero-greeting-row { display: flex; align-items: center; flex-wrap: wrap; gap: 6px 14px; margin-bottom: 12px; }
+    .hero-main { flex: 1; min-width: 0; }
+    .hero-greeting-row .eyebrow { margin-bottom: 0; }
+    .hero-greeting-row .place-wrap { position: relative; flex: 0 0 auto; }
+    .hero-greeting-row .place-button { min-height: 0; padding: 2px 6px; margin-left: -6px; font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: .02em; color: #e0ede1; }
+    .hero-greeting-row .place-button:hover { background: rgb(255 255 255 / 12%); }
+    .hero-greeting-row .place-button svg, .hero-greeting-row .place-icon i { color: #e0ede1; }
+    body:not([data-page="home"]) .hero .hero-greeting-row { display: none; }
+    body[data-page="home"] .hero-inner { min-height: 220px; }
+    .hero-weather { position: relative; z-index: 1; display: none; padding-bottom: 18px; }
+    body[data-page="home"] .hero-weather { display: block; }
+    .hero-weather .wx-week { margin: 0; padding: 4px; border: 1px solid rgb(255 255 255 / 16%); border-radius: 12px; background: rgb(8 32 42 / 52%); -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); }
+    .hero-weather .wx-day-name { color: #d3e3d6; }
+    .hero-weather .wx-day:hover { background: rgb(255 255 255 / 10%); }
+    .hero-weather .wx-day[aria-pressed="true"] { background: rgb(255 255 255 / 20%); border-color: rgb(255 255 255 / 30%); box-shadow: none; }
+    .hero-weather .wx-day[aria-pressed="true"] .wx-day-name, .hero-weather .wx-temps b { color: #fff; }
+    .hero-weather .wx-temps span { color: #c4d6c9; }
+    .hero-weather .wx-rain { color: #9ccbf0; }
+    .hero-weather .wx-day svg { color: #fff !important; }
+    .hero-weather .wx-empty { color: #e0ede1; }
+    .hero-weather .wx-day-num { color: #9cb6a1; }
+    .hero-weather .wx-day[aria-pressed="true"] .wx-day-num { color: #d3e3d6; }
     .stats { display: grid; grid-template-columns: repeat(3, 1fr) auto; align-items: center; padding-block: 24px; border-bottom: 1px solid var(--line); gap: 25px; }
     .stat { display: grid; grid-template-columns: 37px auto; column-gap: 10px; align-items: center; }
     .stat > svg { grid-row: span 2; width: 32px; height: 32px; color: #7c9580; }
@@ -139,7 +155,6 @@
     .row-actions .icon-button { width: 40px; }
     .row-actions svg { width: 16px; height: 16px; }
     .danger { color: #a34236; }
-    footer { display: flex; align-items: center; justify-content: space-between; gap: 18px; color: var(--muted); font-size: 11px; padding-block: 35px 28px; }
     footer p { display: flex; align-items: center; gap: 6px; }
     footer svg { width: 14px; height: 14px; }
     footer a { text-underline-offset: 3px; }
@@ -278,13 +293,13 @@
     body.splashing { overflow: hidden; }
     .weather-card { min-width: 0; padding: 14px 18px 10px; border: 1px solid var(--line); border-radius: 8px; background: #fcfdfb; }
     .wx-head { display: flex; justify-content: space-between; align-items: center; gap: 12px; }
-    .place-wrap { position: relative; flex: 1; min-width: 0; }
+    .place-wrap { position: relative; }
     .place-button { display: inline-flex; align-items: center; gap: 6px; max-width: 100%; min-height: 34px; padding: 2px 8px; margin-left: -8px; border-radius: 6px; font-size: 15px; font-weight: 600; }
     .place-button:hover { background: var(--mint); }
     .place-button svg { width: 16px; height: 16px; color: var(--green); }
     .place-icon { display: inline-grid; }
-    #place-name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-    .wx-desc { font-size: 12px; line-height: 1.35; color: var(--muted); }
+    #place-name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 320px; }
+    .wx-desc { flex: 1; min-width: 0; font-size: 12px; line-height: 1.35; color: var(--muted); }
     .wx-now { display: flex; align-items: center; gap: 6px; flex: 0 0 auto; }
     .wx-now-icon { display: inline-grid; }
     .wx-now-icon svg { width: 32px; height: 32px; stroke-width: 1.5; }
@@ -311,6 +326,7 @@
     .wx-day[aria-pressed="true"] { background: #fff; border-color: var(--line); box-shadow: 0 1px 4px #16352914; }
     .wx-day-name { font-size: 11px; line-height: 15px; font-weight: 600; color: var(--muted); }
     .wx-day[aria-pressed="true"] .wx-day-name { color: var(--deep); }
+    .wx-day-num { font-weight: 500; opacity: .7; }
     .wx-day svg { width: 22px; height: 22px; margin-block: 2px; }
     .wx-temps { display: flex; align-items: baseline; gap: 3px; line-height: 17px; white-space: nowrap; }
     .wx-temps b { font-size: 13px; font-weight: 600; }
@@ -322,8 +338,10 @@
     .wx-hourly-head span { font-size: 11px; color: var(--muted); text-align: right; }
     .wx-hours { display: flex; gap: 2px; overflow-x: auto; margin: 4px -18px 0; padding: 0 18px; scroll-snap-type: x proximity; scrollbar-width: none; }
     .wx-hours::-webkit-scrollbar { display: none; }
-    .wx-hour { flex: 0 0 52px; display: flex; flex-direction: column; align-items: center; gap: 2px; padding: 5px 0; border-radius: 8px; scroll-snap-align: start; font-variant-numeric: tabular-nums; }
+    .wx-hour { flex: 0 0 52px; display: flex; flex-direction: column; align-items: center; gap: 2px; min-height: 0; padding: 5px 0; border-radius: 8px; scroll-snap-align: start; font-variant-numeric: tabular-nums; }
+    button.wx-hour:hover { background: #f0f4ee; }
     .wx-hour.is-now { background: var(--mint); }
+    .wx-hour[aria-pressed="true"] { box-shadow: inset 0 0 0 1.5px var(--green); }
     .wx-hour-time { font-size: 11px; line-height: 14px; color: var(--muted); white-space: nowrap; }
     .wx-hour.is-now .wx-hour-time, .wx-hour.is-midnight .wx-hour-time { color: var(--deep); font-weight: 600; }
     .wx-hour svg { width: 20px; height: 20px; }
@@ -332,8 +350,15 @@
     .wx-wind svg { width: 10px; height: 10px; fill: currentColor; }
     .wx-hour.is-sun { flex-basis: 58px; background: #fbf3e6; }
     .wx-hour.is-sun .wx-hour-temp { font-size: 11px; white-space: nowrap; }
-    .wx-credit { margin-top: 4px; font-size: 10px; color: var(--muted); }
-    .wx-credit a { text-underline-offset: 2px; }
+    .wx-detail { display: grid; grid-template-columns: auto 1fr; align-items: center; gap: 6px 12px; margin-top: 8px; padding: 10px 12px; border-radius: 8px; background: #f0f4ee; }
+    .wx-dial { position: relative; width: 48px; height: 48px; display: grid; place-items: center; border: 1.5px solid var(--line); border-radius: 50%; background: #fff; }
+    .wx-dial b { position: absolute; top: 2px; font-size: 8px; line-height: 10px; color: var(--muted); }
+    .wx-dial svg { width: 20px; height: 20px; margin-top: 5px; color: var(--deep); fill: var(--deep); }
+    .wx-detail-time { font-size: 11px; line-height: 14px; color: var(--muted); }
+    .wx-detail strong { display: block; font-size: 14px; line-height: 19px; }
+    .wx-detail-sub { font-size: 12px; line-height: 16px; color: var(--muted); }
+    .wx-facts { grid-column: 1 / -1; display: flex; flex-wrap: wrap; gap: 4px 18px; font-size: 12px; color: var(--muted); }
+    .wx-facts b { margin-left: 3px; color: var(--ink); font-weight: 600; }
     .kpi-title { margin: 18px 0 10px; font-size: 18px; }
     .kpis { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; }
     .kpi { position: relative; display: flex; flex-direction: column; align-items: flex-start; gap: 1px; min-width: 0; min-height: 0; padding: 12px 14px; border: 1px solid var(--line); border-radius: 8px; background: #fcfdfb; text-align: left; }
@@ -413,13 +438,11 @@
       .hero-score strong { font-size: 36px; }
       .hero-score .eyebrow { font-size: 9px; }
       .hero-score p { display: none; }
-      .hero.compact .hero-inner { min-height: 0; padding-block: 12px; }
-      .hero.compact .hero-greeting { margin-bottom: 2px; }
-      .hero.compact h1 { font-size: 28px; }
-      .hero.compact .hero-copy { display: none; }
+      body[data-page="home"] .hero-inner { min-height: 160px; }
+      .hero-weather { padding-bottom: 14px; }
       body[data-page="home"] main { padding-top: 10px; }
       .weather-card { padding: 10px 12px 8px; }
-      .wx-week { gap: 1px; margin-inline: -6px; }
+      .wx-week { gap: 1px; }
       .wx-hours { margin-inline: -12px; padding-inline: 12px; }
       .kpi-title { margin: 12px 0 8px; }
       .kpis { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
@@ -472,7 +495,6 @@
       .history-row .exercise-symbol { width: 31px; height: 31px; }
       .history-row strong { font-size: 12px; }
       .row-actions .icon-button { width: 34px; }
-      footer { flex-direction: column; align-items: flex-start; gap: 10px; padding-bottom: 150px; }
       .bottom-nav { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); position: fixed; z-index: 10; left: 0; right: 0; bottom: 0; padding: 6px 4px max(8px, env(safe-area-inset-bottom)); background: rgb(245 247 244 / 96%); backdrop-filter: blur(12px); border-top: 1px solid var(--line); }
       .bottom-nav button { display: flex; flex-direction: column; align-items: center; gap: 3px; min-height: 56px; font-size: 11px; color: var(--muted); }
       .nav-pill { width: 54px; height: 30px; display: grid; place-items: center; border-radius: 15px; transition: background-color .2s; }
@@ -485,7 +507,7 @@
     }
     @media (max-width: 360px) { h1 { font-size: 37px; } .hero-score strong { font-size: 31px; } .hero .eyebrow { font-size: 9px; } .section-heading h2 { font-size: 23px; } .wrap { width: calc(100% - 28px); } }
     @media (max-width: 360px) { .run-date-fields { grid-template-columns: 1fr; gap: 0; } .run-date-fields .form-field { margin-block: 8px; } }
-    @media (max-width: 760px) and (max-height: 800px) { .hero.compact .hero-greeting, .kpi-title { display: none; } .kpis { margin-top: 10px; } }
+    @media (max-width: 760px) and (max-height: 800px) { .hero .hero-greeting, .kpi-title { display: none; } .kpis { margin-top: 10px; } }
     @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } *, *::before, *::after { animation: none !important; transition: none !important; } }
   </style>
   <noscript><style>.splash { display: none; }</style></noscript>
@@ -571,12 +593,13 @@
     <a class="brand" href="#" aria-label="Ol'Man Muz home"><span class="brand-mark"><i data-lucide="mountain-snow"></i></span><span class="brand-name">Ol'Man Muz</span></a>
     <div class="top-actions"><span class="date-label" id="header-date"></span><a class="nav-link" href="#history"><i data-lucide="notebook-pen"></i> Field notes</a><button class="icon-button" id="open-data" title="Backups and data" aria-label="Backups and data"><i data-lucide="database"></i></button></div>
   </header>
-  <section class="hero compact" id="hero" aria-labelledby="page-title">
+  <section class="hero" id="hero" aria-labelledby="page-title">
     <img class="hero-image" src="DSC_3074.JPG" alt="A surfer launching off a breaking wave as two others paddle nearby" fetchpriority="high">
     <div class="hero-inner wrap">
-      <div><p class="eyebrow hero-greeting" id="hero-greeting"></p><h1 id="page-title">Ol'Man <span>Muz.</span></h1><p class="hero-copy">Training for absolutely nothing.</p></div>
+      <div class="hero-main"><div class="hero-greeting-row"><p class="eyebrow hero-greeting" id="hero-greeting"></p><div class="place-wrap" id="place-wrap"><button type="button" class="place-button" id="place-button" aria-expanded="false" aria-controls="place-menu" title="Change the weather location"><span class="place-icon" id="place-icon"></span><span id="place-name">Current location</span><i data-lucide="chevron-down"></i></button><div class="place-menu" id="place-menu" hidden></div></div></div><h1 id="page-title">Ol'Man <span>Muz.</span></h1><p class="hero-copy">Training for absolutely nothing.</p></div>
       <div class="hero-score"><span class="eyebrow">Lifetime reps</span><strong id="lifetime">0</strong></div>
     </div>
+    <div class="hero-weather wrap"><div class="wx-week" id="wx-week" role="group" aria-label="Choose a day for the hourly forecast"></div></div>
   </section>
   <div class="wrap">
     <div class="view-tabs" role="tablist" aria-label="Activity tracker"><button type="button" id="home-tab" role="tab" aria-selected="true" aria-controls="home-panel" data-view="home"><i data-lucide="house"></i> Home</button><button type="button" id="exercises-tab" role="tab" aria-selected="false" aria-controls="exercise-panel" tabindex="-1" data-view="exercises"><i data-lucide="dumbbell"></i> Exercises</button><button type="button" id="runs-tab" role="tab" aria-selected="false" aria-controls="run-panel" tabindex="-1" data-view="runs"><i data-lucide="footprints"></i> Runs</button><button type="button" id="activities-tab" role="tab" aria-selected="false" aria-controls="activity-panel" tabindex="-1" data-view="activities"><i data-lucide="activity"></i> Activities</button><button type="button" id="health-tab" role="tab" aria-selected="false" aria-controls="health-panel" tabindex="-1" data-view="health"><i data-lucide="heart-pulse"></i> Health</button></div>
@@ -609,17 +632,12 @@
         <article class="weather-card" id="weather-card" aria-labelledby="weather-title">
           <h2 class="sr-only" id="weather-title">Weather</h2>
           <div class="wx-head">
-            <div class="place-wrap" id="place-wrap">
-              <button type="button" class="place-button" id="place-button" aria-expanded="false" aria-controls="place-menu" title="Change the weather location"><span class="place-icon" id="place-icon"></span><span id="place-name">Current location</span><i data-lucide="chevron-down"></i></button>
-              <p class="wx-desc" id="wx-desc"></p>
-              <div class="place-menu" id="place-menu" hidden></div>
-            </div>
+            <p class="wx-desc" id="wx-desc"></p>
             <div class="wx-now"><span class="wx-now-icon" id="wx-now-icon"></span><span class="wx-now-temp" id="wx-now-temp">--</span></div>
           </div>
-          <div class="wx-week" id="wx-week" role="group" aria-label="Choose a day for the hourly forecast"></div>
           <div class="wx-hourly-head" id="wx-hourly-head"><h3 id="wx-hourly-title"></h3><span id="wx-hourly-note"></span></div>
           <div class="wx-hours" id="wx-hours"></div>
-          <p class="wx-credit"><span id="wx-updated"></span>Weather data by <a href="https://open-meteo.com/" target="_blank" rel="noopener">Open-Meteo.com</a></p>
+          <div class="wx-detail" id="wx-detail" aria-live="polite"></div>
         </article>
         <h2 class="kpi-title">The state of things.</h2>
         <div class="kpis" id="kpis"></div>
@@ -709,7 +727,6 @@
         </div>
       </section>
     </main>
-    <footer><p><i data-lucide="hard-drive"></i> Everything stays on this device. Garmin data is read from Health Connect and never uploaded.</p></footer>
   </div>
   <nav class="bottom-nav" aria-label="Pages">
     <button type="button" data-view="home" aria-current="page"><span class="nav-pill"><i data-lucide="house"></i></span>Home</button>
@@ -1082,7 +1099,7 @@ lucide.createIcons({icons});\``);if(typeof document>"u")throw new Error("`create
         { id: 'denmark-wa', name: 'Denmark', region: 'Western Australia', country: 'Australia', lat: -34.96, lon: 117.35 },
         { id: 'perth-wa', name: 'Perth', region: 'Western Australia', country: 'Australia', lat: -31.95, lon: 115.86 }
       ],
-      selected: 'here', here: null, cache: {}, day: null, status: '', loading: false, searching: false, results: [], request: 0, search: 0, searchTimer: null, shown: ''
+      selected: 'here', here: null, cache: {}, day: null, hour: null, open: false, status: '', loading: false, searching: false, results: [], request: 0, search: 0, searchTimer: null, shown: ''
     };
     try {
       const saved = JSON.parse(localStorage.getItem(weatherKey) || 'null');
@@ -1772,6 +1789,7 @@ lucide.createIcons({icons});\``);if(typeof document>"u")throw new Error("`create
     const wxInfo = code => wxCodes[code] || ['Unsettled', 'cloud'];
     const degrees = value => Number.isFinite(value) ? `${Math.round(value)}°` : '--';
     const compass = value => ['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW'][Math.round(value / 45) % 8];
+    const compassName = value => ['north', 'north-east', 'east', 'south-east', 'south', 'south-west', 'west', 'north-west'][Math.round(value / 45) % 8];
     const placeSpot = place => `${place.lat.toFixed(2)},${place.lon.toFixed(2)}`;
     const placeLabel = place => place.region ? `${place.name}, ${stateCodes[place.region] || place.region}` : place.name;
     const placeDetail = place => [place.region, place.country !== 'Australia' && place.country].filter(Boolean).join(', ');
@@ -1799,7 +1817,7 @@ lucide.createIcons({icons});\``);if(typeof document>"u")throw new Error("`create
       const output = { utc_offset_seconds: Number.isFinite(input.utc_offset_seconds) ? input.utc_offset_seconds : -new Date().getTimezoneOffset() * 60, daily: { time: [...daily.time] }, hourly: { time: [...hourly.time] }, current: { time: current.time } };
       for (const key of ['weather_code', 'temperature_2m_max', 'temperature_2m_min', 'precipitation_probability_max', 'wind_speed_10m_max', 'uv_index_max']) if (!(output.daily[key] = numbers(daily[key], daily.time.length))) return null;
       for (const key of ['sunrise', 'sunset']) output.daily[key] = daily.time.map((_, index) => hourPattern.test(daily[key]?.[index]) ? daily[key][index] : null);
-      for (const key of ['temperature_2m', 'weather_code', 'precipitation_probability', 'wind_speed_10m', 'wind_direction_10m', 'is_day']) if (!(output.hourly[key] = numbers(hourly[key], hourly.time.length))) return null;
+      for (const key of ['temperature_2m', 'apparent_temperature', 'weather_code', 'precipitation_probability', 'wind_speed_10m', 'wind_direction_10m', 'wind_gusts_10m', 'is_day']) if (!(output.hourly[key] = numbers(hourly[key], hourly.time.length))) return null;
       for (const key of ['temperature_2m', 'apparent_temperature', 'weather_code', 'wind_speed_10m', 'wind_direction_10m', 'is_day']) output.current[key] = Number.isFinite(current[key]) ? current[key] : null;
       return output;
     }
@@ -1842,6 +1860,8 @@ lucide.createIcons({icons});\``);if(typeof document>"u")throw new Error("`create
     function choosePlace(id) {
       weather.selected = id;
       weather.day = null;
+      weather.hour = null;
+      weather.open = false;
       weather.status = '';
       saveWeather();
       closePlaceMenu();
@@ -1893,7 +1913,7 @@ lucide.createIcons({icons});\``);if(typeof document>"u")throw new Error("`create
       const query = {
         latitude: place.lat.toFixed(2), longitude: place.lon.toFixed(2), timezone: 'auto', forecast_days: 7,
         current: 'temperature_2m,apparent_temperature,weather_code,wind_speed_10m,wind_direction_10m,is_day',
-        hourly: 'temperature_2m,weather_code,precipitation_probability,wind_speed_10m,wind_direction_10m,is_day',
+        hourly: 'temperature_2m,apparent_temperature,weather_code,precipitation_probability,wind_speed_10m,wind_direction_10m,wind_gusts_10m,is_day',
         daily: 'weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max,wind_speed_10m_max,uv_index_max,sunrise,sunset'
       };
       const response = await fetch(`https://api.open-meteo.com/v1/forecast?${Object.entries(query).map(([key, value]) => `${key}=${value}`).join('&')}`, fetchTimeout());
@@ -1951,15 +1971,15 @@ lucide.createIcons({icons});\``);if(typeof document>"u")throw new Error("`create
       // The forecast's own clock, so a saved place in another time zone still lines up with "now".
       const localNow = data ? `${new Date(Date.now() + data.utc_offset_seconds * 1000).toISOString().slice(0, 13)}:00` : '';
       const first = data ? data.daily.time.findIndex(day => day >= localNow.slice(0, 10)) : -1;
-      get('wx-hourly-head').hidden = first < 0;
-      get('wx-hours').hidden = first < 0;
+      get('wx-hourly-head').hidden = first < 0 || !weather.open;
+      get('wx-hours').hidden = first < 0 || !weather.open;
+      get('wx-detail').hidden = true;
       if (first < 0) {
         const message = weather.status || (weather.loading ? 'Fetching the forecast…' : data ? 'This forecast is out of date.' : 'No forecast yet.');
         get('wx-now-icon').innerHTML = '';
         get('wx-now-temp').textContent = '--';
         get('wx-desc').textContent = message;
         get('wx-week').innerHTML = '<p class="wx-empty">The 7-day forecast appears here.</p>';
-        get('wx-updated').textContent = '';
         return;
       }
       const { daily, hourly } = data;
@@ -1971,17 +1991,17 @@ lucide.createIcons({icons});\``);if(typeof document>"u")throw new Error("`create
       get('wx-now-icon').innerHTML = wxIcon(current.weather_code, current.is_day);
       get('wx-now-temp').textContent = degrees(current.temperature_2m);
       get('wx-desc').textContent = [wxInfo(current.weather_code)[0], Number.isFinite(current.apparent_temperature) ? `feels ${degrees(current.apparent_temperature)}` : '', wind].filter(Boolean).join(' · ');
-      get('wx-updated').textContent = `${weather.status || (weather.loading ? 'Updating…' : `Updated ${formatClock(cached.at)}`)} · `;
       get('wx-week').innerHTML = daily.time.slice(first, first + 7).map((day, offset) => {
         const index = first + offset;
         const rain = daily.precipitation_probability_max[index];
         const code = daily.weather_code[index];
         const label = `${offset ? formatDay(day, { weekday: 'long' }) : 'Today'}: ${wxInfo(code)[0]}, high ${degrees(daily.temperature_2m_max[index])}, low ${degrees(daily.temperature_2m_min[index])}${Number.isFinite(rain) ? `, ${Math.round(rain)}% chance of rain` : ''}`;
-        return `<button type="button" class="wx-day" data-wx-day="${index}" aria-pressed="${index === weather.day}" aria-label="${escapeHTML(label)}"><span class="wx-day-name">${offset ? formatDay(day, { weekday: 'short' }) : 'Today'}</span>${wxIcon(code)}<span class="wx-temps"><b>${degrees(daily.temperature_2m_max[index])}</b><span>${degrees(daily.temperature_2m_min[index])}</span></span><span class="wx-rain">${rain >= 10 ? `${Math.round(rain)}%` : ''}</span></button>`;
+        return `<button type="button" class="wx-day" data-wx-day="${index}" aria-pressed="${weather.open && index === weather.day}" aria-label="${escapeHTML(label)}"><span class="wx-day-name">${offset ? formatDay(day, { weekday: 'short' }) : 'Today'} <span class="wx-day-num">${formatDay(day, { day: 'numeric' })}</span></span>${wxIcon(code)}<span class="wx-temps"><b>${degrees(daily.temperature_2m_max[index])}</b><span>${degrees(daily.temperature_2m_min[index])}</span></span><span class="wx-rain">${rain >= 10 ? `${Math.round(rain)}%` : ''}</span></button>`;
       }).join('');
       const today = weather.day === first;
       const start = today ? nowIndex : Math.max(0, hourly.time.findIndex(time => time.startsWith(daily.time[weather.day])));
       const end = Math.min(start + 24, hourly.time.length);
+      const picked = weather.hour !== null && weather.hour >= start && weather.hour < end ? weather.hour : null;
       const items = [];
       for (let index = start; index < end; index++) {
         const time = hourly.time[index];
@@ -1992,7 +2012,8 @@ lucide.createIcons({icons});\``);if(typeof document>"u")throw new Error("`create
         const speed = hourly.wind_speed_10m[index];
         const direction = hourly.wind_direction_10m[index];
         const arrow = Number.isFinite(direction) ? `<i data-lucide="navigation-2" style="transform:rotate(${Math.round(direction + 180) % 360}deg)"></i>` : '';
-        items.push([time, `<div class="wx-hour${isNow ? ' is-now' : ''}${midnight ? ' is-midnight' : ''}"><span class="wx-hour-time">${label}</span>${wxIcon(hourly.weather_code[index], hourly.is_day[index])}<span class="wx-hour-temp">${degrees(hourly.temperature_2m[index])}</span><span class="wx-rain">${rain >= 10 ? `${Math.round(rain)}%` : ''}</span><span class="wx-wind"${Number.isFinite(direction) ? ` title="Wind from the ${compass(direction)}"` : ''}>${arrow}${Number.isFinite(speed) ? Math.round(speed) : ''}</span></div>`]);
+        const hourLabel = `${label}: ${wxInfo(hourly.weather_code[index])[0]}, ${degrees(hourly.temperature_2m[index])}${Number.isFinite(direction) ? `, wind from the ${compassName(direction)}` : ''}`;
+        items.push([time, `<button type="button" class="wx-hour${isNow ? ' is-now' : ''}${midnight ? ' is-midnight' : ''}" data-wx-hour="${index}" aria-pressed="${index === picked}" aria-label="${escapeHTML(hourLabel)}"><span class="wx-hour-time">${label}</span>${wxIcon(hourly.weather_code[index], hourly.is_day[index])}<span class="wx-hour-temp">${degrees(hourly.temperature_2m[index])}</span><span class="wx-rain">${rain >= 10 ? `${Math.round(rain)}%` : ''}</span><span class="wx-wind">${arrow}${Number.isFinite(speed) ? Math.round(speed) : ''}</span></button>`]);
       }
       daily.time.forEach((_, index) => [['sunrise', 'Sunrise'], ['sunset', 'Sunset']].forEach(([key, label]) => {
         const at = daily[key][index];
@@ -2002,6 +2023,18 @@ lucide.createIcons({icons});\``);if(typeof document>"u")throw new Error("`create
       get('wx-hourly-title').textContent = today ? 'Next 24 hours' : `${formatDay(daily.time[weather.day], { weekday: 'long' })}, hour by hour`;
       get('wx-hourly-note').textContent = [Number.isFinite(daily.uv_index_max[weather.day]) ? `UV ${Math.round(daily.uv_index_max[weather.day])}` : '', Number.isFinite(daily.wind_speed_10m_max[weather.day]) ? `wind to ${Math.round(daily.wind_speed_10m_max[weather.day])} km/h` : ''].filter(Boolean).join(' · ');
       get('wx-hours').innerHTML = items.map(item => item[1]).join('');
+      if (picked !== null && weather.open) {
+        const pickedDirection = hourly.wind_direction_10m[picked];
+        const pickedSpeed = hourly.wind_speed_10m[picked];
+        const pickedGust = hourly.wind_gusts_10m[picked];
+        const pickedRain = hourly.precipitation_probability[picked];
+        const pickedWhen = today && picked === nowIndex ? 'Now' : `${formatDay(hourly.time[picked].slice(0, 10), { weekday: 'short' })} ${new Date(hourly.time[picked]).toLocaleTimeString([], { hour: 'numeric' })}`;
+        const hasDirection = Number.isFinite(pickedDirection);
+        get('wx-detail').innerHTML = `<div class="wx-dial" aria-hidden="true"><b>N</b>${hasDirection ? `<i data-lucide="navigation-2" style="transform:rotate(${Math.round(pickedDirection + 180) % 360}deg)"></i>` : ''}</div>`
+          + `<div><span class="wx-detail-time">${escapeHTML(pickedWhen)} · ${escapeHTML(wxInfo(hourly.weather_code[picked])[0])}</span><strong>${hasDirection ? `Wind from the ${compassName(pickedDirection)}` : 'Wind direction unavailable'}</strong><span class="wx-detail-sub">${[hasDirection ? `${compass(pickedDirection)} ${Math.round(pickedDirection)}°` : '', Number.isFinite(pickedSpeed) ? `${Math.round(pickedSpeed)} km/h` : ''].filter(Boolean).join(' · ')}</span></div>`
+          + `<div class="wx-facts"><span>Gusts<b>${Number.isFinite(pickedGust) ? `${Math.round(pickedGust)} km/h` : '--'}</b></span><span>Feels like<b>${degrees(hourly.apparent_temperature[picked])}</b></span><span>Rain<b>${Number.isFinite(pickedRain) ? `${Math.round(pickedRain)}%` : '--'}</b></span></div>`;
+        get('wx-detail').hidden = false;
+      }
       const shown = `${placeSpot(place)}|${weather.day}`;
       if (weather.shown !== shown) { get('wx-hours').scrollLeft = 0; weather.shown = shown; }
     }
@@ -2207,7 +2240,6 @@ lucide.createIcons({icons});\``);if(typeof document>"u")throw new Error("`create
       const changed = view !== activeView;
       activeView = view;
       document.body.dataset.page = view;
-      get('hero').classList.toggle('compact', view === 'home');
       get('home-panel').hidden = view !== 'home';
       get('exercise-panel').hidden = view !== 'exercises';
       get('exercise-stats').hidden = view !== 'exercises';
@@ -2452,12 +2484,22 @@ lucide.createIcons({icons});\``);if(typeof document>"u")throw new Error("`create
       if (tile.dataset.day) healthDay = tile.dataset.day;
       switchView(tile.dataset.go);
     });
+    get('wx-week').addEventListener('click', event => {
+      const button = event.target.closest('[data-wx-day]');
+      if (!button) return;
+      const index = Number(button.dataset.wxDay);
+      weather.open = !(weather.open && weather.day === index);
+      weather.day = index;
+      weather.hour = null;
+      renderWeather();
+      icons();
+    });
     get('weather-card').addEventListener('click', event => {
       const button = event.target.closest('button');
       if (!button) return;
       if (button.id === 'place-button') { if (get('place-menu').hidden) openPlaceMenu(); else closePlaceMenu(); }
       else if (button.id === 'place-add') { weather.searching = true; renderPlaceMenu(); get('place-query').focus(); }
-      else if (button.dataset.wxDay) { weather.day = Number(button.dataset.wxDay); renderWeather(); icons(); }
+      else if (button.dataset.wxHour) { const index = Number(button.dataset.wxHour); weather.hour = weather.hour === index ? null : index; renderWeather(); icons(); }
       else if (button.dataset.addPlace) {
         const found = weather.results[Number(button.dataset.addPlace)];
         const place = found && cleanPlace({ id: `geo-${found.id ?? `${found.latitude},${found.longitude}`}`, name: found.name, region: found.admin1, country: found.country, lat: found.latitude, lon: found.longitude });
