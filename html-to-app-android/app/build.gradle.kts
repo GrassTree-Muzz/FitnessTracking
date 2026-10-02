@@ -1,6 +1,13 @@
+import java.util.Properties
+
 plugins {
     id("com.android.application")
 }
+
+// Kept out of git: add thunderforestKey=... to local.properties. Without it the route map shows a plain line.
+val thunderforestKey = Properties().apply {
+    rootProject.file("local.properties").takeIf { it.exists() }?.inputStream()?.use { load(it) }
+}.getProperty("thunderforestKey", "").filter { it.isLetterOrDigit() }
 
 android {
     namespace = "com.example.peakmildeffort"
@@ -12,6 +19,11 @@ android {
         targetSdk = 36
         versionCode = 3
         versionName = "1.2"
+        buildConfigField("String", "THUNDERFOREST_KEY", "\"$thunderforestKey\"")
+    }
+
+    buildFeatures {
+        buildConfig = true
     }
 
     compileOptions {

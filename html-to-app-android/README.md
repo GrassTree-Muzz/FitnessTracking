@@ -1,6 +1,6 @@
 # Ol'Man Muz – Android app
 
-An Android app wrapping the tracker in the repository root's `index.html`. Your data lives in the app's private storage (the page's `localStorage`). The app only goes online for the Home page weather. Its permissions are internet and approximate location (both for the weather) and read-only Health Connect for your Garmin data.
+An Android app wrapping the tracker in the repository root's `index.html`. Your data lives in the app's private storage (the page's `localStorage`). The app only goes online for the Home page weather and the activity route map tiles. Its permissions are internet and approximate location (both for the weather) and read-only Health Connect for your Garmin data.
 
 Versions: AGP 9.3.3, Gradle 9.5.1 (wrapper), compileSdk 37, targetSdk 36, minSdk 26 (Android 8.0+). Garmin data needs Android 14 or newer.
 
@@ -29,9 +29,23 @@ Garmin Connect copies your activities (runs, paddles, tennis, rides, swims and t
 3. Garmin runs appear in **Runs** with a Garmin badge; every other Garmin activity appears in **Activities**, with a filter by type, weekly hours per sport and a year-in-sport summary. Tap the chart icon on any activity for heart-rate zones, plus pace or speed and splits where it has distance. Sleep, resting heart rate, steps and trends are in **Health**.
 4. After each session, let the watch sync to Garmin Connect, then open the app. It refreshes by itself when opened (only new or edited activities are re-read), or tap **Refresh** to re-read everything.
 
-What Garmin doesn't share with Health Connect: stress, Body Battery, HRV, VO2 max, SpO2, training status, GPS maps, or its own resting heart rate. The app estimates resting heart rate as your lowest 30-minute average while asleep.
+What Garmin doesn't share with Health Connect: stress, Body Battery, HRV, VO2 max, SpO2, training status, or its own resting heart rate. GPS routes appear only if Garmin Connect writes them (see Route map). The app estimates resting heart rate as your lowest 30-minute average while asleep.
 
 To change access later: **Settings → Health Connect → App permissions → Ol'Man Muz**. The old live cloud sync is archived in [../archive/garmin-cloud-sync/](../archive/garmin-cloud-sync/README.md).
+
+## Route map
+
+Activity details show the GPS route on a map when Health Connect holds one for that activity. Health Connect asks for consent per activity, so the first time you open one, tap **Show route** and allow it.
+
+- Map tiles are Thunderforest Outdoors, drawn with Leaflet 1.9.4 (bundled in `app/src/main/assets/leaflet/`, loaded only in the app). Create a free key at [thunderforest.com](https://www.thunderforest.com/) and add this line to `local.properties` in this folder (it's gitignored):
+
+	```
+	thunderforestKey=YOUR_KEY
+	```
+
+- Without a key the route still draws, on a blank background.
+- The app fetches tiles itself and caches up to 50 MB in its cache folder, so the key never appears in page code or the cache. Tiles are only requested for the area you view.
+- Route points stay on the phone. Thunderforest sees tile numbers (roughly the area you view) and the phone's IP address.
 
 ## Home page and weather
 

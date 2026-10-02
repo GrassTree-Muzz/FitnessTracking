@@ -11,6 +11,7 @@ import android.webkit.GeolocationPermissions
 import android.webkit.ValueCallback
 import android.webkit.WebChromeClient
 import android.webkit.WebResourceRequest
+import android.webkit.WebResourceResponse
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import android.widget.FrameLayout
@@ -25,6 +26,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.health.connect.client.HealthConnectClient
 import androidx.health.connect.client.PermissionController
+import androidx.health.connect.client.contracts.ExerciseRouteRequestContract
 import androidx.lifecycle.lifecycleScope
 import androidx.webkit.JavaScriptReplyProxy
 import androidx.webkit.WebMessageCompat
@@ -33,7 +35,9 @@ import androidx.webkit.WebViewCompat
 import androidx.webkit.WebViewFeature
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
+import org.json.JSONArray
 import org.json.JSONObject
+import java.io.File
 import kotlin.coroutines.cancellation.CancellationException
 
 class MainActivity : AppCompatActivity() {
@@ -44,7 +48,18 @@ class MainActivity : AppCompatActivity() {
     private var healthReply: JavaScriptReplyProxy? = null
     private var healthSync: Job? = null
     private var locationRequest: Pair<String, GeolocationPermissions.Callback>? = null
+    private var routeRequest: String? = null
+    private val tileCache by lazy { TileCache(File(cacheDir, "tiles")) }
 
+    private val requestRoute = registerForActivityResult(ExerciseRouteRequestContract()) { route ->
+        val id = routeRequest ?: return@registerForActivityResult
+        routeRequest = null
+        val points = JSONArray()
+        // A null route means the user declined, so the page keeps offering the button.
+        val state = if (route != null && HealthReader.appendRoute(points, route)) "data" else "consent"
+        val reply = JSONObject().put("type", "route").put("id", id).put("routeState", state).put("route", points)
+        runCatching { healthReply?.postMessage(reply.toString()) }
+    }
     private val requestLocation =
         registerForActivityResult(ActivityResultContracts.RequestPermission()) { granted ->
             locationRequest?.let { (origin, callback) -> callback.invoke(origin, granted, false) }
@@ -103,8 +118,8 @@ class MainActivity : AppCompatActivity() {
         val back = onBackPressedDispatcher.addCallback(this, enabled = false) { webView.goBack() }
 
         webView.webViewClient = object : WebViewClient() {
-            override fun shouldInterceptRequest(view: WebView, request: WebResourceRequest) =
-                assetLoader.shouldInterceptRequest(request.url)
+            override fun shouldInterceptRequest(view: WebView, request: WebResourceRequest): WebResourceResponse? =
+                if (tileCache.handles(request)) tileCache.load(request) else assetLoader.shouldInterceptRequest(request.url)
 
             override fun shouldOverrideUrlLoading(view: WebView, request: WebResourceRequest): Boolean {
                 val url = request.url
@@ -196,11 +211,18 @@ class MainActivity : AppCompatActivity() {
                 val id = request.optString("id")
                 if (RECORD_ID.matches(id)) launchHealth("activity", id) { it.activityDetail(id) }
             }
+            "route" -> {
+                val id = request.optString("id")
+                if (RECORD_ID.matches(id) && healthReader() != null) {
+                    routeRequest = id
+                    requestRoute.launch(id)
+                }
+            }
         }
     }
 
     private fun sendHealthStatus() {
-        launchHealth("status") { it.status() }
+        launchHealth("status") { it.status().put("mapKey", BuildConfig.THUNDERFOREST_KEY) }
     }
 
     private fun healthReader(): HealthReader? =

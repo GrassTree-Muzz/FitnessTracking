@@ -8,6 +8,8 @@ import androidx.health.connect.client.records.ActiveCaloriesBurnedRecord
 import androidx.health.connect.client.records.BodyFatRecord
 import androidx.health.connect.client.records.DistanceRecord
 import androidx.health.connect.client.records.ElevationGainedRecord
+import androidx.health.connect.client.records.ExerciseRoute
+import androidx.health.connect.client.records.ExerciseRouteResult
 import androidx.health.connect.client.records.ExerciseSessionRecord
 import androidx.health.connect.client.records.FloorsClimbedRecord
 import androidx.health.connect.client.records.HeartRateRecord
@@ -184,7 +186,14 @@ class HealthReader(private val client: HealthConnectClient) {
                 .sortedBy { it.time }
                 .forEach { speed.put(JSONArray().put(it.time.toEpochMilli()).put(it.speed.inMetersPerSecond)) }
         }
-        return JSONObject().put("type", "activity").put("id", id).put("hr", hr).put("speed", speed)
+        // Garmin owns the route, so Health Connect asks the user for consent per session instead of handing it over.
+        val route = JSONArray()
+        val routeState = when (val result = session.exerciseRouteResult) {
+            is ExerciseRouteResult.Data -> if (appendRoute(route, result.exerciseRoute)) "data" else "none"
+            is ExerciseRouteResult.ConsentRequired -> "consent"
+            else -> "none"
+        }
+        return JSONObject().put("type", "activity").put("id", id).put("hr", hr).put("speed", speed).put("routeState", routeState).put("route", route)
     }
 
     private suspend fun activities(range: TimeRangeFilter, can: (KClass<out Record>) -> Boolean, known: Map<String, Long>): JSONArray {
@@ -249,6 +258,21 @@ class HealthReader(private val client: HealthConnectClient) {
 
     companion object {
         const val GARMIN_PACKAGE = "com.garmin.android.apps.connectmobile"
+        private const val MAX_ROUTE_POINTS = 500
+
+        /** Adds [lat, lon] pairs rounded to about a metre, thinned to a few hundred points. False when there are none. */
+        fun appendRoute(target: JSONArray, route: ExerciseRoute): Boolean {
+            val points = route.route
+            if (points.isEmpty()) return false
+            val step = (points.size + MAX_ROUTE_POINTS - 1) / MAX_ROUTE_POINTS
+            val round = { value: Double -> Math.round(value * 1e5) / 1e5 }
+            points.forEachIndexed { index, point ->
+                if (index % step == 0 || index == points.lastIndex) {
+                    target.put(JSONArray().put(round(point.latitude)).put(round(point.longitude)))
+                }
+            }
+            return true
+        }
 
         private val RECORD_TYPES: List<KClass<out Record>> = listOf(
             ExerciseSessionRecord::class,

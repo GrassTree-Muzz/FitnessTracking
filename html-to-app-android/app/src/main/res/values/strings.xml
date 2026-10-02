@@ -1,4 +1,4 @@
 <resources>
     <string name="app_name">Ol\'Man Muz</string>
-    <string name="health_privacy">Ol\'Man Muz reads the runs, heart rate, speed, steps, distance, floors, calories, sleep, weight and body fat that Garmin Connect shares with Health Connect, and shows them in the app.\n\nThe data stays on this phone. The app never writes to Health Connect and never uploads your health data. It only goes online for the Home page weather forecast.\n\nYou can remove access at any time in Health Connect.</string>
+    <string name="health_privacy">Ol\'Man Muz reads the runs, heart rate, speed, steps, distance, floors, calories, sleep, weight and body fat that Garmin Connect shares with Health Connect, and shows them in the app.\n\nThe data stays on this phone. The app never writes to Health Connect and never uploads your health data. It only goes online for the Home page weather forecast and, if you open an activity\'s route, map pictures from Thunderforest (which see the map area you view and your IP address, not the route itself).\n\nYou can remove access at any time in Health Connect.</string>
 </resources>

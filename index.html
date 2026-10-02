@@ -267,6 +267,9 @@
     .run-detail-section { margin-top: 22px; }
     .run-detail-section .section-heading span { color: var(--muted); font-size: 11px; }
     .detail-chart { position: relative; height: 190px; }
+    .route-map { height: 260px; overflow: hidden; border: 1px solid var(--line); border-radius: 8px; background: var(--mint); }
+    .route-map .leaflet-container { font: inherit; }
+    .route-consent { margin-top: 8px; }
     .zone-bar { display: flex; height: 12px; margin-top: 12px; overflow: hidden; border-radius: 6px; background: var(--mint); }
     .zone-bar span { height: 100%; }
     .zone-legend { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 8px; margin-top: 9px; color: var(--muted); font-size: 10px; }
@@ -771,6 +774,7 @@
     <div class="dialog-header"><div><p class="dialog-kicker"><i data-lucide="watch"></i><span id="activity-detail-date"></span></p><h2 id="activity-detail-title">An activity.</h2><p class="health-sub" id="activity-detail-effort"></p></div><button class="icon-button close-dialog" aria-label="Close activity details"><i data-lucide="x"></i></button></div>
     <div class="run-stat-grid" id="activity-detail-stats"></div>
     <p class="storage-note" id="activity-detail-status" role="status" aria-live="polite"></p>
+    <section class="run-detail-section" id="activity-map-section" aria-labelledby="activity-map-title" hidden><div class="section-heading"><h3 id="activity-map-title">Route</h3></div><div class="route-map" id="activity-map" aria-label="Map of the route" hidden></div><p class="storage-note" id="activity-map-status" role="status" aria-live="polite"></p><button type="button" class="secondary route-consent" id="activity-map-consent" hidden><i data-lucide="map"></i> Show route</button></section>
     <section class="run-detail-section" id="activity-hr-section" aria-labelledby="activity-hr-title" hidden><div class="section-heading"><h3 id="activity-hr-title">Heart rate</h3><span id="activity-zone-note"></span></div><div class="detail-chart"><canvas id="activity-hr-chart" role="img" aria-label="Heart rate during the activity, coloured by zone"></canvas></div><div class="zone-bar" id="activity-zone-bar" aria-hidden="true"></div><div class="zone-legend" id="activity-zone-legend"></div></section>
     <section class="run-detail-section" id="activity-speed-section" aria-labelledby="activity-speed-title" hidden><div class="section-heading"><h3 id="activity-speed-title">Pace</h3><span id="activity-speed-note"></span></div><div class="detail-chart"><canvas id="activity-speed-chart" role="img" aria-label="Pace or speed during the activity"></canvas></div><div class="split-list" id="activity-splits"></div></section>
     <div class="form-field max-hr-field"><label for="max-hr">Max heart rate for zones (bpm)</label><input id="max-hr" type="number" inputmode="numeric" min="120" max="230" step="1"></div>
@@ -1027,7 +1031,7 @@ lucide.createIcons({icons});\``);if(typeof document>"u")throw new Error("`create
     const garminCacheKey = 'peak-mild-effort.garmin.v1';
     const maxHeartRateKey = 'peak-mild-effort.max-hr.v1';
     const healthBridge = window.AndroidHealth || null;
-    const garmin = { status: null, data: null, index: null, syncing: false, error: '', lastSync: 0, timer: null, askedToConnect: false };
+    const garmin = { status: null, data: null, index: null, syncing: false, error: '', lastSync: 0, timer: null, askedToConnect: false, mapKey: '' };
     const healthCharts = [];
     const detailCharts = [];
     const activityCharts = [];
@@ -1248,6 +1252,7 @@ lucide.createIcons({icons});\``);if(typeof document>"u")throw new Error("`create
       if (!message || typeof message !== 'object') return;
       if (message.type === 'status') {
         garmin.status = { available: message.available === true, updateRequired: message.updateRequired === true, connected: message.connected === true, complete: message.complete === true };
+        garmin.mapKey = typeof message.mapKey === 'string' && /^[A-Za-z0-9]{16,64}$/.test(message.mapKey) ? message.mapKey : '';
         if (!garmin.status.connected && garmin.data) {
           garmin.data = null;
           garmin.index = null;
@@ -1275,7 +1280,12 @@ lucide.createIcons({icons});\``);if(typeof document>"u")throw new Error("`create
         } catch (error) { garmin.error = error.message; }
         renderGarminViews();
       } else if (message.type === 'activity') {
-        if (message.id === openActivityId) renderActivityDetail({ hr: numberPairs(message.hr), speed: numberPairs(message.speed) });
+        if (message.id === openActivityId) {
+          renderActivityDetail({ hr: numberPairs(message.hr), speed: numberPairs(message.speed) });
+          showActivityRoute(message.id, message.routeState, message.route);
+        }
+      } else if (message.type === 'route') {
+        showActivityRoute(message.id, message.routeState, message.route);
       } else if (message.type === 'error') {
         const text = typeof message.message === 'string' && message.message ? message.message.slice(0, 200) : 'Health Connect could not be read.';
         if (message.request === 'activity') {
@@ -1685,11 +1695,64 @@ lucide.createIcons({icons});\``);if(typeof document>"u")throw new Error("`create
       if (activity.steps && seconds) stats.push(info.kind === 'pace' ? [whole(activity.steps / (seconds / 60)), 'steps per min'] : [whole(activity.steps), 'steps']);
       get('activity-detail-stats').innerHTML = stats.map(([value, label]) => `<div class="run-stat"><strong>${escapeHTML(value)}</strong><small>${label}</small></div>`).join('');
       get('activity-detail-status').textContent = info.kind === 'time' ? 'Fetching heart rate…' : 'Fetching heart rate and pace…';
+      destroyRouteMap();
+      get('activity-map-section').hidden = true;
+      get('activity-map-consent').hidden = true;
+      get('activity-map-status').textContent = '';
       get('activity-hr-section').hidden = true;
       get('activity-speed-section').hidden = true;
       get('max-hr').value = maxHeartRateFor();
       requestHealth({ type: 'activity', id });
       get('activity-dialog').showModal();
+    }
+    let routeMap = null;
+    let leafletLoad = null;
+    // Leaflet ships only inside the Android app (assets/leaflet), where routes exist, so the plain page never loads it.
+    function loadLeaflet() {
+      if (window.L) return Promise.resolve();
+      leafletLoad ??= new Promise((resolve, reject) => {
+        const style = document.createElement('link');
+        style.rel = 'stylesheet';
+        style.href = 'leaflet/leaflet.css';
+        const script = document.createElement('script');
+        script.src = 'leaflet/leaflet.js';
+        script.onload = resolve;
+        script.onerror = () => { leafletLoad = null; reject(new Error('The map library is only available in the Android app.')); };
+        document.head.append(style, script);
+      });
+      return leafletLoad;
+    }
+    function destroyRouteMap() { routeMap?.remove(); routeMap = null; }
+    function cleanRoute(points) {
+      return Array.isArray(points) ? points.filter(point => Array.isArray(point) && Math.abs(point[0]) <= 90 && Math.abs(point[1]) <= 180).map(point => [point[0], point[1]]) : [];
+    }
+    function showActivityRoute(id, state, points) {
+      if (id !== openActivityId) return;
+      const route = state === 'data' ? cleanRoute(points) : [];
+      const drawable = route.length >= 2;
+      destroyRouteMap();
+      get('activity-map-section').hidden = !drawable && state !== 'consent';
+      get('activity-map').hidden = !drawable;
+      get('activity-map-consent').hidden = state !== 'consent';
+      get('activity-map-status').textContent = state === 'consent' ? "Health Connect needs your OK before it shares Garmin's route." : '';
+      if (!drawable) return;
+      loadLeaflet().then(() => { if (id === openActivityId) drawRoute(route); }).catch(error => { get('activity-map-status').textContent = error.message; });
+    }
+    function drawRoute(route) {
+      destroyRouteMap();
+      const map = L.map(get('activity-map'), { preferCanvas: true });
+      routeMap = map;
+      if (garmin.mapKey) {
+        L.tileLayer(`https://api.thunderforest.com/outdoors/{z}/{x}/{y}{r}.png?apikey=${garmin.mapKey}`, {
+          maxZoom: 19,
+          attribution: 'Maps &copy; <a href="https://www.thunderforest.com/">Thunderforest</a>, Data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap contributors</a>'
+        }).addTo(map);
+      } else get('activity-map-status').textContent = 'Add a Thunderforest key to the app build to show the map behind the route.';
+      const line = L.polyline(route, { color: '#d0452f', weight: 4, opacity: .9, lineJoin: 'round' }).addTo(map);
+      L.circleMarker(route[0], { radius: 6, color: '#fff', weight: 2, fillColor: '#326f60', fillOpacity: 1 }).addTo(map);
+      L.circleMarker(route.at(-1), { radius: 6, color: '#fff', weight: 2, fillColor: '#263e35', fillOpacity: 1 }).addTo(map);
+      map.invalidateSize();
+      map.fitBounds(line.getBounds(), { padding: [24, 24] });
     }
     function renderActivityDetail(detail) {
       const activity = garminActivities().find(item => item.id === openActivityId);
@@ -2548,7 +2611,8 @@ lucide.createIcons({icons});\``);if(typeof document>"u")throw new Error("`create
       if (activity?.avgHr) get('activity-detail-effort').textContent = effortLabel(activity.avgHr / value);
       if (activity && garminDetail) renderActivityDetail(garminDetail);
     });
-    get('activity-dialog').addEventListener('close', () => { openActivityId = null; garminDetail = null; destroyCharts(detailCharts); });
+    get('activity-dialog').addEventListener('close', () => { openActivityId = null; garminDetail = null; destroyCharts(detailCharts); destroyRouteMap(); });
+    get('activity-map-consent').addEventListener('click', () => { if (openActivityId) requestHealth({ type: 'route', id: openActivityId }); });
     get('export-data').addEventListener('click', () => {
       if (window.AndroidBackup) { AndroidBackup.postMessage(JSON.stringify(state, null, 2)); return; }
       const file = new Blob([JSON.stringify(state, null, 2)], { type: 'application/json' });
