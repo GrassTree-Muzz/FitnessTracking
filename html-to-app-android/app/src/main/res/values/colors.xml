@@ -1,4 +1,6 @@
 <resources>
     <!-- Matches the paper colour variable in index.html -->
     <color name="paper">#F5F7F4</color>
+    <!-- Matches the night sky behind the page's hiker splash -->
+    <color name="splash">#0B252C</color>
 </resources>

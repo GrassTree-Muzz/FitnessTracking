@@ -1,6 +1,6 @@
 # Ol'Man Muz – Android app
 
-An offline Android app wrapping the tracker in the repository root's `index.html`. Your data lives in the app's private storage (the page's `localStorage`). The app has no internet access. Its only permissions are read-only Health Connect permissions for your Garmin data.
+An Android app wrapping the tracker in the repository root's `index.html`. Your data lives in the app's private storage (the page's `localStorage`). The app only goes online for the Home page weather. Its permissions are internet and approximate location (both for the weather) and read-only Health Connect for your Garmin data.
 
 Versions: AGP 9.3.3, Gradle 9.5.1 (wrapper), compileSdk 37, targetSdk 36, minSdk 26 (Android 8.0+). Garmin data needs Android 14 or newer.
 
@@ -26,12 +26,20 @@ Garmin Connect copies your activities (runs, paddles, tennis, rides, swims and t
 
 1. On the phone (Android 14+), open **Garmin Connect** and sync the watch. Then open **Settings**, search for **Health Connect**, open **App permissions → Garmin Connect** and turn on **Allow all**.
 2. Open **Ol'Man Muz** and go to the **Health** tab. Tap **Connect Health Connect**, choose **Allow all**, and if Health Connect asks about past data, allow it so the app can read more than the last 30 days.
-3. Every Garmin activity appears in **Activities**, with a filter by type, weekly hours per sport and a year-in-sport summary. Garmin runs also appear in **Runs** with a Garmin badge. Tap the chart icon on any activity for heart-rate zones, plus pace or speed and splits where it has distance. Sleep, resting heart rate, steps and trends are in **Health**.
+3. Garmin runs appear in **Runs** with a Garmin badge; every other Garmin activity appears in **Activities**, with a filter by type, weekly hours per sport and a year-in-sport summary. Tap the chart icon on any activity for heart-rate zones, plus pace or speed and splits where it has distance. Sleep, resting heart rate, steps and trends are in **Health**.
 4. After each session, let the watch sync to Garmin Connect, then open the app. It refreshes by itself when opened (only new or edited activities are re-read), or tap **Refresh** to re-read everything.
 
 What Garmin doesn't share with Health Connect: stress, Body Battery, HRV, VO2 max, SpO2, training status, GPS maps, or its own resting heart rate. The app estimates resting heart rate as your lowest 30-minute average while asleep.
 
 To change access later: **Settings → Health Connect → App permissions → Ol'Man Muz**. The old live cloud sync is archived in [../archive/garmin-cloud-sync/](../archive/garmin-cloud-sync/README.md).
+
+## Home page and weather
+
+The app opens with a short hiker splash (tap to skip), then **Home**: a 7-day forecast, the hourly forecast for the chosen day, and tiles for last night's sleep, your last run, today's steps and how many days you've been active this week. Tap a tile to open its page.
+
+- Tap the place name to switch between **Current location**, your saved places (Denmark WA and Perth WA to start) and **Add a place**. The × removes a saved place.
+- Current location asks for approximate location once. It's used only to fetch the forecast and name the nearest town, and only while Current location is selected.
+- Forecasts come from [Open-Meteo](https://open-meteo.com/) (free, no account). Town names for your current location come from BigDataCloud's free client-side lookup. The last forecast is kept for offline use and refreshed after 30 minutes.
 
 ## Update the app later
 

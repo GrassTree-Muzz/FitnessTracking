@@ -1,10 +1,13 @@
 package com.example.peakmildeffort
 
+import android.Manifest
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
 import android.text.format.DateFormat
+import android.webkit.GeolocationPermissions
 import android.webkit.ValueCallback
 import android.webkit.WebChromeClient
 import android.webkit.WebResourceRequest
@@ -17,6 +20,7 @@ import androidx.activity.addCallback
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.health.connect.client.HealthConnectClient
@@ -39,6 +43,13 @@ class MainActivity : AppCompatActivity() {
     private var pendingBackup: String? = null
     private var healthReply: JavaScriptReplyProxy? = null
     private var healthSync: Job? = null
+    private var locationRequest: Pair<String, GeolocationPermissions.Callback>? = null
+
+    private val requestLocation =
+        registerForActivityResult(ActivityResultContracts.RequestPermission()) { granted ->
+            locationRequest?.let { (origin, callback) -> callback.invoke(origin, granted, false) }
+            locationRequest = null
+        }
 
     private val requestHealthPermissions =
         registerForActivityResult(PermissionController.createRequestPermissionResultContract()) { sendHealthStatus() }
@@ -81,6 +92,8 @@ class MainActivity : AppCompatActivity() {
         webView.settings.javaScriptEnabled = true
         webView.settings.domStorageEnabled = true // required by the tracker's localStorage
         webView.settings.allowFileAccess = false
+        // Match the launch screen until the page paints its own splash, instead of flashing white.
+        webView.setBackgroundColor(getColor(R.color.splash))
 
         val assetLoader = WebViewAssetLoader.Builder()
             .addPathHandler("/assets/", WebViewAssetLoader.AssetsPathHandler(this))
@@ -106,6 +119,7 @@ class MainActivity : AppCompatActivity() {
             }
 
             override fun onPageFinished(view: WebView, url: String?) {
+                view.setBackgroundColor(getColor(R.color.paper))
                 if (!bridgeSupported) view.evaluateJavascript(
                     "window.AndroidBackup={postMessage:function(){alert('Backup not saved. Update Android System WebView from Google Play, then try again.')}}",
                     null
@@ -123,6 +137,20 @@ class MainActivity : AppCompatActivity() {
                 fileCallback = callback
                 openBackup.launch(arrayOf("*/*"))
                 return true
+            }
+
+            // Only the bundled page may ask (for the Home weather); Android's own prompt decides.
+            override fun onGeolocationPermissionsShowPrompt(origin: String, callback: GeolocationPermissions.Callback) {
+                when {
+                    Uri.parse(origin).host != appHost -> callback.invoke(origin, false, false)
+                    ContextCompat.checkSelfPermission(this@MainActivity, Manifest.permission.ACCESS_COARSE_LOCATION) ==
+                        PackageManager.PERMISSION_GRANTED -> callback.invoke(origin, true, false)
+                    else -> {
+                        locationRequest?.let { (oldOrigin, oldCallback) -> oldCallback.invoke(oldOrigin, false, false) }
+                        locationRequest = origin to callback
+                        requestLocation.launch(Manifest.permission.ACCESS_COARSE_LOCATION)
+                    }
+                }
             }
         }
 
