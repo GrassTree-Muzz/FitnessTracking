@@ -462,7 +462,7 @@
       .stat strong { font-size: 23px; }
       .stat small { font-size: 11px; margin: 0; }
       .stats > .primary { display: none; }
-      main { padding-top: 24px; }
+      main { padding-top: 24px; padding-bottom: calc(96px + env(safe-area-inset-bottom)); }
       .dashboard { grid-template-columns: 1fr; gap: 29px; }
       .runs-layout { grid-template-columns: 1fr; gap: 28px; }
       .garmin-bar { margin-top: 12px; }
@@ -1743,10 +1743,13 @@ lucide.createIcons({icons});\``);if(typeof document>"u")throw new Error("`create
       const map = L.map(get('activity-map'), { preferCanvas: true });
       routeMap = map;
       if (garmin.mapKey) {
-        L.tileLayer(`https://api.thunderforest.com/outdoors/{z}/{x}/{y}{r}.png?apikey=${garmin.mapKey}`, {
+        const tiles = L.tileLayer(`https://api.thunderforest.com/outdoors/{z}/{x}/{y}{r}.png?apikey=${garmin.mapKey}`, {
           maxZoom: 19,
           attribution: 'Maps &copy; <a href="https://www.thunderforest.com/">Thunderforest</a>, Data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap contributors</a>'
-        }).addTo(map);
+        });
+        tiles.on('tileerror', () => { get('activity-map-status').textContent = 'Map tiles failed to load. Check your Thunderforest key, plan, and connection.'; });
+        tiles.on('load', () => { get('activity-map-status').textContent = ''; });
+        tiles.addTo(map);
       } else get('activity-map-status').textContent = 'Add a Thunderforest key to the app build to show the map behind the route.';
       const line = L.polyline(route, { color: '#d0452f', weight: 4, opacity: .9, lineJoin: 'round' }).addTo(map);
       L.circleMarker(route[0], { radius: 6, color: '#fff', weight: 2, fillColor: '#326f60', fillOpacity: 1 }).addTo(map);
