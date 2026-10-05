@@ -163,6 +163,31 @@ class HealthReader(private val client: HealthConnectClient) {
             .put("bodyFat", bodyFat)
     }
 
+    /** Five-minute heart-rate buckets as [start, min, average, max] for the Health page's scrollable timeline. */
+    suspend fun heartRate(startMs: Long, endMs: Long): JSONObject {
+        val buckets = JSONArray()
+        if (HealthPermission.getReadPermission(HeartRateRecord::class) in client.permissionController.getGrantedPermissions()) {
+            client.aggregateGroupByDuration(
+                AggregateGroupByDurationRequest(
+                    metrics = setOf(HeartRateRecord.BPM_MIN, HeartRateRecord.BPM_AVG, HeartRateRecord.BPM_MAX),
+                    timeRangeFilter = TimeRangeFilter.between(Instant.ofEpochMilli(startMs), Instant.ofEpochMilli(endMs)),
+                    timeRangeSlicer = Duration.ofMinutes(5),
+                    dataOriginFilter = garmin,
+                )
+            ).forEach { bucket ->
+                val average = bucket.result[HeartRateRecord.BPM_AVG] ?: return@forEach
+                buckets.put(
+                    JSONArray()
+                        .put(bucket.startTime.toEpochMilli())
+                        .put(bucket.result[HeartRateRecord.BPM_MIN] ?: average)
+                        .put(average)
+                        .put(bucket.result[HeartRateRecord.BPM_MAX] ?: average)
+                )
+            }
+        }
+        return JSONObject().put("type", "heart").put("start", startMs).put("end", endMs).put("buckets", buckets)
+    }
+
     suspend fun activityDetail(id: String): JSONObject {
         val granted = client.permissionController.getGrantedPermissions()
         val session = client.readRecord(ExerciseSessionRecord::class, id).record

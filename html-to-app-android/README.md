@@ -18,7 +18,7 @@ Copy the APK to your phone, open it, and allow "Install unknown apps" for that a
 ## Move your existing data
 
 1. In the browser version, open **Backups and data** and choose **Download backup**.
-2. In the app, open **Backups and data**, choose **Restore a backup**, and pick that file.
+2. In the app, open **Backups and data** (the database icon at the top right of the cover photo), choose **Restore a backup**, and pick that file.
 
 ## Garmin data (Health Connect)
 
@@ -26,8 +26,8 @@ Garmin Connect copies your activities (runs, paddles, tennis, rides, swims and t
 
 1. On the phone (Android 14+), open **Garmin Connect** and sync the watch. Then open **Settings**, search for **Health Connect**, open **App permissions → Garmin Connect** and turn on **Allow all**.
 2. Open **Ol'Man Muz** and go to the **Health** tab. Tap **Connect Health Connect**, choose **Allow all**, and if Health Connect asks about past data, allow it so the app can read more than the last 30 days.
-3. Garmin runs appear in **Runs** with a Garmin badge; every other Garmin activity appears in **Activities**, with a filter by type, weekly hours per sport and a year-in-sport summary. Tap the chart icon on any activity for heart-rate zones, plus pace or speed and splits where it has distance. Sleep, resting heart rate, steps and trends are in **Health**.
-4. After each session, let the watch sync to Garmin Connect, then open the app. It refreshes by itself when opened (only new or edited activities are re-read), or tap **Refresh** to re-read everything.
+3. Garmin runs appear in **Runs** with a Garmin badge; every other Garmin activity appears in **Activities**, with a filter by type, weekly hours per sport and a year-in-sport summary. Tap the chart icon on any activity for heart-rate zones, plus pace or speed and splits where it has distance. Sleep, resting heart rate, steps and trends are in **Health**, along with a heart-rate timeline in 5-minute detail that you can swipe back through the last 90 days.
+4. After each session, let the watch sync to Garmin Connect, then open the app. It refreshes by itself when opened (only new or edited activities are re-read), or tap the refresh arrow on the Garmin pill at the top right of the cover photo to re-read everything.
 
 What Garmin doesn't share with Health Connect: stress, Body Battery, HRV, VO2 max, SpO2, training status, or its own resting heart rate. GPS routes appear only if Garmin Connect writes them (see Route map). The app estimates resting heart rate as your lowest 30-minute average while asleep.
 
@@ -49,7 +49,7 @@ Activity details show the GPS route on a map when Health Connect holds one for t
 
 ## Home page and weather
 
-The app opens with a short hiker splash (tap to skip), then **Home**: a 7-day forecast, the hourly forecast for the chosen day, and tiles for last night's sleep, your last run, today's steps and how many days you've been active this week. Tap a tile to open its page.
+The app opens with a short hiker splash (tap to skip), then **Home**: a 7-day forecast, the hourly forecast for the chosen day, and tiles for last night's sleep, your last activity, today's steps and how many days you've been active this week. Tap a tile to open it: the last activity opens its details, and the week tile opens a month calendar that compares this month with last month up to the same date.
 
 - Tap the place name to switch between **Current location**, your saved places (Denmark WA and Perth WA to start) and **Add a place**. The × removes a saved place.
 - Current location asks for approximate location once. It's used only to fetch the forecast and name the nearest town, and only while Current location is selected.

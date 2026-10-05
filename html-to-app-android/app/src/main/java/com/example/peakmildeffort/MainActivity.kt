@@ -211,6 +211,13 @@ class MainActivity : AppCompatActivity() {
                 val id = request.optString("id")
                 if (RECORD_ID.matches(id)) launchHealth("activity", id) { it.activityDetail(id) }
             }
+            "heart" -> {
+                val start = request.optLong("start")
+                val end = request.optLong("end")
+                if (start > 0 && end > start && end - start <= MAX_HEART_RANGE_MS) {
+                    launchHealth("heart", start.toString()) { it.heartRate(start, end) }
+                }
+            }
             "route" -> {
                 val id = request.optString("id")
                 if (RECORD_ID.matches(id) && healthReader() != null) {
@@ -259,5 +266,8 @@ class MainActivity : AppCompatActivity() {
 
     private companion object {
         val RECORD_ID = Regex("^[A-Za-z0-9._-]{1,128}$")
+
+        // The page asks for up to 7 days at a time; the extra day allows for daylight-saving shifts.
+        const val MAX_HEART_RANGE_MS = 8L * 24 * 60 * 60 * 1000
     }
 }

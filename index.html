@@ -27,20 +27,27 @@
     h2 { font: 600 28px/1.2 'Fraunces', Georgia, serif; }
     h3 { font-size: 15px; font-weight: 600; }
     .wrap { width: min(1180px, calc(100% - 80px)); margin-inline: auto; }
-    .topbar { height: 76px; display: flex; align-items: center; justify-content: space-between; gap: 16px; }
-    .brand { display: flex; align-items: center; gap: 10px; text-decoration: none; }
-    .brand-mark { width: 39px; height: 39px; background: var(--deep); color: #fff; border-radius: 50%; display: grid; place-items: center; }
-    .brand-mark svg { width: 24px; height: 24px; }
-    .brand-name { font-weight: 600; font-size: 16px; }
-    .top-actions { display: flex; align-items: center; gap: 20px; }
-    .date-label { font-size: 12px; color: var(--muted); }
-    .nav-link { text-decoration: none; font-size: 13px; min-height: 44px; display: flex; align-items: center; gap: 7px; }
     .icon-button { width: 44px; height: 44px; padding: 0; display: inline-grid; place-items: center; border-radius: 6px; flex: 0 0 auto; }
     .icon-button:hover { background: var(--mint); }
     .hero { position: relative; min-height: 302px; background: #123842; color: white; }
     .hero-image { position: absolute; width: 100%; height: 100%; object-fit: cover; object-position: center 49%; }
     .hero::after { content: ''; position: absolute; inset: 0; background: linear-gradient(90deg, rgb(8 32 42 / 80%), rgb(10 40 50 / 28%) 58%, rgb(9 34 44 / 55%)); }
-    .hero-inner { position: relative; z-index: 1; min-height: 302px; display: flex; align-items: center; justify-content: space-between; gap: 30px; padding-block: 30px; }
+    .hero-bar { position: relative; z-index: 3; display: flex; align-items: center; gap: 12px; padding-top: 12px; }
+    .hero-actions { display: flex; align-items: center; gap: 6px; margin-left: auto; flex: 0 0 auto; }
+    .sync-pill { display: flex; align-items: center; gap: 6px; min-height: 32px; padding: 3px 11px 3px 10px; border: 1px solid rgb(255 255 255 / 18%); border-radius: 16px; background: rgb(8 32 42 / 58%); -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); color: #e0ede1; font-size: 11px; font-weight: 600; line-height: 1.2; white-space: nowrap; }
+    .sync-pill:has(button:not([hidden])) { padding-right: 3px; }
+    .sync-pill > svg { width: 14px; height: 14px; color: #bfe9e0; }
+    .sync-pill p:empty { display: none; }
+    .sync-pill button { display: inline-flex; align-items: center; justify-content: center; min-height: 26px; padding: 3px 10px; border-radius: 13px; background: rgb(255 255 255 / 16%); color: #fff; font-size: 11px; font-weight: 600; }
+    .sync-pill button:hover { background: rgb(255 255 255 / 26%); }
+    .sync-pill button.is-icon { width: 26px; padding: 0; }
+    .sync-pill button svg { width: 14px; height: 14px; }
+    .sync-pill.is-busy > svg { animation: pulse 1.2s ease-in-out infinite; }
+    .sync-pill.is-error { border-color: rgb(255 190 150 / 45%); background: rgb(96 42 24 / 72%); }
+    .hero-icon { width: 32px; height: 32px; min-height: 32px; padding: 0; display: grid; place-items: center; border: 1px solid rgb(255 255 255 / 18%); border-radius: 50%; background: rgb(8 32 42 / 58%); -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); color: #e0ede1; }
+    .hero-icon:hover { background: rgb(8 32 42 / 78%); }
+    .hero-icon svg { width: 16px; height: 16px; }
+    .hero-inner { position: relative; z-index: 2; min-height: 258px; display: flex; align-items: center; justify-content: space-between; gap: 30px; padding-block: 14px 30px; }
     .eyebrow { font-size: 10px; text-transform: uppercase; font-weight: 600; }
     .hero .eyebrow { display: flex; align-items: center; gap: 8px; color: #e0ede1; margin-bottom: 12px; }
     .hero .eyebrow svg { width: 16px; height: 16px; }
@@ -50,15 +57,15 @@
     .hero-score { align-self: center; text-align: right; min-width: 150px; }
     .hero-score strong { display: block; font: 600 65px/1.1 'Fraunces', Georgia, serif; font-variant-numeric: tabular-nums; overflow-wrap: anywhere; }
     .hero-score .eyebrow { display: block; margin: 0; }
-    .hero-greeting-row { display: flex; align-items: center; flex-wrap: wrap; gap: 6px 14px; margin-bottom: 12px; }
     .hero-main { flex: 1; min-width: 0; }
-    .hero-greeting-row .eyebrow { margin-bottom: 0; }
-    .hero-greeting-row .place-wrap { position: relative; flex: 0 0 auto; }
-    .hero-greeting-row .place-button { min-height: 0; padding: 2px 6px; margin-left: -6px; font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: .02em; color: #e0ede1; }
-    .hero-greeting-row .place-button:hover { background: rgb(255 255 255 / 12%); }
-    .hero-greeting-row .place-button svg, .hero-greeting-row .place-icon i { color: #e0ede1; }
-    body:not([data-page="home"]) .hero .hero-greeting-row { display: none; }
-    body[data-page="home"] .hero-inner { min-height: 220px; }
+    .hero-bar .eyebrow { margin: 0; white-space: nowrap; }
+    .hero-bar .place-wrap { position: static; flex: 0 1 auto; min-width: 0; }
+    .hero-bar .place-menu { top: calc(100% + 6px); left: 0; color: var(--ink); }
+    .hero-bar .place-button { min-height: 0; max-width: calc(100% + 6px); padding: 2px 6px; margin-left: -6px; font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: .02em; color: #e0ede1; }
+    .hero-bar .place-button:hover { background: rgb(255 255 255 / 12%); }
+    .hero-bar .place-button svg, .hero-bar .place-icon i { color: #e0ede1; }
+    body:not([data-page="home"]) .hero-bar :is(.hero-greeting, .place-wrap) { display: none; }
+    body[data-page="home"] .hero-inner { min-height: 176px; }
     .hero-weather { position: relative; z-index: 1; display: none; padding-bottom: 18px; }
     body[data-page="home"] .hero-weather { display: block; }
     .hero-weather .wx-week { margin: 0; padding: 4px; border: 1px solid rgb(255 255 255 / 16%); border-radius: 12px; background: rgb(8 32 42 / 52%); -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); }
@@ -192,13 +199,6 @@
     .sport-fill { display: block; height: 100%; border-radius: 4px; background: var(--exercise); }
     .run-date-fields { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
     .run-duration { border: 0; padding: 0; margin: 15px 0; min-width: 0; }
-    .garmin-bar { display: flex; align-items: center; gap: 10px; margin-top: 16px; padding: 8px 8px 8px 14px; border: 1px solid var(--line); border-radius: 8px; background: #fcfdfb; color: var(--muted); font-size: 12px; }
-    .garmin-bar > svg { width: 18px; height: 18px; color: var(--green); }
-    .garmin-bar p { flex: 1; min-width: 0; overflow-wrap: anywhere; }
-    .garmin-bar .secondary { min-height: 38px; padding: 6px 12px; font-size: 12px; flex: 0 0 auto; }
-    .garmin-bar .secondary svg { width: 15px; height: 15px; }
-    .garmin-bar.is-busy > svg { animation: pulse 1.2s ease-in-out infinite; }
-    .garmin-bar.is-error { border-color: #cc8f64; background: #fff1df; color: #6b4425; }
     .source-badge { display: inline-flex; align-items: center; gap: 4px; margin-left: 7px; padding: 1px 7px 1px 5px; border-radius: 999px; background: #e3ecf4; color: #3f6485; font-size: 10px; font-weight: 600; vertical-align: 1px; }
     .source-badge svg { width: 12px; height: 12px; }
     .run-hr { color: #a8473a; }
@@ -232,11 +232,12 @@
     .stage-legend { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; margin-top: 16px; }
     .stage-legend div { padding-top: 6px; border-top: 3px solid var(--stage); color: var(--muted); font-size: 10px; }
     .stage-legend strong { display: block; color: var(--ink); font-size: 15px; font-variant-numeric: tabular-nums; }
-    .heart-spark { display: block; width: 100%; height: 118px; margin-top: 14px; overflow: visible; }
-    .heart-spark .line { fill: none; stroke: #c2503f; stroke-width: 2; stroke-linejoin: round; vector-effect: non-scaling-stroke; }
-    .heart-spark .area { fill: url(#hr-fill); stroke: none; }
-    .heart-spark .rest { stroke: #28594b; stroke-width: 1; stroke-dasharray: 4 4; vector-effect: non-scaling-stroke; }
-    .spark-axis { display: flex; justify-content: space-between; margin-top: 4px; color: var(--muted); font-size: 10px; }
+    .hr-track-wrap { position: relative; height: 210px; margin-top: 14px; }
+    .hr-track { position: absolute; inset: 0; overflow-x: auto; overflow-y: hidden; overscroll-behavior-x: contain; scrollbar-width: none; }
+    .hr-track::-webkit-scrollbar { display: none; }
+    .hr-track-space { height: 100%; }
+    .hr-track-canvas { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
+    .hr-track-note { margin-top: 4px; color: var(--muted); font-size: 11px; }
     .heart-figures { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; margin-top: 16px; }
     .heart-figures div { padding-left: 12px; border-left: 1px solid var(--line); }
     .heart-figures div:first-child { padding-left: 0; border: 0; }
@@ -284,6 +285,33 @@
     .split-fill { display: block; height: 100%; border-radius: 4px; background: #658bb4; }
     .split-row.fastest .split-fill { background: var(--green); }
     .max-hr-field { max-width: 260px; }
+    .month-dialog { width: min(720px, calc(100% - 28px)); height: min(880px, calc(100dvh - 28px)); max-width: none; max-height: none; }
+    .month-dialog::backdrop { background: #152a24b8; -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); }
+    .month-dialog .dialog-header { margin-bottom: 14px; }
+    .month-nav { display: flex; align-items: center; }
+    .cal-head, .month-grid { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 4px; }
+    .cal-head { margin-bottom: 4px; color: var(--muted); font-size: 10px; font-weight: 600; text-align: center; }
+    .cal-day { display: flex; flex-direction: column; align-items: center; gap: 3px; min-width: 0; min-height: 56px; padding: 6px 2px 4px; border: 1px solid var(--line); border-radius: 8px; background: #fcfdfb; font-variant-numeric: tabular-nums; }
+    .cal-day.is-active { border-color: transparent; background: var(--mint); }
+    .cal-day[aria-pressed="true"] { border-color: var(--deep); background: #fff; box-shadow: 0 1px 4px #16352914; }
+    .cal-day:disabled { opacity: .45; background: none; }
+    .cal-num { min-width: 22px; padding: 0 5px; border-radius: 10px; font-size: 12px; font-weight: 600; line-height: 18px; }
+    .cal-day.is-today .cal-num { background: var(--deep); color: #fff; }
+    .cal-marks { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 2px; min-height: 13px; }
+    .cal-marks svg { width: 12px; height: 12px; stroke-width: 2.2; }
+    .cal-more { color: var(--muted); font-size: 9px; font-weight: 600; line-height: 12px; }
+    .month-day { min-height: 70px; margin-top: 14px; }
+    .month-day h3 { font-size: 13px; }
+    .month-day .history-row { padding: 9px 0; }
+    .month-kpi-title { margin: 16px 0 10px; padding-top: 16px; border-top: 1px solid var(--line); font-size: 15px; }
+    .month-kpis { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+    .month-kpi { min-width: 0; padding: 11px 13px; border: 1px solid var(--line); border-radius: 8px; background: #fcfdfb; }
+    .month-kpi .eyebrow { display: flex; align-items: center; gap: 6px; color: var(--muted); white-space: nowrap; }
+    .month-kpi .eyebrow svg { width: 14px; height: 14px; }
+    .month-kpi-row { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 2px 6px; margin-top: 2px; }
+    .month-kpi strong { font: 600 26px/1.15 'Fraunces', Georgia, serif; font-variant-numeric: tabular-nums; white-space: nowrap; }
+    .month-kpi strong small { margin-left: 3px; font: 500 12px 'DM Sans', sans-serif; color: var(--muted); }
+    .delta.even { background: #edf0ec; color: var(--muted); }
     .splash { position: fixed; inset: 0; z-index: 50; overflow: hidden; background: #0b252c; cursor: pointer; transition: opacity .45s ease, transform .45s ease; }
     .splash.leaving { opacity: 0; transform: scale(1.03); pointer-events: none; }
     .splash svg { position: absolute; inset: 0; width: 100%; height: 100%; }
@@ -370,7 +398,7 @@
     .kpi .eyebrow svg { width: 14px; height: 14px; }
     .kpi strong { margin-top: 3px; font: 600 30px/1.1 'Fraunces', Georgia, serif; font-variant-numeric: tabular-nums; }
     .kpi strong small { margin-left: 4px; font: 500 12px 'DM Sans', sans-serif; color: var(--muted); }
-    .kpi-sub { font-size: 11px; color: var(--muted); }
+    .kpi-sub { max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 11px; color: var(--muted); }
     .kpi-go { position: absolute; top: 11px; right: 9px; width: 16px; height: 16px; color: #9aa89d; }
     .stage-bar { display: flex; gap: 2px; width: 100%; height: 5px; margin-top: 6px; overflow: hidden; border-radius: 3px; }
     .steps-row { display: flex; align-items: center; gap: 9px; }
@@ -420,18 +448,14 @@
     .skip-link { position: fixed; top: -60px; left: 10px; z-index: 30; padding: 10px; background: white; }
     .skip-link:focus { top: 10px; }
     @keyframes arrive { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
-    @media (min-width: 1600px) { .hero, .hero-inner { min-height: 340px; } }
+    @media (min-width: 1600px) { .hero { min-height: 340px; } .hero-inner { min-height: 296px; } }
     @media (max-width: 1000px) { .wrap { width: calc(100% - 48px); } .dashboard { gap: 25px; grid-template-columns: minmax(0, 1.4fr) minmax(275px, 1fr); } .exercise-column { padding-left: 23px; } .stats { gap: 15px; } }
     @media (max-width: 760px) {
       .wrap { width: calc(100% - 36px); }
       .view-tabs { display: none; }
-      .topbar { height: 56px; }
-      .brand-name { font-size: 14px; }
-      .brand-mark { width: 34px; height: 34px; }
-      .top-actions { gap: 4px; }
-      .date-label, .nav-link { display: none; }
-      .hero, .hero-inner { min-height: 235px; }
-      .hero-inner { align-items: flex-start; padding-block: 27px 21px; gap: 12px; }
+      .hero { min-height: 235px; }
+      .hero-bar { gap: 10px; padding-top: 10px; }
+      .hero-inner { min-height: 193px; align-items: flex-start; padding-block: 12px 21px; gap: 12px; }
       .hero-image { object-position: 56% 48%; }
       .hero::after { background: linear-gradient(90deg, rgb(9 34 44 / 78%), rgb(11 42 50 / 20%)); }
       .hero .eyebrow { font-size: 10px; max-width: 230px; }
@@ -441,7 +465,7 @@
       .hero-score strong { font-size: 36px; }
       .hero-score .eyebrow { font-size: 9px; }
       .hero-score p { display: none; }
-      body[data-page="home"] .hero-inner { min-height: 160px; }
+      body[data-page="home"] .hero-inner { min-height: 118px; }
       .hero-weather { padding-bottom: 14px; }
       body[data-page="home"] main { padding-top: 10px; }
       .weather-card { padding: 10px 12px 8px; }
@@ -465,7 +489,6 @@
       main { padding-top: 24px; padding-bottom: calc(96px + env(safe-area-inset-bottom)); }
       .dashboard { grid-template-columns: 1fr; gap: 29px; }
       .runs-layout { grid-template-columns: 1fr; gap: 28px; }
-      .garmin-bar { margin-top: 12px; }
       .health-empty { flex-direction: column; padding: 22px; }
       .health-toolbar { flex-wrap: wrap; }
       .health-grid { grid-template-columns: 1fr; }
@@ -507,6 +530,11 @@
       body[data-page="exercises"] .fab[data-fab="exercises"], body[data-page="runs"] .fab[data-fab="runs"], body[data-page="activities"] .fab[data-fab="garmin"], body[data-page="health"] .fab[data-fab="garmin"] { display: inline-flex; }
       .toast { bottom: calc(148px + env(safe-area-inset-bottom)); }
       dialog { padding: 22px; }
+      .month-dialog { width: calc(100% - 16px); height: calc(100dvh - 16px); padding: 16px 14px 22px; }
+      .month-dialog .dialog-header h2 { font-size: 25px; }
+      .month-kpis { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+      .month-kpi strong { font-size: 23px; }
+      .cal-day { min-height: 48px; }
     }
     @media (max-width: 360px) { h1 { font-size: 37px; } .hero-score strong { font-size: 31px; } .hero .eyebrow { font-size: 9px; } .section-heading h2 { font-size: 23px; } .wrap { width: calc(100% - 28px); } }
     @media (max-width: 360px) { .run-date-fields { grid-template-columns: 1fr; gap: 0; } .run-date-fields .form-field { margin-block: 8px; } }
@@ -592,14 +620,11 @@
     });
   </script>
   <a class="skip-link" href="#main">Skip to your tracker</a>
-  <header class="topbar wrap">
-    <a class="brand" href="#" aria-label="Ol'Man Muz home"><span class="brand-mark"><i data-lucide="mountain-snow"></i></span><span class="brand-name">Ol'Man Muz</span></a>
-    <div class="top-actions"><span class="date-label" id="header-date"></span><a class="nav-link" href="#history"><i data-lucide="notebook-pen"></i> Field notes</a><button class="icon-button" id="open-data" title="Backups and data" aria-label="Backups and data"><i data-lucide="database"></i></button></div>
-  </header>
   <section class="hero" id="hero" aria-labelledby="page-title">
     <img class="hero-image" src="DSC_3074.JPG" alt="A surfer launching off a breaking wave as two others paddle nearby" fetchpriority="high">
+    <div class="hero-bar wrap"><p class="eyebrow hero-greeting" id="hero-greeting"></p><div class="place-wrap" id="place-wrap"><button type="button" class="place-button" id="place-button" aria-expanded="false" aria-controls="place-menu" title="Change the weather location"><span class="place-icon" id="place-icon"></span><span id="place-name">Current location</span><i data-lucide="chevron-down"></i></button><div class="place-menu" id="place-menu" hidden></div></div><div class="hero-actions"><div class="sync-pill" id="garmin-bar" hidden><i data-lucide="watch"></i><p id="garmin-bar-text" role="status" aria-live="polite"></p><button type="button" id="garmin-bar-action" hidden></button></div><button type="button" class="hero-icon" id="open-data" title="Backups and data" aria-label="Backups and data"><i data-lucide="database"></i></button></div></div>
     <div class="hero-inner wrap">
-      <div class="hero-main"><div class="hero-greeting-row"><p class="eyebrow hero-greeting" id="hero-greeting"></p><div class="place-wrap" id="place-wrap"><button type="button" class="place-button" id="place-button" aria-expanded="false" aria-controls="place-menu" title="Change the weather location"><span class="place-icon" id="place-icon"></span><span id="place-name">Current location</span><i data-lucide="chevron-down"></i></button><div class="place-menu" id="place-menu" hidden></div></div></div><h1 id="page-title">Ol'Man <span>Muz.</span></h1><p class="hero-copy">Training for absolutely nothing.</p></div>
+      <div class="hero-main"><h1 id="page-title">Ol'Man <span>Muz.</span></h1><p class="hero-copy">Training for absolutely nothing.</p></div>
       <div class="hero-score"><span class="eyebrow">Lifetime reps</span><strong id="lifetime">0</strong></div>
     </div>
     <div class="hero-weather wrap"><div class="wx-week" id="wx-week" role="group" aria-label="Choose a day for the hourly forecast"></div></div>
@@ -629,7 +654,6 @@
       <div class="stat"><i data-lucide="moon"></i><strong id="health-stat-sleep">--</strong><small>avg sleep · last 7 nights</small></div>
       <div class="stat"><i data-lucide="footprints"></i><strong id="health-stat-steps">--</strong><small>avg steps · last 7 days</small></div>
     </div>
-    <div class="garmin-bar" id="garmin-bar" hidden><i data-lucide="watch"></i><p id="garmin-bar-text" role="status" aria-live="polite"></p><button type="button" class="secondary" id="garmin-bar-action" hidden></button></div>
     <main id="main">
       <section id="home-panel" role="tabpanel" aria-labelledby="home-tab">
         <article class="weather-card" id="weather-card" aria-labelledby="weather-title">
@@ -709,7 +733,7 @@
           <div class="health-toolbar"><div><h2 id="health-day-title">Today, so far.</h2><p class="history-caption" id="health-day-caption"></p></div><div class="period-nav"><button class="icon-button" id="health-prev-day" aria-label="Previous day" title="Previous day"><i data-lucide="chevron-left"></i></button><span class="period-label" id="health-day-label"></span><button class="icon-button" id="health-next-day" aria-label="Next day" title="Next day"><i data-lucide="chevron-right"></i></button></div></div>
           <div class="health-grid">
             <article class="health-card" aria-labelledby="sleep-card-title"><div class="health-card-head"><div><p class="eyebrow" id="sleep-card-title"><i data-lucide="moon"></i> Last night</p><p class="big-number" id="sleep-total">--</p><p class="health-sub" id="sleep-window"></p></div><span class="delta" id="sleep-delta" hidden></span></div><div id="sleep-chart"></div></article>
-            <article class="health-card" aria-labelledby="heart-card-title"><div class="health-card-head"><div><p class="eyebrow" id="heart-card-title"><i data-lucide="heart-pulse"></i> Resting heart rate</p><p class="big-number" id="heart-resting">--</p><p class="health-sub" id="heart-caption"></p></div><span class="delta" id="heart-delta" hidden></span></div><div id="heart-chart"></div><div class="heart-figures"><div><strong id="heart-min">--</strong><small>lowest bpm</small></div><div><strong id="heart-avg">--</strong><small>average bpm</small></div><div><strong id="heart-max">--</strong><small>highest bpm</small></div></div></article>
+            <article class="health-card" aria-labelledby="heart-card-title"><div class="health-card-head"><div><p class="eyebrow" id="heart-card-title"><i data-lucide="heart-pulse"></i> Resting heart rate</p><p class="big-number" id="heart-resting">--</p><p class="health-sub" id="heart-caption"></p></div><span class="delta" id="heart-delta" hidden></span></div><div class="hr-track-wrap"><div class="hr-track" id="hr-track" tabindex="0" aria-label="Heart rate timeline. Scroll sideways for earlier days."><div class="hr-track-space" id="hr-track-space"></div></div><canvas class="hr-track-canvas" id="hr-track-canvas" role="img" aria-label="Heart rate through the day"></canvas></div><p class="hr-track-note" id="hr-track-note" aria-live="polite"></p><div class="heart-figures"><div><strong id="heart-min">--</strong><small>lowest bpm</small></div><div><strong id="heart-avg">--</strong><small>average bpm</small></div><div><strong id="heart-max">--</strong><small>highest bpm</small></div></div></article>
           </div>
           <div class="health-tiles">
             <div class="health-tile"><svg class="step-ring" viewBox="0 0 100 100" aria-hidden="true"><circle class="track" cx="50" cy="50" r="42"></circle><circle class="progress" id="steps-ring" cx="50" cy="50" r="42" stroke-dasharray="263.9" stroke-dashoffset="263.9"></circle></svg><div><strong id="tile-steps">--</strong><small id="tile-steps-caption">steps</small></div></div>
@@ -778,6 +802,14 @@
     <section class="run-detail-section" id="activity-hr-section" aria-labelledby="activity-hr-title" hidden><div class="section-heading"><h3 id="activity-hr-title">Heart rate</h3><span id="activity-zone-note"></span></div><div class="detail-chart"><canvas id="activity-hr-chart" role="img" aria-label="Heart rate during the activity, coloured by zone"></canvas></div><div class="zone-bar" id="activity-zone-bar" aria-hidden="true"></div><div class="zone-legend" id="activity-zone-legend"></div></section>
     <section class="run-detail-section" id="activity-speed-section" aria-labelledby="activity-speed-title" hidden><div class="section-heading"><h3 id="activity-speed-title">Pace</h3><span id="activity-speed-note"></span></div><div class="detail-chart"><canvas id="activity-speed-chart" role="img" aria-label="Pace or speed during the activity"></canvas></div><div class="split-list" id="activity-splits"></div></section>
     <div class="form-field max-hr-field"><label for="max-hr">Max heart rate for zones (bpm)</label><input id="max-hr" type="number" inputmode="numeric" min="120" max="230" step="1"></div>
+  </dialog>
+  <dialog id="month-dialog" class="month-dialog" aria-labelledby="month-title">
+    <div class="dialog-header"><div><p class="dialog-kicker"><i data-lucide="calendar-days"></i>Your month in motion</p><h2 id="month-title">This month.</h2></div><div class="month-nav"><button type="button" class="icon-button" id="month-prev" aria-label="Previous month" title="Previous month"><i data-lucide="chevron-left"></i></button><button type="button" class="icon-button" id="month-next" aria-label="Next month" title="Next month"><i data-lucide="chevron-right"></i></button><button type="button" class="icon-button close-dialog" aria-label="Close month view"><i data-lucide="x"></i></button></div></div>
+    <div class="cal-head" aria-hidden="true"><span>M</span><span>T</span><span>W</span><span>T</span><span>F</span><span>S</span><span>S</span></div>
+    <div class="month-grid" id="month-grid"></div>
+    <div class="month-day" id="month-day" aria-live="polite"></div>
+    <h3 class="month-kpi-title" id="month-kpi-title"></h3>
+    <div class="month-kpis" id="month-kpis"></div>
   </dialog>
   <dialog id="confirm-dialog" aria-labelledby="confirm-title"><div class="dialog-header"><h2 id="confirm-title">A small correction.</h2><button class="icon-button close-dialog" aria-label="Cancel confirmation"><i data-lucide="x"></i></button></div><p class="data-copy" id="confirm-copy"></p><div class="confirm-actions"><button class="secondary close-dialog">Cancel</button><button class="primary" id="confirm-action">Confirm</button></div></dialog>
   <div class="toast" id="toast" hidden=""><span id="toast-message" role="status" aria-live="polite"></span><button id="undo-action" hidden="">Undo</button><button class="icon-button" id="dismiss-toast" aria-label="Dismiss notification"><i data-lucide="x"></i></button></div>
@@ -1031,7 +1063,7 @@ lucide.createIcons({icons});\``);if(typeof document>"u")throw new Error("`create
     const garminCacheKey = 'peak-mild-effort.garmin.v1';
     const maxHeartRateKey = 'peak-mild-effort.max-hr.v1';
     const healthBridge = window.AndroidHealth || null;
-    const garmin = { status: null, data: null, index: null, syncing: false, error: '', lastSync: 0, timer: null, askedToConnect: false, mapKey: '' };
+    const garmin = { status: null, data: null, index: null, syncing: false, error: '', told: '', lastSync: 0, timer: null, askedToConnect: false, mapKey: '' };
     const healthCharts = [];
     const detailCharts = [];
     const activityCharts = [];
@@ -1256,6 +1288,8 @@ lucide.createIcons({icons});\``);if(typeof document>"u")throw new Error("`create
         if (!garmin.status.connected && garmin.data) {
           garmin.data = null;
           garmin.index = null;
+          hrTrack.days.clear();
+          hrTrack.fresh.clear();
           try { localStorage.removeItem(garminCacheKey); } catch (error) { /* nothing was cached */ }
         }
         syncGarmin();
@@ -1271,6 +1305,8 @@ lucide.createIcons({icons});\``);if(typeof document>"u")throw new Error("`create
           delete next.unresolved;
           garmin.data = next;
           garmin.index = buildGarminIndex(next);
+          // Today's heart rate has probably grown, so the timeline re-reads the days in view (keeping the old line until then).
+          hrTrack.fresh.clear();
           garmin.error = '';
           try { localStorage.setItem(garminCacheKey, JSON.stringify(next)); } catch (error) { /* the cache only speeds up the next launch */ }
           const added = previousIds ? next.activities.filter(activity => !previousIds.has(activity.id)).length : 0;
@@ -1286,12 +1322,15 @@ lucide.createIcons({icons});\``);if(typeof document>"u")throw new Error("`create
         }
       } else if (message.type === 'route') {
         showActivityRoute(message.id, message.routeState, message.route);
+      } else if (message.type === 'heart') {
+        receiveHeart(message);
       } else if (message.type === 'error') {
         const text = typeof message.message === 'string' && message.message ? message.message.slice(0, 200) : 'Health Connect could not be read.';
         if (message.request === 'activity') {
           if (message.id === openActivityId) get('activity-detail-status').textContent = text;
           return;
         }
+        if (message.request === 'heart') { failHeart(Number(message.id), text); return; }
         if (message.request === 'status' && !garmin.status) garmin.status = { available: true, updateRequired: false, connected: false, complete: false };
         clearTimeout(garmin.timer);
         garmin.syncing = false;
@@ -1307,6 +1346,7 @@ lucide.createIcons({icons});\``);if(typeof document>"u")throw new Error("`create
       if (activeView === 'activities') renderActivities();
       if (activeView === 'health') renderHealth();
       if (activeView === 'home') renderHome();
+      if (get('month-dialog').open) renderMonth();
       icons();
     }
     function garminActivities() { return garmin.data?.activities || []; }
@@ -1330,38 +1370,50 @@ lucide.createIcons({icons});\``);if(typeof document>"u")throw new Error("`create
       const bar = get('garmin-bar');
       const view = garminState();
       document.querySelectorAll('[data-garmin-refresh]').forEach(button => { button.hidden = !healthBridge; button.disabled = view !== 'connected' || garmin.syncing; });
-      bar.hidden = view === 'browser' || !['runs', 'activities', 'health'].includes(activeView);
+      bar.hidden = view === 'browser' || activeView === 'exercises';
       if (bar.hidden) return;
+      // Few words on the cover; the longer story is the tooltip, and a new error also gets a toast.
       let text = '';
+      let detail = '';
       let action = '';
       let label = '';
-      if (view === 'checking') text = 'Checking Health Connect…';
-      else if (view === 'unavailable') text = garmin.status.updateRequired ? 'Health Connect needs an update from Google Play.' : "Health Connect isn't available on this phone.";
-      else if (view === 'disconnected') {
-        text = 'Connect Health Connect to bring in your Garmin activities, sleep and heart rate.';
+      if (view === 'checking') text = 'Checking…';
+      else if (view === 'unavailable') {
+        text = garmin.status.updateRequired ? 'Update Health Connect' : 'No Health Connect';
+        detail = garmin.status.updateRequired ? 'Health Connect needs an update from Google Play.' : "Health Connect isn't available on this phone.";
+      } else if (view === 'disconnected') {
+        detail = 'Connect Health Connect to bring in your Garmin activities, sleep and heart rate.';
         action = garmin.askedToConnect ? 'settings' : 'connect';
-        label = garmin.askedToConnect ? 'Open Health Connect' : 'Connect';
-      } else if (garmin.syncing) text = 'Reading Garmin data from Health Connect…';
-      else if (garmin.error) { text = garmin.error; action = 'sync'; label = 'Try again'; }
+        label = 'Connect';
+      } else if (garmin.syncing) text = 'Syncing…';
+      else if (garmin.error) { text = 'Sync failed'; detail = garmin.error; action = 'sync'; label = 'Try again'; }
       else {
-        text = garmin.data ? `Garmin via Health Connect · updated ${formatClock(garmin.data.generatedAt)}` : 'Garmin via Health Connect';
+        text = garmin.data ? formatClock(garmin.data.generatedAt) : 'Not synced';
+        detail = garmin.data ? `Garmin via Health Connect · updated ${formatClock(garmin.data.generatedAt)}${garmin.data.history ? '' : ' · last 30 days only'}` : 'Garmin via Health Connect';
         if (!garmin.status.complete) {
-          text += ' · some access is switched off';
+          detail += ' · some access is switched off';
           action = garmin.askedToConnect ? 'settings' : 'connect';
           label = 'Review';
         } else {
-          if (garmin.data && !garmin.data.history) text += ' · last 30 days only';
           action = 'sync';
           label = 'Refresh';
         }
       }
-      bar.classList.toggle('is-error', Boolean(garmin.error) && !garmin.syncing && view === 'connected');
+      const failed = Boolean(garmin.error) && !garmin.syncing && view === 'connected';
+      if (failed && garmin.error !== garmin.told) notify(garmin.error);
+      garmin.told = failed ? garmin.error : '';
+      bar.classList.toggle('is-error', failed);
       bar.classList.toggle('is-busy', garmin.syncing || view === 'checking');
+      bar.title = detail;
       get('garmin-bar-text').textContent = text;
       const button = get('garmin-bar-action');
+      const iconOnly = action === 'sync';
       button.hidden = !action;
       button.dataset.action = action;
-      button.innerHTML = action === 'sync' ? `<i data-lucide="refresh-cw"></i> ${escapeHTML(label)}` : escapeHTML(label);
+      button.classList.toggle('is-icon', iconOnly);
+      button.title = iconOnly ? (label === 'Refresh' ? 'Refresh Garmin data' : 'Try again') : '';
+      if (iconOnly) button.setAttribute('aria-label', button.title); else button.removeAttribute('aria-label');
+      button.innerHTML = iconOnly ? '<i data-lucide="refresh-cw"></i>' : escapeHTML(label);
     }
     function sleepSummary(session) {
       const totals = { deep: 0, light: 0, rem: 0, other: 0, awake: 0 };
@@ -1384,25 +1436,6 @@ lucide.createIcons({icons});\``);if(typeof document>"u")throw new Error("`create
       const from = escapeHTML(formatClock(session.start));
       const to = escapeHTML(formatClock(session.end));
       return `<div class="hypnogram-wrap"><div class="hypnogram-labels" aria-hidden="true"><span>Awake</span><span>REM</span><span>Light</span><span>Deep</span></div><svg class="hypnogram" viewBox="0 0 100 100" preserveAspectRatio="none" role="img" aria-label="Sleep stages from ${from} to ${to}">${bars}</svg></div><div class="hypnogram-times" aria-hidden="true"><span>${from}</span><span>${to}</span></div>`;
-    }
-    function heartSpark(key, readings, resting) {
-      const dayStart = tracker.parseDay(key);
-      dayStart.setHours(0, 0, 0, 0);
-      const start = dayStart.getTime();
-      const values = readings.map(([, bpm]) => bpm);
-      const low = Math.min(...values, Number.isFinite(resting) ? resting : Infinity) - 5;
-      const high = Math.max(...values) + 5;
-      const x = time => ((time + 900000 - start) / 86400000 * 288).toFixed(1);
-      const y = bpm => (96 - (bpm - low) / (high - low) * 88).toFixed(1);
-      const segments = [];
-      for (const reading of readings) {
-        const last = segments.at(-1);
-        if (last && reading[0] - last.at(-1)[0] <= 3600000) last.push(reading); else segments.push([reading]);
-      }
-      const area = segments.map(segment => `M${x(segment[0][0])},100 ${segment.map(([time, bpm]) => `L${x(time)},${y(bpm)}`).join(' ')} L${x(segment.at(-1)[0])},100Z`).join(' ');
-      const line = segments.map(segment => segment.map(([time, bpm], index) => `${index ? 'L' : 'M'}${x(time)},${y(bpm)}`).join(' ')).join(' ');
-      const rest = Number.isFinite(resting) ? `<line class="rest" x1="0" x2="288" y1="${y(resting)}" y2="${y(resting)}"></line>` : '';
-      return `<svg class="heart-spark" viewBox="0 0 288 100" preserveAspectRatio="none" role="img" aria-label="Heart rate through the day in 30-minute averages"><defs><linearGradient id="hr-fill" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#c2503f" stop-opacity=".3"></stop><stop offset="1" stop-color="#c2503f" stop-opacity="0"></stop></linearGradient></defs><path class="area" d="${area}"></path>${rest}<path class="line" d="${line}"></path></svg><div class="spark-axis" aria-hidden="true"><span>00:00</span><span>06:00</span><span>12:00</span><span>18:00</span><span>24:00</span></div>`;
     }
     function trendChart(id, type, labels, values, color, format) {
       const tick = { color: '#758176', font: { family: 'DM Sans', size: 10 } };
@@ -1465,7 +1498,7 @@ lucide.createIcons({icons});\``);if(typeof document>"u")throw new Error("`create
       const legend = summary.detailed ? `<div class="stage-legend">${[['deep', 'Deep', '#28594b'], ['light', 'Light', '#658bb4'], ['rem', 'REM', '#ab7190'], ['awake', 'Awake', '#c37754']].map(([kind, label, color]) => `<div style="--stage:${color}"><strong>${formatSleep(summary[kind])}</strong>${label} · ${Math.round(summary[kind] / total * 100)}%</div>`).join('')}</div>` : '';
       get('sleep-chart').innerHTML = hypnogram(session) + legend;
     }
-    function renderHeartCard(readings, resting, day, index) {
+    function renderHeartCard(resting, day, index) {
       get('heart-resting').innerHTML = Number.isFinite(resting) ? `${number(resting)}<small>bpm</small>` : '--';
       const usual = average(Array.from({ length: 30 }, (_, offset) => index.restingByDay.get(tracker.shiftDay(healthDay, -offset - 1))));
       const delta = get('heart-delta');
@@ -1476,7 +1509,6 @@ lucide.createIcons({icons});\``);if(typeof document>"u")throw new Error("`create
         delta.textContent = change === 0 ? 'Bang on your usual' : `${change > 0 ? '+' : '−'}${Math.abs(change)} vs 30-day avg`;
       }
       get('heart-caption').textContent = !Number.isFinite(resting) ? 'No overnight heart rate yet.' : `Estimate: lowest 30-minute average ${index.sleepByDay.has(healthDay) ? 'while asleep' : 'this morning'} (dashed line).`;
-      get('heart-chart').innerHTML = readings.length ? heartSpark(healthDay, readings, resting) : '<p class="health-sub">No heart rate recorded for this day.</p>';
       get('heart-min').textContent = orDash(day?.hrMin);
       get('heart-avg').textContent = orDash(day?.hrAvg);
       get('heart-max').textContent = orDash(day?.hrMax);
@@ -1530,6 +1562,12 @@ lucide.createIcons({icons});\``);if(typeof document>"u")throw new Error("`create
       get('health-content').hidden = !showContent;
       renderHealthStats();
       if (!showContent) { destroyCharts(healthCharts); renderGarminEmpty('health', view); return; }
+      renderHealthDay();
+      renderHeartTrack();
+      renderHealthTrends(garmin.index);
+    }
+    // Everything tied to the chosen day, so scrolling the heart rate timeline can change day without rebuilding the trend charts.
+    function renderHealthDay() {
       const index = garmin.index;
       const today = tracker.dayKey();
       const earliest = tracker.shiftDay(today, -89);
@@ -1541,13 +1579,252 @@ lucide.createIcons({icons});\``);if(typeof document>"u")throw new Error("`create
       get('health-day-title').textContent = healthDay === today ? 'Today, so far.' : healthDay === tracker.shiftDay(today, -1) ? 'Yesterday.' : `${formatDay(healthDay, { weekday: 'long', day: 'numeric', month: 'long' })}.`;
       const day = index.days.get(healthDay);
       const session = index.sleepByDay.get(healthDay);
-      const readings = index.hrByDay.get(healthDay) || [];
       const resting = index.restingByDay.get(healthDay) ?? null;
-      get('health-day-caption').textContent = day || session || readings.length ? 'Straight from your Garmin, via Health Connect.' : 'Nothing from Garmin for this day. Sync your watch in Garmin Connect, then refresh.';
+      get('health-day-caption').textContent = day || session || index.hrByDay.has(healthDay) ? 'Straight from your Garmin, via Health Connect.' : 'Nothing from Garmin for this day. Sync your watch in Garmin Connect, then refresh.';
       renderSleepCard(session, index);
-      renderHeartCard(readings, resting, day, index);
+      renderHeartCard(resting, day, index);
       renderHealthTiles(day);
-      renderHealthTrends(index);
+    }
+    // ---- Health: heart rate timeline. Five-minute low/average/high from Health Connect, read a few days at a time as you scroll back. ----
+    const hrTrack = { days: new Map(), fresh: new Set(), pending: new Set(), day: null, width: 0, start: 0, msPerPx: 1, low: 40, high: 160, cursor: null, frame: 0, settle: 0, scrolling: false, glide: false, status: '' };
+    const hrGutter = 30;
+    const dayStartTime = key => tracker.parseDay(key).setHours(0, 0, 0, 0);
+    const hrVisibleStart = () => hrTrack.start + get('hr-track').scrollLeft * hrTrack.msPerPx;
+    const hrExtremes = buckets => [buckets.reduce((best, bucket) => bucket[3] > best[3] ? bucket : best), buckets.reduce((best, bucket) => bucket[1] < best[1] ? bucket : best)];
+    function renderHeartTrack() {
+      const glide = hrTrack.glide;
+      hrTrack.glide = false;
+      const track = get('hr-track');
+      const width = track.clientWidth;
+      if (!width) return;
+      const today = tracker.dayKey();
+      const start = dayStartTime(tracker.shiftDay(today, -89));
+      const keep = hrTrack.width && (hrTrack.width !== width || hrTrack.start !== start) ? hrVisibleStart() : null;
+      Object.assign(hrTrack, { width, start, msPerPx: 86400000 / (width - hrGutter) });
+      get('hr-track-space').style.width = `${Math.ceil(hrGutter + (dayStartTime(tracker.shiftDay(today, 1)) - start) / hrTrack.msPerPx)}px`;
+      if (keep !== null) track.scrollLeft = (keep - start) / hrTrack.msPerPx;
+      // Line up on the chosen day when it changed elsewhere (arrows, Home tiles) or the scroll position was lost while hidden.
+      const drifted = !hrTrack.scrolling && tracker.dayKey(new Date(hrVisibleStart() + 43200000)) !== healthDay;
+      if (hrTrack.day !== healthDay || drifted) {
+        const left = (dayStartTime(healthDay) - start) / hrTrack.msPerPx;
+        const smooth = glide && hrTrack.day !== null && Math.abs(left - track.scrollLeft) <= 3 * (width - hrGutter);
+        hrTrack.day = healthDay;
+        track.scrollTo({ left, behavior: smooth ? 'smooth' : 'instant' });
+      }
+      drawHeartTrack();
+      loadHeartDays();
+    }
+    function drawHeartTrack() {
+      const canvas = get('hr-track-canvas');
+      const width = canvas.clientWidth;
+      const height = canvas.clientHeight;
+      if (!width || !height || !hrTrack.width) return;
+      const ratio = window.devicePixelRatio || 1;
+      if (canvas.width !== Math.round(width * ratio) || canvas.height !== Math.round(height * ratio)) {
+        canvas.width = Math.round(width * ratio);
+        canvas.height = Math.round(height * ratio);
+      }
+      const context = canvas.getContext('2d');
+      context.setTransform(ratio, 0, 0, ratio, 0, 0);
+      context.clearRect(0, 0, width, height);
+      const top = 26;
+      const bottom = height - 22;
+      const from = hrVisibleStart();
+      const to = from + (width - hrGutter) * hrTrack.msPerPx;
+      const half = 150000;
+      const x = time => hrGutter + (time - from) / hrTrack.msPerPx;
+      const y = bpm => bottom - (bpm - hrTrack.low) / (hrTrack.high - hrTrack.low) * (bottom - top);
+      const line = (x1, y1, x2, y2, color) => { context.strokeStyle = color; context.beginPath(); context.moveTo(x1, y1); context.lineTo(x2, y2); context.stroke(); };
+      const font = (size, weight = 400) => `${weight} ${size}px 'DM Sans', sans-serif`;
+      context.lineWidth = 1;
+      context.lineJoin = 'round';
+      context.textBaseline = 'middle';
+      context.font = font(10);
+      context.textAlign = 'right';
+      context.fillStyle = '#758176';
+      const step = hrTrack.high - hrTrack.low > 120 ? 40 : 20;
+      for (let bpm = Math.ceil(hrTrack.low / step) * step; bpm <= hrTrack.high; bpm += step) {
+        const at = Math.round(y(bpm)) + .5;
+        line(hrGutter, at, width, at, '#e3eadf');
+        context.fillText(String(bpm), hrGutter - 6, at);
+      }
+      context.save();
+      context.beginPath();
+      context.rect(hrGutter, 0, width - hrGutter, height);
+      context.clip();
+      const today = tracker.dayKey();
+      const keys = [];
+      for (let key = tracker.dayKey(new Date(from)); dayStartTime(key) < to; key = tracker.shiftDay(key, 1)) keys.push(key);
+      const every = width - hrGutter >= 520 ? 3 : 6;
+      context.textAlign = 'center';
+      for (const key of keys) {
+        const midnight = Math.round(x(dayStartTime(key))) + .5;
+        line(midnight, 4, midnight, bottom, '#cbd7cb');
+        for (let hour = every; hour < 24; hour += every) {
+          const time = tracker.parseDay(key).setHours(hour, 0, 0, 0);
+          const at = Math.round(x(time)) + .5;
+          line(at, top, at, bottom, '#eef2ec');
+          context.fillText(new Date(time).toLocaleTimeString([], { hour: 'numeric' }), at, height - 10);
+        }
+      }
+      context.setLineDash([4, 4]);
+      for (const key of keys) {
+        const resting = garmin.index?.restingByDay.get(key);
+        if (Number.isFinite(resting)) line(x(dayStartTime(key)), Math.round(y(resting)) + .5, x(dayStartTime(tracker.shiftDay(key, 1))), Math.round(y(resting)) + .5, 'rgba(40, 89, 75, .7)');
+      }
+      const now = Date.now();
+      context.setLineDash([2, 3]);
+      if (now > from && now < to) line(Math.round(x(now)) + .5, top, Math.round(x(now)) + .5, bottom, '#9aa89d');
+      context.setLineDash([]);
+      const buckets = keys.flatMap(key => hrTrack.days.get(key) || []);
+      const segments = [];
+      for (const bucket of buckets) {
+        const last = segments.at(-1);
+        if (last && bucket[0] - last.at(-1)[0] <= 960000) last.push(bucket); else segments.push([bucket]);
+      }
+      context.fillStyle = 'rgba(194, 80, 63, .16)';
+      for (const segment of segments) {
+        context.beginPath();
+        segment.forEach(([time, , , high], index) => context[index ? 'lineTo' : 'moveTo'](x(time + half), y(high)));
+        for (let index = segment.length - 1; index >= 0; index--) context.lineTo(x(segment[index][0] + half), y(segment[index][1]));
+        context.fill();
+      }
+      context.strokeStyle = '#c2503f';
+      context.fillStyle = '#c2503f';
+      context.lineWidth = 1.6;
+      for (const segment of segments) {
+        context.beginPath();
+        if (segment.length === 1) { context.arc(x(segment[0][0] + half), y(segment[0][2]), 1.6, 0, Math.PI * 2); context.fill(); continue; }
+        segment.forEach(([time, , average], index) => context[index ? 'lineTo' : 'moveTo'](x(time + half), y(average)));
+        context.stroke();
+      }
+      context.font = font(10, 600);
+      context.lineWidth = 3;
+      const marker = (time, bpm, color, offset) => {
+        const at = x(time + half);
+        context.fillStyle = color;
+        context.beginPath();
+        context.arc(at, y(bpm), 3, 0, Math.PI * 2);
+        context.fill();
+        context.strokeStyle = '#fcfdfb';
+        context.strokeText(String(Math.round(bpm)), at, y(bpm) + offset);
+        context.fillText(String(Math.round(bpm)), at, y(bpm) + offset);
+      };
+      for (const key of keys) {
+        const day = hrTrack.days.get(key);
+        if (!day?.length) continue;
+        const [peak, trough] = hrExtremes(day);
+        marker(peak[0], peak[3], '#c2503f', -10);
+        marker(trough[0], trough[1], '#28594b', 11);
+      }
+      context.textAlign = 'left';
+      context.fillStyle = '#263e35';
+      for (const key of keys) {
+        const label = key === today ? 'Today' : key === tracker.shiftDay(today, -1) ? 'Yesterday' : formatDay(key, { weekday: 'short', day: 'numeric', month: 'short' });
+        const size = context.measureText(label).width;
+        context.fillText(label, Math.min(Math.max(hrGutter + 6, x(dayStartTime(key)) + 6), x(dayStartTime(tracker.shiftDay(key, 1))) - 10 - size), 12);
+      }
+      if (hrTrack.cursor !== null) {
+        let near = null;
+        for (const bucket of buckets) {
+          const gap = Math.abs(bucket[0] + half - hrTrack.cursor);
+          if (gap <= 600000 && (!near || gap < Math.abs(near[0] + half - hrTrack.cursor))) near = bucket;
+        }
+        const at = Math.round(x(near ? near[0] + half : hrTrack.cursor)) + .5;
+        context.lineWidth = 1;
+        line(at, top - 4, at, bottom, '#263e35');
+        if (near) {
+          context.fillStyle = '#c2503f';
+          context.strokeStyle = '#fff';
+          context.lineWidth = 2;
+          context.beginPath();
+          context.arc(at, y(near[2]), 4, 0, Math.PI * 2);
+          context.fill();
+          context.stroke();
+        }
+        const text = near ? `${formatClock(near[0])} · ${Math.round(near[2])} bpm${near[3] - near[1] >= 4 ? ` (${Math.round(near[1])}–${Math.round(near[3])})` : ''}` : `${formatClock(hrTrack.cursor)} · no reading`;
+        context.font = font(11, 600);
+        const box = context.measureText(text).width + 16;
+        const left = Math.min(Math.max(hrGutter + 2, at - box / 2), width - box - 2);
+        context.fillStyle = '#294638';
+        context.beginPath();
+        if (context.roundRect) context.roundRect(left, 2, box, 20, 6); else context.rect(left, 2, box, 20);
+        context.fill();
+        context.fillStyle = '#fff';
+        context.textAlign = 'center';
+        context.fillText(text, left + box / 2, 12);
+      }
+      context.restore();
+    }
+    function loadHeartDays() {
+      if (!healthBridge || !hrTrack.width) return;
+      const today = tracker.dayKey();
+      const from = hrVisibleStart();
+      const first = [tracker.shiftDay(today, -89), tracker.shiftDay(tracker.dayKey(new Date(from)), -2)].sort()[1];
+      const last = [today, tracker.dayKey(new Date(from + (hrTrack.width - hrGutter) * hrTrack.msPerPx - 1))].sort()[0];
+      let batch = [];
+      const send = () => {
+        if (!batch.length) return;
+        batch.forEach(key => hrTrack.pending.add(key));
+        hrTrack.status = '';
+        requestHealth({ type: 'heart', start: dayStartTime(batch[0]), end: dayStartTime(tracker.shiftDay(batch.at(-1), 1)) });
+        batch = [];
+      };
+      for (let key = first; key <= last; key = tracker.shiftDay(key, 1)) {
+        if (hrTrack.fresh.has(key) || hrTrack.pending.has(key)) send();
+        else if (batch.push(key) === 7) send();
+      }
+      send();
+      updateHeartNote();
+    }
+    function receiveHeart(message) {
+      const start = finiteNumber(message.start);
+      const end = finiteNumber(message.end);
+      if (start === null || !(end > start)) return;
+      for (let key = tracker.dayKey(new Date(start)); dayStartTime(key) < end; key = tracker.shiftDay(key, 1)) {
+        hrTrack.days.set(key, []);
+        hrTrack.fresh.add(key);
+        hrTrack.pending.delete(key);
+      }
+      for (const bucket of Array.isArray(message.buckets) ? message.buckets : []) {
+        if (Array.isArray(bucket) && bucket.length === 4 && bucket.every(Number.isFinite)) hrTrack.days.get(tracker.dayKey(new Date(bucket[0])))?.push(bucket);
+      }
+      let low = Infinity;
+      let high = -Infinity;
+      for (const day of hrTrack.days.values()) for (const bucket of day) { low = Math.min(low, bucket[1]); high = Math.max(high, bucket[3]); }
+      hrTrack.low = Number.isFinite(low) ? Math.min(40, Math.floor((low - 12) / 10) * 10) : 40;
+      hrTrack.high = Number.isFinite(high) ? Math.max(140, Math.ceil((high + 15) / 10) * 10) : 160;
+      hrTrack.status = '';
+      drawHeartTrack();
+      updateHeartNote();
+    }
+    function failHeart(start, text) {
+      for (const key of [...hrTrack.pending]) if (dayStartTime(key) >= start && dayStartTime(key) < start + 8 * 86400000) hrTrack.pending.delete(key);
+      hrTrack.status = text;
+      updateHeartNote();
+    }
+    function updateHeartNote() {
+      if (!hrTrack.width) return;
+      const from = hrVisibleStart();
+      const keys = [];
+      for (let key = tracker.dayKey(new Date(from)); dayStartTime(key) < from + (hrTrack.width - hrGutter) * hrTrack.msPerPx && key <= tracker.dayKey(); key = tracker.shiftDay(key, 1)) keys.push(key);
+      const loading = keys.some(key => !hrTrack.days.has(key));
+      const empty = keys.every(key => !hrTrack.days.get(key)?.length);
+      get('hr-track-note').textContent = hrTrack.status || (loading ? 'Loading heart rate…' : empty ? 'No heart rate recorded here.' : 'Swipe back through 90 days. Tap the line for exact bpm.');
+      const day = hrTrack.days.get(healthDay) || [];
+      const label = formatDay(healthDay, { weekday: 'long', day: 'numeric', month: 'long' });
+      const [peak, trough] = day.length ? hrExtremes(day) : [];
+      get('hr-track-canvas').setAttribute('aria-label', peak ? `Heart rate on ${label}: low ${Math.round(trough[1])} bpm at ${formatClock(trough[0])}, high ${Math.round(peak[3])} bpm at ${formatClock(peak[0])}.` : `Heart rate on ${label}: no readings loaded.`);
+    }
+    function settleHeartTrack() {
+      hrTrack.scrolling = false;
+      loadHeartDays();
+      if (activeView !== 'health' || !garmin.index) return;
+      const centre = tracker.dayKey(new Date(hrVisibleStart() + 43200000));
+      if (centre === healthDay) return;
+      healthDay = hrTrack.day = centre;
+      renderHealthDay();
+      updateHeartNote();
     }
     function renderActivityStats(activities) {
       const monthStart = new Date();
@@ -2122,15 +2399,26 @@ lucide.createIcons({icons});\``);if(typeof document>"u")throw new Error("`create
         sleepValue = formatSleep(summary.asleep);
         sleepDetail = `<span class="kpi-sub">${escapeHTML(`${formatClock(session.start)} – ${formatClock(session.end)}`)}</span>${summary.detailed ? `<span class="stage-bar" title="${escapeHTML(stages.map(([ms, , label]) => `${label} ${formatSleep(ms)}`).join(' · '))}">${stages.map(([ms, color]) => ms > 0 ? `<span style="flex:${Math.round(ms / 60000)};background:${color}"></span>` : '').join('')}</span>` : ''}`;
       }
-      const run = allRuns().sort((first, second) => second.date.localeCompare(first.date) || second.startTime.localeCompare(first.startTime) || second.createdAt - first.createdAt)[0];
-      let runValue = '--';
-      let runDetail = '<span class="kpi-sub">No runs yet</span>';
-      if (run) {
-        const ago = Math.round((tracker.parseDay(today) - tracker.parseDay(run.date)) / 86400000);
-        const when = ago === 0 ? 'Today' : ago === 1 ? 'Yesterday' : ago < 7 ? `${ago} days ago · ${formatDay(run.date, { weekday: 'short' })}` : formatDay(run.date, { day: 'numeric', month: 'short', ...(run.date.slice(0, 4) === today.slice(0, 4) ? {} : { year: 'numeric' }) });
-        const pace = run.distanceMeters ? ` · ${formatDuration(Math.round(run.durationSeconds * 1000 / run.distanceMeters))} /km` : '';
-        runValue = `${new Intl.NumberFormat(undefined, { maximumFractionDigits: 2 }).format(run.distanceMeters / 1000)}<small>km</small>`;
-        runDetail = `<span class="kpi-sub">${escapeHTML(when)}</span><span class="kpi-sub">${formatElapsed(run.durationSeconds)}${pace}</span>`;
+      const latest = [...garminActivities().map(activity => ({ at: activity.start, activity })), ...state.runs.map(run => ({ at: runTime(run), run }))].reduce((best, item) => !best || item.at > best.at ? item : best, null);
+      let lastIcon = 'activity';
+      let lastValue = '--';
+      let lastDetail = `<span class="kpi-sub">${escapeHTML(waiting || 'No activities yet')}</span>`;
+      let lastTarget = 'data-go="activities"';
+      if (latest) {
+        const { activity, run } = latest;
+        const info = activityInfo(activity ? activity.type : 56);
+        const seconds = activity ? activitySeconds(activity) : run.durationSeconds;
+        const metres = activity ? activity.distanceM || 0 : run.distanceMeters;
+        const key = tracker.dayKey(new Date(latest.at));
+        const ago = Math.round((tracker.parseDay(today) - tracker.parseDay(key)) / 86400000);
+        const when = ago === 0 ? 'Today' : ago === 1 ? 'Yesterday' : ago < 7 ? formatDay(key, { weekday: 'long' }) : formatDay(key, { day: 'numeric', month: 'short', ...(key.slice(0, 4) === today.slice(0, 4) ? {} : { year: 'numeric' }) });
+        const moving = info.kind !== 'time' && metres >= 50 && seconds > 0;
+        const rate = info.kind === 'swim' ? `${formatDuration(Math.round(seconds * 100 / metres))} /100 m` : info.kind === 'speed' ? `${new Intl.NumberFormat(undefined, { maximumFractionDigits: 1 }).format(metres / seconds * 3.6)} km/h` : `${formatDuration(Math.round(seconds * 1000 / metres))} /km`;
+        lastIcon = info.icon;
+        lastValue = moving ? (info.kind === 'swim' ? `${number(Math.round(metres))}<small>m</small>` : `${new Intl.NumberFormat(undefined, { maximumFractionDigits: 2 }).format(metres / 1000)}<small>km</small>`) : seconds >= 3600 ? `${Math.floor(seconds / 3600)}<small>h</small> ${Math.floor(seconds / 60) % 60}<small>min</small>` : `${Math.max(1, Math.round(seconds / 60))}<small>min</small>`;
+        const extra = moving ? `${formatElapsed(seconds)} · ${rate}` : activity?.avgHr ? `${number(Math.round(activity.avgHr))} bpm avg` : activity ? formatClock(latest.at) : formatElapsed(seconds);
+        lastDetail = `<span class="kpi-sub">${escapeHTML(`${activity?.title || info.label} · ${when}`)}</span><span class="kpi-sub">${escapeHTML(extra)}</span>`;
+        lastTarget = activity ? `data-activity="${escapeHTML(activity.id)}"` : 'data-go="runs"';
       }
       const steps = index?.days.get(today)?.steps;
       const hasSteps = Number.isFinite(steps);
@@ -2142,15 +2430,137 @@ lucide.createIcons({icons});\``);if(typeof document>"u")throw new Error("`create
       const dots = week.map((key, offset) => `<span class="${key > today ? 'later' : activeDays.has(key) ? 'on' : ''}${key === today ? ' today' : ''}" title="${formatDay(key, { weekday: 'long' })}">${'MTWTFSS'[offset]}</span>`).join('');
       get('kpis').innerHTML = `
         <button type="button" class="kpi" data-go="health"${sleepDay ? ` data-day="${sleepDay}"` : ''}><span class="eyebrow"><i data-lucide="moon"></i>${escapeHTML(sleepLabel)}</span><strong>${sleepValue}</strong>${sleepDetail}<i data-lucide="chevron-right" class="kpi-go"></i></button>
-        <button type="button" class="kpi" data-go="runs"><span class="eyebrow"><i data-lucide="route"></i>Last run</span><strong>${runValue}</strong>${runDetail}<i data-lucide="chevron-right" class="kpi-go"></i></button>
+        <button type="button" class="kpi" ${lastTarget}><span class="eyebrow"><i data-lucide="${lastIcon}"></i>Last activity</span><strong>${lastValue}</strong>${lastDetail}<i data-lucide="chevron-right" class="kpi-go"></i></button>
         <button type="button" class="kpi" data-go="health" data-day="${today}"><span class="eyebrow"><i data-lucide="footprints"></i>Steps today</span><span class="steps-row"><svg class="step-ring" viewBox="0 0 100 100" aria-hidden="true"><circle class="track" cx="50" cy="50" r="42"></circle><circle class="progress" cx="50" cy="50" r="42" stroke-dasharray="263.9" stroke-dashoffset="${(263.9 * (1 - Math.min(1, hasSteps ? steps / 10000 : 0))).toFixed(1)}"></circle></svg><strong>${hasSteps ? number(steps) : '--'}</strong></span><span class="kpi-sub">${escapeHTML(stepsNote)}</span><i data-lucide="chevron-right" class="kpi-go"></i></button>
-        <button type="button" class="kpi" data-go="activities"><span class="eyebrow"><i data-lucide="calendar-check"></i>This week</span><strong>${activeCount}<small>${activeCount === 1 ? 'day' : 'days'} active</small></strong><span class="week-dots" role="img" aria-label="${activeCount} active ${activeCount === 1 ? 'day' : 'days'} so far this week">${dots}</span><i data-lucide="chevron-right" class="kpi-go"></i></button>`;
+        <button type="button" class="kpi" data-open="month"><span class="eyebrow"><i data-lucide="calendar-check"></i>This week</span><strong>${activeCount}<small>${activeCount === 1 ? 'day' : 'days'} active</small></strong><span class="week-dots" role="img" aria-label="${activeCount} active ${activeCount === 1 ? 'day' : 'days'} so far this week">${dots}</span><i data-lucide="chevron-right" class="kpi-go"></i></button>`;
     }
     function renderHome() {
-      const hour = new Date().getHours();
-      get('hero-greeting').textContent = `${hour < 12 ? 'Morning' : hour < 17 ? 'Afternoon' : 'Evening'} · ${new Date().toLocaleDateString(undefined, { weekday: 'long', day: 'numeric', month: 'long' })}`;
+      get('hero-greeting').textContent = new Date().toLocaleDateString(undefined, { weekday: 'short', day: 'numeric', month: 'short' });
       renderWeather();
       renderKpis();
+    }
+    // ---- Month view: a calendar of everything logged, plus this month against last ----
+    const gymTypes = new Set([70, 81]);
+    let monthShown = '';
+    let monthDay = null;
+    const monthLength = month => new Date(Number(month.slice(0, 4)), Number(month.slice(5, 7)), 0).getDate();
+    const shiftMonth = (month, amount) => tracker.dayKey(new Date(Number(month.slice(0, 4)), Number(month.slice(5, 7)) - 1 + amount, 1, 12)).slice(0, 7);
+    function runTime(run) {
+      const at = tracker.parseDay(run.date);
+      if (run.startTime) at.setHours(...run.startTime.split(':').map(Number), 0, 0);
+      return at.getTime();
+    }
+    function activityDays() {
+      const days = new Map();
+      const day = key => { if (!days.has(key)) days.set(key, { items: [], sets: new Map() }); return days.get(key); };
+      for (const activity of garminActivities()) day(tracker.dayKey(new Date(activity.start))).items.push({ at: activity.start, type: activity.type, seconds: activitySeconds(activity), metres: activity.distanceM || 0, activity });
+      for (const run of state.runs) day(run.date).items.push({ at: runTime(run), type: 56, seconds: run.durationSeconds, metres: run.distanceMeters, run });
+      for (const entry of state.entries) {
+        const sets = day(entry.date).sets;
+        const total = sets.get(entry.exerciseId) || { count: 0, amount: 0 };
+        total.count++;
+        total.amount += entryAmount(entry);
+        sets.set(entry.exerciseId, total);
+      }
+      days.forEach(entry => entry.items.sort((first, second) => first.at - second.at));
+      return days;
+    }
+    function monthStats(days, from, to) {
+      const stats = { activities: 0, gym: 0, runs: 0, metres: 0, seconds: 0, days: 0 };
+      for (const [key, day] of days) {
+        if (key < from || key > to) continue;
+        stats.days++;
+        for (const item of day.items) {
+          stats.activities++;
+          stats.seconds += item.seconds;
+          if (item.activity && gymTypes.has(item.type)) stats.gym++;
+          if (item.type === 56 || item.type === 57) { stats.runs++; stats.metres += item.metres; }
+        }
+      }
+      return stats;
+    }
+    function dayMarks(day) {
+      const marks = day.items.map(item => { const info = activityInfo(item.type); return [info.icon, activityColor(item.type), item.activity?.title || info.label]; });
+      for (const id of day.sets.keys()) {
+        const exercise = state.exercises.find(item => item.id === id);
+        if (exercise) marks.push([exercise.icon, exercise.color, exercise.name]);
+      }
+      return marks;
+    }
+    function renderMonth() {
+      const today = tracker.dayKey();
+      const current = today.slice(0, 7);
+      const days = activityDays();
+      const earliest = [...days.keys()].reduce((first, key) => key < first ? key : first, today).slice(0, 7);
+      monthShown = monthShown > current ? current : monthShown < earliest ? earliest : monthShown;
+      if (!monthDay?.startsWith(monthShown)) monthDay = monthShown === current ? today : [...days.keys()].filter(key => key.startsWith(monthShown)).sort().at(-1) || null;
+      get('month-title').textContent = formatDay(`${monthShown}-01`, { month: 'long', year: 'numeric' });
+      get('month-prev').disabled = monthShown <= earliest;
+      get('month-next').disabled = monthShown >= current;
+      const cells = Array.from({ length: (tracker.parseDay(`${monthShown}-01`).getDay() + 6) % 7 }, () => '<span></span>');
+      for (let date = 1; date <= monthLength(monthShown); date++) {
+        const key = `${monthShown}-${String(date).padStart(2, '0')}`;
+        const marks = days.has(key) ? dayMarks(days.get(key)) : [];
+        const shown = marks.length > 3 ? marks.slice(0, 2) : marks;
+        const label = `${formatDay(key, { weekday: 'long', day: 'numeric', month: 'long' })}${marks.length ? `: ${marks.map(mark => mark[2]).join(', ')}` : ''}`;
+        cells.push(`<button type="button" class="cal-day${marks.length ? ' is-active' : ''}${key === today ? ' is-today' : ''}" data-cal-day="${key}" aria-pressed="${key === monthDay}" aria-label="${escapeHTML(label)}"${key > today ? ' disabled' : ''}><span class="cal-num">${date}</span><span class="cal-marks">${shown.map(([icon, color]) => `<i data-lucide="${icon}" style="color:${color}"></i>`).join('')}${marks.length > shown.length ? `<span class="cal-more">+${marks.length - shown.length}</span>` : ''}</span></button>`);
+      }
+      get('month-grid').innerHTML = cells.join('');
+      renderMonthDay(days);
+      renderMonthKpis(days, today);
+    }
+    function renderMonthDay(days) {
+      const box = get('month-day');
+      if (!monthDay) { box.innerHTML = '<p class="history-caption">Nothing logged this month. Tap a day to check.</p>'; return; }
+      const day = days.get(monthDay);
+      const rows = (day?.items || []).map(item => {
+        if (item.activity) return activityRow(item.activity);
+        const run = item.run;
+        const pace = run.distanceMeters ? ` · ${formatDuration(Math.round(run.durationSeconds * 1000 / run.distanceMeters))} /km` : '';
+        return `<article class="history-row activity-row" style="--exercise:${activityColor(56)}"><span class="exercise-symbol"><i data-lucide="footprints"></i></span><div><strong>Run</strong><small>${escapeHTML(`${run.startTime ? `${run.startTime} · ` : ''}${formatElapsed(run.durationSeconds)}${pace}`)}</small></div><span class="history-reps">${formatKmShort(run.distanceMeters)} <small>km</small></span><span></span></article>`;
+      });
+      for (const [id, total] of day?.sets || []) {
+        const exercise = state.exercises.find(item => item.id === id);
+        if (!exercise) continue;
+        const timed = exercise.unit === 'seconds';
+        rows.push(`<article class="history-row activity-row" style="--exercise:${exercise.color}"><span class="exercise-symbol"><i data-lucide="${exercise.icon}"></i></span><div><strong>${escapeHTML(exercise.name)}</strong><small>${number(total.count)} ${total.count === 1 ? 'set' : 'sets'} logged</small></div><span class="history-reps">${timed ? formatDuration(total.amount) : number(total.amount)} <small>${timed ? 'min:sec' : 'reps'}</small></span><span></span></article>`);
+      }
+      box.innerHTML = `<h3>${escapeHTML(formatDay(monthDay, { weekday: 'long', day: 'numeric', month: 'long' }))}</h3>${rows.join('') || `<p class="history-caption">${monthDay === tracker.dayKey() ? 'Nothing logged yet today. Plenty of day left.' : 'A rest day. Recovery counts too.'}</p>`}`;
+    }
+    function renderMonthKpis(days, today) {
+      const current = monthShown === today.slice(0, 7);
+      const previous = shiftMonth(monthShown, -1);
+      const pad = date => String(date).padStart(2, '0');
+      // A month in progress is compared with last month up to the same date.
+      const cut = current ? Math.min(Number(today.slice(8)), monthLength(previous)) : monthLength(previous);
+      const now = monthStats(days, `${monthShown}-01`, current ? today : `${monthShown}-${pad(monthLength(monthShown))}`);
+      const before = monthStats(days, `${previous}-01`, `${previous}-${pad(cut)}`);
+      const name = month => formatDay(`${month}-01`, { month: 'long' });
+      const earlier = current ? new Intl.DateTimeFormat(undefined, { day: 'numeric', month: 'short' }).formatRange(tracker.parseDay(`${previous}-01`), tracker.parseDay(`${previous}-${pad(cut)}`)) : formatDay(`${previous}-01`, { month: 'short' });
+      get('month-kpi-title').textContent = current ? `${name(monthShown)} so far vs ${earlier}` : `${name(monthShown)} vs ${name(previous)}`;
+      const decimal = value => new Intl.NumberFormat(undefined, { maximumFractionDigits: 1 }).format(value);
+      get('month-kpis').innerHTML = [
+        ['activity', 'Activities', stats => stats.activities, number, ''],
+        ['dumbbell', 'Gym sessions', stats => stats.gym, number, ''],
+        ['footprints', 'Runs', stats => stats.runs, number, ''],
+        ['route', 'Run distance', stats => stats.metres / 1000, decimal, 'km'],
+        ['timer', 'Active time', stats => stats.seconds / 3600, decimal, 'h'],
+        ['calendar-check', 'Active days', stats => stats.days, number, '']
+      ].map(([icon, label, pick, format, unit]) => {
+        const value = pick(now);
+        const was = pick(before);
+        const change = Math.round((value - was) * 10) / 10;
+        const suffix = unit ? ` ${unit}` : '';
+        const chip = change > 0 ? `<span class="delta">+${format(change)}${suffix}</span>` : change < 0 ? `<span class="delta down">−${format(-change)}${suffix}</span>` : '<span class="delta even">Same</span>';
+        return `<div class="month-kpi"><span class="eyebrow"><i data-lucide="${icon}"></i>${label}</span><div class="month-kpi-row"><strong>${format(value)}${unit ? `<small>${unit}</small>` : ''}</strong>${chip}</div><span class="kpi-sub">${escapeHTML(earlier)}: ${format(was)}${suffix}</span></div>`;
+      }).join('');
+    }
+    function openMonth() {
+      monthShown = tracker.dayKey().slice(0, 7);
+      monthDay = tracker.dayKey();
+      renderMonth();
+      icons();
+      get('month-dialog').showModal();
     }
     function notify(message, undo = null) {
       clearTimeout(toastTimer);
@@ -2304,6 +2714,8 @@ lucide.createIcons({icons});\``);if(typeof document>"u")throw new Error("`create
     function switchView(view) {
       if (!['home', 'exercises', 'runs', 'activities', 'health'].includes(view)) return;
       const changed = view !== activeView;
+      // Finish a just-ended timeline scroll now, so it can't overrule a day picked on another page.
+      if (changed && activeView === 'health' && hrTrack.scrolling) { clearTimeout(hrTrack.settle); settleHeartTrack(); }
       activeView = view;
       document.body.dataset.page = view;
       get('home-panel').hidden = view !== 'home';
@@ -2315,7 +2727,6 @@ lucide.createIcons({icons});\``);if(typeof document>"u")throw new Error("`create
       get('activity-stats').hidden = view !== 'activities';
       get('health-panel').hidden = view !== 'health';
       get('health-stats').hidden = view !== 'health';
-      document.querySelector('.nav-link').setAttribute('href', { home: '#home-panel', runs: '#run-log', activities: '#activity-panel', health: '#health-panel' }[view] || '#history');
       document.querySelectorAll('.view-tabs [data-view]').forEach(button => { button.setAttribute('aria-selected', button.dataset.view === view); button.tabIndex = button.dataset.view === view ? 0 : -1; });
       document.querySelectorAll('.bottom-nav [data-view]').forEach(button => { if (button.dataset.view === view) button.setAttribute('aria-current', 'page'); else button.removeAttribute('aria-current'); });
       closePlaceMenu();
@@ -2395,7 +2806,6 @@ lucide.createIcons({icons});\``);if(typeof document>"u")throw new Error("`create
       renderExerciseOptions();
       get('exercise-dialog').showModal();
     }
-    get('header-date').textContent = new Date().toLocaleDateString(undefined, { weekday: 'short', day: 'numeric', month: 'long' });
     get('log-date').value = logDate;
     get('log-date').max = tracker.dayKey();
     document.querySelectorAll('.open-log').forEach(button => button.addEventListener('click', () => openLog()));
@@ -2545,8 +2955,10 @@ lucide.createIcons({icons});\``);if(typeof document>"u")throw new Error("`create
     get('activity-empty-action').addEventListener('click', event => garminAction(event.currentTarget.dataset.action));
     document.querySelectorAll('[data-garmin-refresh]').forEach(button => button.addEventListener('click', () => syncGarmin(true)));
     get('kpis').addEventListener('click', event => {
-      const tile = event.target.closest('[data-go]');
+      const tile = event.target.closest('.kpi');
       if (!tile) return;
+      if (tile.dataset.activity) { openActivity(tile.dataset.activity); icons(); return; }
+      if (tile.dataset.open === 'month') { openMonth(); return; }
       if (tile.dataset.day) healthDay = tile.dataset.day;
       switchView(tile.dataset.go);
     });
@@ -2561,11 +2973,18 @@ lucide.createIcons({icons});\``);if(typeof document>"u")throw new Error("`create
       icons();
     });
     get('weather-card').addEventListener('click', event => {
+      const button = event.target.closest('[data-wx-hour]');
+      if (!button) return;
+      const index = Number(button.dataset.wxHour);
+      weather.hour = weather.hour === index ? null : index;
+      renderWeather();
+      icons();
+    });
+    get('place-wrap').addEventListener('click', event => {
       const button = event.target.closest('button');
       if (!button) return;
       if (button.id === 'place-button') { if (get('place-menu').hidden) openPlaceMenu(); else closePlaceMenu(); }
       else if (button.id === 'place-add') { weather.searching = true; renderPlaceMenu(); get('place-query').focus(); }
-      else if (button.dataset.wxHour) { const index = Number(button.dataset.wxHour); weather.hour = weather.hour === index ? null : index; renderWeather(); icons(); }
       else if (button.dataset.addPlace) {
         const found = weather.results[Number(button.dataset.addPlace)];
         const place = found && cleanPlace({ id: `geo-${found.id ?? `${found.latitude},${found.longitude}`}`, name: found.name, region: found.admin1, country: found.country, lat: found.latitude, lon: found.longitude });
@@ -2581,7 +3000,7 @@ lucide.createIcons({icons});\``);if(typeof document>"u")throw new Error("`create
         else { saveWeather(); renderPlaceMenu(); }
       } else if (button.dataset.place) choosePlace(button.dataset.place);
     });
-    get('weather-card').addEventListener('input', event => {
+    get('place-wrap').addEventListener('input', event => {
       if (event.target.id !== 'place-query') return;
       clearTimeout(weather.searchTimer);
       weather.searchTimer = setTimeout(() => searchPlaces(event.target.value), 300);
@@ -2595,8 +3014,8 @@ lucide.createIcons({icons});\``);if(typeof document>"u")throw new Error("`create
     });
     get('activity-filter').addEventListener('change', event => { activityFilter = event.target.value; activityLimit = 10; renderActivities(); icons(); });
     get('more-activities').addEventListener('click', () => { activityLimit += 20; renderActivities(); icons(); });
-    get('health-prev-day').addEventListener('click', () => { healthDay = tracker.shiftDay(healthDay, -1); renderHealth(); icons(); });
-    get('health-next-day').addEventListener('click', () => { healthDay = [tracker.dayKey(), tracker.shiftDay(healthDay, 1)].sort()[0]; renderHealth(); icons(); });
+    get('health-prev-day').addEventListener('click', () => { healthDay = tracker.shiftDay(healthDay, -1); hrTrack.glide = true; renderHealth(); icons(); });
+    get('health-next-day').addEventListener('click', () => { healthDay = [tracker.dayKey(), tracker.shiftDay(healthDay, 1)].sort()[0]; hrTrack.glide = true; renderHealth(); icons(); });
     get('health-range').addEventListener('click', event => {
       const button = event.target.closest('[data-health-range]');
       if (!button) return;
@@ -2604,6 +3023,35 @@ lucide.createIcons({icons});\``);if(typeof document>"u")throw new Error("`create
       document.querySelectorAll('[data-health-range]').forEach(item => item.setAttribute('aria-pressed', item === button));
       renderHealth();
       icons();
+    });
+    get('hr-track').addEventListener('scroll', () => {
+      hrTrack.scrolling = true;
+      hrTrack.cursor = null;
+      if (!hrTrack.frame) hrTrack.frame = requestAnimationFrame(() => { hrTrack.frame = 0; drawHeartTrack(); });
+      clearTimeout(hrTrack.settle);
+      hrTrack.settle = setTimeout(settleHeartTrack, 180);
+    }, { passive: true });
+    get('hr-track').addEventListener('click', event => {
+      const offset = event.clientX - get('hr-track').getBoundingClientRect().left;
+      if (offset < hrGutter || !hrTrack.width) return;
+      const time = hrVisibleStart() + (offset - hrGutter) * hrTrack.msPerPx;
+      hrTrack.cursor = hrTrack.cursor !== null && Math.abs(hrTrack.cursor - time) < 12 * hrTrack.msPerPx ? null : time;
+      drawHeartTrack();
+    });
+    if (window.ResizeObserver) new ResizeObserver(() => { if (activeView === 'health' && hrTrack.width) renderHeartTrack(); }).observe(get('hr-track'));
+    get('month-prev').addEventListener('click', () => { monthShown = shiftMonth(monthShown, -1); monthDay = null; renderMonth(); icons(); });
+    get('month-next').addEventListener('click', () => { monthShown = shiftMonth(monthShown, 1); monthDay = null; renderMonth(); icons(); });
+    get('month-grid').addEventListener('click', event => {
+      const cell = event.target.closest('[data-cal-day]');
+      if (!cell) return;
+      monthDay = cell.dataset.calDay;
+      get('month-grid').querySelectorAll('[data-cal-day]').forEach(item => item.setAttribute('aria-pressed', item === cell));
+      renderMonthDay(activityDays());
+      icons();
+    });
+    get('month-day').addEventListener('click', event => {
+      const button = event.target.closest('[data-activity]');
+      if (button) { openActivity(button.dataset.activity); icons(); }
     });
     get('max-hr').addEventListener('change', event => {
       const value = Math.round(Number(event.target.value));
@@ -2680,7 +3128,6 @@ lucide.createIcons({icons});\``);if(typeof document>"u")throw new Error("`create
       get('log-date').max = today;
       get('set-date').max = today;
       get('run-date').max = today;
-      get('header-date').textContent = new Date().toLocaleDateString(undefined, { weekday: 'short', day: 'numeric', month: 'long' });
       render();
     });
     if (healthBridge) {
